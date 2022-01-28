@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import 'floating-vue/dist/style.css';
 import Popper from 'vue3-popper';
 import ThemeToggle from './components/ThemeToggle.vue';
 import Modal from './components/Modal.vue';
