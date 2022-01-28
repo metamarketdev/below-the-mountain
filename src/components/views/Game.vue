@@ -14,14 +14,16 @@
       </div>
 
       <a href="https://discord.gg/yWxXYxbpB6" target="_blank">
-        <i class="fab fa-discord fa-lg hover:text-purple-500"></i>
+        <i class="fab fa-discord fa-lg hover:text-purple-600"></i>
       </a>
     </nav>
 
-    <div class="container mx-auto px-2 max-w-6xl mt-2 text-left">
-      <h2 class="font-title text-4xl p-2">{{ $route.name }}</h2>
+    <div class="p-4">
+      <h2 class="font-title text-4xl">{{ $route.name }}</h2>
 
-      <router-view />
+      <div class="w-full mt-2 text-left border">
+        <router-view />
+      </div>
     </div>
   </div>
 

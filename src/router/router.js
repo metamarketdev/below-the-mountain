@@ -13,7 +13,7 @@ const routes = [
   {
     path: '/app',
     component: Game,
-    redirect: 'inventory',
+    redirect: '/app/inventory',
 
     children: [
       {

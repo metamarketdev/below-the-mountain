@@ -6,7 +6,7 @@ const networks = require('../networks.js');
 
 // hh verify "0x48d90737e118351a43077968871ec78dd66873bb"  --network fuji --show-stack-traces
 
-const GOLD_NAME = 'Mounchain Gold';
+const GOLD_NAME = 'Mountain Gold';
 const GOLD_SYMBOL = 'MGD';
 
 function getContractData(contract) {
