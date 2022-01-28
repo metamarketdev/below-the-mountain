@@ -1,7 +1,7 @@
 <template>
   <router-link
     :to="to"
-    class="flex flex-row items-center p-2 rounded hover:bg-sky-500 hover:bg-opacity-50 text-gray-400 font-semibold group"
+    class="flex flex-row items-center p-2 rounded hover:bg-sky-500 hover:bg-opacity-50 text-gray-400 font-medium group"
     active-class="text-gray-200"
     v-slot="{ isActive }"
   >

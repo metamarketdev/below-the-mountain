@@ -1,8 +1,6 @@
 <template>
-  <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
-  <div class="bg-gray-800 text-gray-200">
+  <div class="bg-gray-800 text-gray-200 font-sans">
     <!-- <input type="file" @input="input" /> -->
-
     <router-view />
   </div>
 </template>
@@ -62,18 +60,8 @@ export default {
 </script>
 
 <style lang="scss">
-html {
-  background: rgb(28, 41, 54);
-
-  &.dark {
-    background: black;
-  }
-}
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
 }
 </style>
