@@ -47,24 +47,24 @@ async function main() {
 
   // Auto verify
 
-  try {
-    console.log('Verifying...');
+  // try {
+  //   console.log('Verifying...');
 
-    // Wait a few confirmations to make sure the bytecode is not empty
-    await goldContract.deployTransaction.wait(6);
+  //   // Wait a few confirmations to make sure the bytecode is not empty
+  //   await goldContract.deployTransaction.wait(6);
 
-    await hre.run('verify:verify', {
-      address: goldContract.address,
-      network: hre.network.name,
-      constructorArguments: [GOLD_NAME, GOLD_SYMBOL],
-      // libraries: {
-      //   LibraryName: libraryContract.address,
-      // },
-    });
-  } catch (err) {
-    console.log('Verification failed:', err.message);
-    console.error(err);
-  }
+  //   await hre.run('verify:verify', {
+  //     address: goldContract.address,
+  //     network: hre.network.name,
+  //     constructorArguments: [GOLD_NAME, GOLD_SYMBOL],
+  //     // libraries: {
+  //     //   LibraryName: libraryContract.address,
+  //     // },
+  //   });
+  // } catch (err) {
+  //   console.log('Verification failed:', err.message);
+  //   console.error(err);
+  // }
 }
 
 main()
