@@ -13,9 +13,13 @@
       </div>
 
       <div>
-        <div class="flex flex-row items-center gap-2 mb-2">
+        <div class="flex flex-row items-center gap-2 mb-4">
+          <router-link to="/">
+            <HomeIcon class="w-6 h-6 text-gray-600 hover:text-gray-200" />
+          </router-link>
+
           <a href="https://discord.gg/yWxXYxbpB6" target="_blank">
-            <i class="fab fa-discord fa-lg hover:text-purple-600 text-xl"></i>
+            <i class="fab fa-discord fa-lg text-gray-600 hover:text-purple-600 text-xl"></i>
           </a>
         </div>
 
@@ -48,12 +52,14 @@
 import Nav from '../Nav.vue';
 import UserMenu from '../UserMenu.vue';
 import GameNavLink from '../GameNavLink.vue';
+import { HomeIcon } from '@heroicons/vue/solid';
 
 export default {
   components: {
     GameNavLink,
     Nav,
     UserMenu,
+    HomeIcon,
   },
 };
 </script>
