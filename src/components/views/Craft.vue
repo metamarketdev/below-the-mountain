@@ -3,9 +3,7 @@
     <div v-if="loadingRecipes">Loading...</div>
 
     <div v-else>
-      <Item v-for="(recipe, i) in filteredRecipes" :key="i">
-        {{ recipe }}
-      </Item>
+      <Recipe v-for="(recipe, i) in filteredRecipes" :key="i" :bind="recipe" />
     </div>
   </ItemGroup>
 
@@ -19,12 +17,12 @@
 import contracts from '../../contracts';
 import Moralis from '../../plugins/moralis';
 import ItemGroup from '../ItemGroup.vue';
-import Item from '../Item.vue';
+import Recipe from '../Recipe.vue';
 
 export default {
   name: 'Craft',
 
-  components: { Item, ItemGroup },
+  components: { Recipe, ItemGroup },
 
   data() {
     return {

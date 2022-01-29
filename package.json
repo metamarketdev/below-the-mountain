@@ -2,9 +2,10 @@
   "name": "vite-test",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
+    "prerelease": "vite build",
+    "serve": "vite",
+    "dev": "NODE_ENV=development nodemon server.js",
+    "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@headlessui/vue": "^1.4.3",
