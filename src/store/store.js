@@ -1,20 +1,11 @@
 import { createStore } from 'vuex';
 import Moralis from '../plugins/moralis';
 import contracts from '../contracts';
+import _ from 'lodash';
 
 const CHAIN_NAME = 'avalanche testnet';
 const NFT_TABLE = 'AvaxNFTOwners';
 const NFT_TABLE_PENDING = 'AvaxNFTOwnersPending';
-
-async function queryNfts(table, ownerAddress, contract) {
-  // console.log('Fetching:', table, ownerAddress, contractAddress);
-  const query = new Moralis.Query(table);
-  query.equalTo('owner_of', ownerAddress);
-  query.equalTo('token_address', contract.address.toLowerCase());
-  const result = await query.find();
-  console.log('Fetched', result.length, 'entries', result);
-  return result;
-}
 
 const store = createStore({
   state() {
@@ -28,11 +19,15 @@ const store = createStore({
 
       loadingItems: true,
 
-      items: [],
-      pendingItems: [],
+      confirmed: {
+        items: [],
+        tools: [],
+      },
 
-      tools: [],
-      pendingTools: [],
+      pending: {
+        items: [],
+        tools: [],
+      },
     };
   },
 
@@ -73,28 +68,68 @@ const store = createStore({
 
     async loadItems({ state, commit, dispatch }) {
       commit('setLoadingItems', true);
-      console.log('Contracts', contracts);
-      const items = await queryNfts(NFT_TABLE, state.userAttributes.ethAddress, contracts.items);
 
-      commit('setItems', items);
-      const pendingItems = await queryNfts(
-        NFT_TABLE_PENDING,
-        state.userAttributes.ethAddress,
-        contracts.items,
-      );
-      commit('setPendingItems', pendingItems);
+      await dispatch('fetchUserTokens', {
+        contractAddress: contracts.items.address,
+        destination: 'items',
+      });
 
-      const tools = await queryNfts(NFT_TABLE, state.userAttributes.ethAddress, contracts.tools);
-      commit('setTools', tools);
-
-      const pendingTools = await queryNfts(
-        NFT_TABLE_PENDING,
-        state.userAttributes.ethAddress,
-        contracts.tools,
-      );
-      commit('setPendingTools', pendingTools);
+      await dispatch('fetchUserTokens', {
+        contractAddress: contracts.tools.address,
+        destination: 'tools',
+      });
 
       commit('setLoadingItems', false);
+    },
+
+    async fetchUserTokens({ state, commit }, { contractAddress, destination }) {
+      const query = new Moralis.Query(NFT_TABLE);
+      query.equalTo('owner_of', state.userAttributes.ethAddress);
+      query.equalTo('token_address', contractAddress.toLowerCase());
+      const result = await query.find();
+      const subscription = await query.subscribe();
+      commit('setItems', { items: result, destination });
+
+      const queryPending = new Moralis.Query(NFT_TABLE_PENDING);
+      queryPending.equalTo('owner_of', state.userAttributes.ethAddress);
+      queryPending.equalTo('token_address', contractAddress.toLowerCase());
+      const resultPending = await queryPending.find();
+      const subscriptionPending = await queryPending.subscribe();
+      commit('setPendingItems', { items: resultPending, destination });
+
+      subscription.on('create', (msg) => {
+        // console.log('created pending', msg);
+        // state.pendingGems.push(msg);
+        commit('createItem', { msg, destination });
+      });
+      subscription.on('delete', (msg) => {
+        commit('deleteItem', { msg, destination });
+        // console.log('delete pending', msg);
+        // state.pendingGems = state.pendingGems.filter(({ id }) => msg.id !== id);
+      });
+      subscription.on('update', (msg) => {
+        commit('updateItem', { msg, destination });
+        // console.log('updated pending', msg);
+        // let old = state.pendingGems.find(({ id }) => msg.id === id);
+        // old = msg;
+      });
+
+      subscriptionPending.on('create', (msg) => {
+        // console.log('created pending', msg);
+        // state.pendingGems.push(msg);
+        commit('createPendingItem', { msg, destination });
+      });
+      subscriptionPending.on('delete', (msg) => {
+        commit('deletePendingItem', { msg, destination });
+        // console.log('delete pending', msg);
+        // state.pendingGems = state.pendingGems.filter(({ id }) => msg.id !== id);
+      });
+      subscriptionPending.on('update', (msg) => {
+        commit('updatePendingItem', { msg, destination });
+        // console.log('updated pending', msg);
+        // let old = state.pendingGems.find(({ id }) => msg.id === id);
+        // old = msg;
+      });
     },
   },
 
@@ -113,24 +148,47 @@ const store = createStore({
       state.gold = payload;
     },
 
-    setItems(state, payload) {
-      state.items = payload;
+    setItems(state, { items, destination }) {
+      console.log('1');
+      state.confirmed[destination] = items;
     },
 
-    setPendingItems(state, payload) {
-      state.pendingItems = payload;
+    setPendingItems(state, { items, destination }) {
+      console.log('2');
+      state.pending[destination] = items;
     },
 
-    setTools(state, payload) {
-      state.tools = payload;
+    createItem(state, { msg, destination }) {
+      console.log('yes!');
     },
-
-    setPendingTools(state, payload) {
-      state.pendingTools = payload;
+    deleteItem(state, { msg, destination }) {
+      console.log('yes!');
+    },
+    updateItem(state, { msg, destination }) {
+      console.log('yes!');
+    },
+    createPendingItem(state, { msg, destination }) {
+      console.log('yes!');
+    },
+    deletePendingItem(state, { msg, destination }) {
+      console.log('yes!');
+    },
+    updatePendingItem(state, { msg, destination }) {
+      console.log('yes!');
     },
   },
 
   getters: {
+    allItems: (state) => {
+      const allItems = [...state.confirmed.items, ...state.pending.items];
+      return _.uniqBy(allItems, 'attributes.token_id');
+    },
+
+    allTools: (state) => {
+      const allTools = [...state.confirmed.tools, ...state.pending.tools];
+      return _.uniqBy(allTools, 'attributes.token_id');
+    },
+
     isConnected: (state) => !!state.currentChainId,
 
     isWrongNetwork: (state, getters) =>

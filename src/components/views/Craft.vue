@@ -13,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup title="Available Materials">
-    <Item v-for="item in $store.state.items" :key="item.id" :item="item" />
-    <Item v-for="item in $store.state.pendingItems" :key="item.id" :item="item" />
+    <Item v-for="item in allItems" :key="item.id" :item="item" />
   </ItemGroup>
 
   <Modal :open="showCraftingModal" @close="showCraftingModal = false">
@@ -36,6 +35,7 @@ import Item from '../Item.vue';
 import Recipe from '../Recipe.vue';
 import Modal from '../Modal.vue';
 import Cta from '../Cta.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Craft',
@@ -60,6 +60,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['allItems', 'allTools']),
+
     filteredRecipes() {
       return this.recipes
         .map((recipe) => {
