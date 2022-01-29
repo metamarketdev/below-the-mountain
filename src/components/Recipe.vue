@@ -1,7 +1,8 @@
 <template>
-  <VTooltip theme="item-tooltip">
+  <VTooltip theme="item-tooltip" class="inline-block">
     <div
-      class="relative bg-gray-700 border border-gray-600 border-b-4 p-2 rounded-md inline-block m-1"
+      @click="$emit('click')"
+      class="bg-gray-700 border border-gray-600 border-b-4 p-2 rounded-md m-1"
     >
       <div class="text-center">
         <!-- <img :src="src" :alt="metadata.name" width="80" height="80" class="inline-block" /> -->
