@@ -7,7 +7,10 @@ const networks = require('../networks.js');
 // hh verify "0x48d90737e118351a43077968871ec78dd66873bb"  --network fuji --show-stack-traces
 
 const GOLD_NAME = 'Mountain Gold';
-const GOLD_SYMBOL = 'MGD';
+const GOLD_SYMBOL = 'MGLD';
+
+const TOOLS_NAME = 'Mountain Tools';
+const TOOLS_SYMBOL = 'MTLS';
 
 function getContractData(contract) {
   return {
@@ -17,7 +20,7 @@ function getContractData(contract) {
 }
 
 async function main() {
-  let goldContract, itemsContract;
+  let goldContract, itemsContract, craftingContract, toolsContract;
   let network = networks[hre.network.name];
 
   let [owner] = await ethers.getSigners();
@@ -26,7 +29,12 @@ async function main() {
   console.log('Deploying...');
 
   goldContract = await deployContract('Gold', [GOLD_NAME, GOLD_SYMBOL]);
+  goldContract.deployTransaction.wait(2);
   itemsContract = await deployContract('Items', ['']);
+  itemsContract.deployTransaction.wait(2);
+  craftingContract = await deployContract('Crafting', []);
+  craftingContract.deployTransaction.wait(2);
+  toolsContract = await deployContract('Tools', [TOOLS_NAME, TOOLS_SYMBOL]);
 
   console.log(
     '\u001b[' +
@@ -42,6 +50,11 @@ async function main() {
 
     fs.writeFileSync('src/contracts/Gold.json', JSON.stringify(getContractData(goldContract)));
     fs.writeFileSync('src/contracts/Items.json', JSON.stringify(getContractData(itemsContract)));
+    fs.writeFileSync(
+      'src/contracts/Crafting.json',
+      JSON.stringify(getContractData(craftingContract)),
+    );
+    fs.writeFileSync('src/contracts/Tools.json', JSON.stringify(getContractData(toolsContract)));
   } catch (err) {
     console.log('ABI creation failed:', err.message);
     console.error(err);

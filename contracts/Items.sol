@@ -64,8 +64,12 @@ contract Items is ERC1155, Ownable, Withdrawable {
       );
   }
 
+  // function _exists(uint256 tokenId) internal view virtual returns (bool) {
+  //   return tokenId < nextId;
+  // }
+
   function uri(uint256 tokenId) public view override returns (string memory) {
-    // TODO: require for invalid request (unexisting id)
+    // TODO: exists?
     return getMetadata(tokenId);
   }
 }

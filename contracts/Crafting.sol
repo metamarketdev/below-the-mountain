@@ -17,4 +17,26 @@ contract Crafting is Ownable, Withdrawable {
   mapping(uint256 => Recipe) private _recipeDetails;
 
   constructor() {}
+
+  function addRecipe(
+    uint256 inputTokenId,
+    uint256 inputAmount,
+    uint256 outputTokenId,
+    uint256 outputAmount
+  ) public onlyOwner returns (uint256 tokenId) {
+    uint256 newId = nextId;
+    _recipeDetails[newId] = Recipe(inputTokenId, inputAmount, outputTokenId, outputAmount);
+    nextId++;
+    return newId;
+  }
+
+  function updateRecipe(
+    uint256 recipeId,
+    uint256 inputTokenId,
+    uint256 inputAmount,
+    uint256 outputTokenId,
+    uint256 outputAmount
+  ) public onlyOwner {
+    _recipeDetails[recipeId] = Recipe(inputTokenId, inputAmount, outputTokenId, outputAmount);
+  }
 }

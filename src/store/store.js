@@ -6,12 +6,13 @@ const CHAIN_NAME = 'avalanche testnet';
 const NFT_TABLE = 'AvaxNFTOwners';
 const NFT_TABLE_PENDING = 'AvaxNFTOwnersPending';
 
-async function queryNfts(table, ownerAddress, contractAddress) {
-  console.log('Fetching:', table, ownerAddress, contractAddress);
+async function queryNfts(table, ownerAddress, contract) {
+  // console.log('Fetching:', table, ownerAddress, contractAddress);
   const query = new Moralis.Query(table);
   query.equalTo('owner_of', ownerAddress);
-  query.equalTo('token_address', contractAddress.toLowerCase());
+  query.equalTo('token_address', contract.address.toLowerCase());
   const result = await query.find();
+  console.log('Fetched', result.length, 'entries', result);
   return result;
 }
 
@@ -26,8 +27,12 @@ const store = createStore({
       gold: 0,
 
       loadingItems: true,
+
       items: [],
       pendingItems: [],
+
+      tools: [],
+      pendingTools: [],
     };
   },
 
@@ -67,21 +72,29 @@ const store = createStore({
     },
 
     async loadItems({ state, commit, dispatch }) {
-      const items = await queryNfts(
-        NFT_TABLE,
-        state.userAttributes.ethAddress,
-        contracts.items.address,
-      );
+      commit('setLoadingItems', true);
+      console.log('Contracts', contracts);
+      const items = await queryNfts(NFT_TABLE, state.userAttributes.ethAddress, contracts.items);
 
       commit('setItems', items);
-      console.log(items);
       const pendingItems = await queryNfts(
         NFT_TABLE_PENDING,
         state.userAttributes.ethAddress,
-        contracts.items.address,
+        contracts.items,
       );
       commit('setPendingItems', pendingItems);
-      console.log(items);
+
+      const tools = await queryNfts(NFT_TABLE, state.userAttributes.ethAddress, contracts.tools);
+      commit('setTools', tools);
+
+      const pendingTools = await queryNfts(
+        NFT_TABLE_PENDING,
+        state.userAttributes.ethAddress,
+        contracts.tools,
+      );
+      commit('setPendingTools', pendingTools);
+
+      commit('setLoadingItems', false);
     },
   },
 
@@ -90,6 +103,10 @@ const store = createStore({
       state.user = payload;
       state.userAttributes = payload.attributes;
       state.avatar = payload.attributes.avatar;
+    },
+
+    setLoadingItems(state, payload) {
+      state.loadingItems = payload;
     },
 
     setGold(state, payload) {
@@ -102,6 +119,14 @@ const store = createStore({
 
     setPendingItems(state, payload) {
       state.pendingItems = payload;
+    },
+
+    setTools(state, payload) {
+      state.tools = payload;
+    },
+
+    setPendingTools(state, payload) {
+      state.pendingTools = payload;
     },
   },
 

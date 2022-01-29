@@ -35,11 +35,9 @@
     </nav>
 
     <div class="flex flex-col flex-grow p-4">
-      <h2 class="font-title text-4xl text-left">{{ $route.name }}</h2>
+      <h2 class="font-title text-4xl text-left mb-12">{{ $route.name }}</h2>
 
-      <div class="flex w-full mt-2 text-left rounded bg-stone-900 p-4">
-        <router-view />
-      </div>
+      <router-view />
     </div>
   </div>
 

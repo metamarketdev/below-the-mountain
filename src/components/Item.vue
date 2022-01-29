@@ -48,6 +48,7 @@ export default {
 
   computed: {
     metadata() {
+      console.log(this.item.attributes.token_uri)
       return JSON.parse(this.item.attributes.token_uri);
     },
 
