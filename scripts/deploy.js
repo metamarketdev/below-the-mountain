@@ -43,16 +43,7 @@ async function main() {
   ]);
   await craftingContract.deployTransaction.wait();
 
-  console.log(
-    '\u001b[' +
-      32 +
-      'm' +
-      `Deployed! https://testnet.snowtrace.io/address/${goldContract.address}` +
-      '\u001b[0m',
-  );
-
   console.log('Initializing states...');
-
 
   await toolsContract.authorize(craftingContract.address, true, true);
   await itemsContract.authorize(craftingContract.address, true, true);
