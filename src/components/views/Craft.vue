@@ -1,8 +1,11 @@
 <template>
   <ItemGroup title="Recipes">
-    {{ filteredRecipes }}
-    <div v-for="(recipe, i) in filteredRecipes" :key="i">
-      {{ recipe }}
+    <div v-if="loadingRecipes">Loading...</div>
+
+    <div v-else>
+      <Item v-for="(recipe, i) in filteredRecipes" :key="i">
+        {{ recipe }}
+      </Item>
     </div>
   </ItemGroup>
 
@@ -15,8 +18,8 @@
 <script>
 import contracts from '../../contracts';
 import Moralis from '../../plugins/moralis';
-import Item from '../Item.vue';
 import ItemGroup from '../ItemGroup.vue';
+import Item from '../Item.vue';
 
 export default {
   name: 'Craft',
