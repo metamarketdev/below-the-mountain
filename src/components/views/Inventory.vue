@@ -11,19 +11,8 @@ export default {
 
   components: { Item },
 
-  mounted() {
-    this.loadData();
-  },
-
-  methods: {
-    loadData() {
-      this.loadGems();
-      // this.loadPendingGems();
-      // this.listenToNewNfts();
-    },
-
-    async loadGems() {},
-  },
+  mounted() {},
+  methods: {},
 };
 </script>
 
