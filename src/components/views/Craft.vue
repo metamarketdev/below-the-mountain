@@ -1,4 +1,11 @@
 <template>
+  <ItemGroup title="Recipes">
+    {{ filteredRecipes }}
+    <div v-for="(recipe, i) in filteredRecipes" :key="i">
+      {{ recipe }}
+    </div>
+  </ItemGroup>
+
   <ItemGroup title="Available Materials">
     <Item v-for="item in $store.state.items" :key="item.id" :item="item" />
     <Item v-for="item in $store.state.pendingItems" :key="item.id" :item="item" />
@@ -11,9 +18,6 @@ import Moralis from '../../plugins/moralis';
 import Item from '../Item.vue';
 import ItemGroup from '../ItemGroup.vue';
 
-// const erc20abi = require('../../abi/IERC20.json');
-let ethers;
-
 export default {
   name: 'Craft',
 
@@ -21,34 +25,81 @@ export default {
 
   data() {
     return {
+      loadingRecipes: false,
       recipes: [],
+      onlyPossible: false,
       craftingContract: null,
     };
   },
 
   async mounted() {
-    await this.initWeb3();
     await this.fetchContractState();
   },
 
+  computed: {
+    filteredRecipes() {
+      return this.recipes
+        .map((recipe) => {
+          const inputItem = this.$store.state.items.find(
+            (item) => item.attributes.token_id === recipe.inputTokenId,
+          );
+
+          if (inputItem) {
+            recipe.possibleAmount = Math.floor(inputItem.attributes.amount / recipe.inputAmount);
+          } else {
+            recipe.possibleAmount = 0;
+          }
+
+          return recipe;
+        })
+        .filter((recipe) => {
+          if (this.onlyPossible) {
+            return recipe.possibleAmount >= 1;
+          } else {
+            return true;
+          }
+        });
+    },
+  },
+
   methods: {
-    async initWeb3() {
-      ethers = Moralis.web3Library;
+    async fetchContractState() {
+      this.loadingRecipes = true;
 
-      console.log(contracts.crafting.abi);
+      const web3Provider = await Moralis.enableWeb3();
+      const ethers = Moralis.web3Library;
+      // console.log('Crafting ABI:', contracts.crafting.abi);
 
-      this.craftingContract = new ethers.Contract(
+      const craftingContract = new ethers.Contract(
         contracts.crafting.address,
         contracts.crafting.abi,
+        web3Provider,
       );
 
-      console.log(this.craftingContract);
-    },
+      let numRecipes = await craftingContract.numRecipes();
+      numRecipes = numRecipes.toNumber();
 
-    async fetchContractState() {
-      const numRecipes = await this.craftingContract.numRecipes();
-      console.log({ numRecipes });
-      setTimeout(this.fetchContractState, 5000);
+      let recipes = [];
+
+      for (let i = 1; i <= numRecipes; i++) {
+        let recipe = await craftingContract._recipeDetails(i);
+        // let recipe = await toolsContract._(i);
+
+        // IMPROVEMENT: make this more future-proof
+        if (recipe.enabled) {
+          recipe = {
+            inputAmount: recipe.inputAmount.toNumber(),
+            inputTokenId: recipe.inputTokenId.toNumber(),
+            outputTokenType: recipe.outputTokenType.toNumber(),
+          };
+
+          recipes.push(recipe);
+        }
+      }
+
+      this.recipes = recipes;
+
+      this.loadingRecipes = false;
     },
   },
 };

@@ -19,7 +19,7 @@ export default {
   },
   crafting: {
     address: craftingContract.address,
-    abi: craftingAbi,
+    abi: craftingContract.abi,
   },
   tools: {
     address: toolsContract.address,

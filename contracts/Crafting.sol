@@ -20,7 +20,7 @@ contract Crafting is Ownable, Withdrawable {
     uint256 outputTokenType;
   }
 
-  mapping(uint256 => Recipe) private _recipeDetails;
+  mapping(uint256 => Recipe) public _recipeDetails;
 
   constructor(address _toolsContract, address _itemsContract) {
     toolsContract = Tools(_toolsContract);

@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/den/Projects/below-the-mountain/contracts/Crafting.sol": {
-      "lastModificationDate": 1643468452714,
-      "contentHash": "aa715c912bbb21982a394a12f1550e57",
+      "lastModificationDate": 1643470218708,
+      "contentHash": "118cab0898569fcc6dc5bf4fef1054ce",
       "sourceName": "contracts/Crafting.sol",
       "solcConfig": {
         "version": "0.8.0",
