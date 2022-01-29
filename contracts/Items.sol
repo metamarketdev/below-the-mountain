@@ -3,10 +3,11 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./ExternalActor.sol";
 import "./Withdrawable.sol";
 import "./String.sol";
 
-contract Items is ERC1155, Ownable, Withdrawable {
+contract Items is ERC1155, Ownable, Withdrawable, ExternalActor {
   uint256 private nextId = 1;
 
   struct Item {
@@ -47,6 +48,14 @@ contract Items is ERC1155, Ownable, Withdrawable {
     _itemDetails[newId] = Item(name, description, image);
     nextId++;
     return newId;
+  }
+
+  function externalBurn(
+    address requester,
+    uint256 tokenId,
+    uint256 amount
+  ) public onlyAllowedBurners {
+    _burn(requester, tokenId, amount);
   }
 
   function getMetadata(uint256 tokenId) public view returns (string memory) {

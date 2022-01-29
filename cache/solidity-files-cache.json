@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/den/Projects/below-the-mountain/contracts/Crafting.sol": {
-      "lastModificationDate": 1643448536445,
-      "contentHash": "02be02a461a18c28e9010490d0c96b4b",
+      "lastModificationDate": 1643468452714,
+      "contentHash": "aa715c912bbb21982a394a12f1550e57",
       "sourceName": "contracts/Crafting.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -30,6 +30,8 @@
       },
       "imports": [
         "@openzeppelin/contracts/access/Ownable.sol",
+        "./Items.sol",
+        "./Tools.sol",
         "./Withdrawable.sol"
       ],
       "versionPragmas": [
@@ -185,8 +187,8 @@
       ]
     },
     "/Users/den/Projects/below-the-mountain/contracts/Tools.sol": {
-      "lastModificationDate": 1643452790074,
-      "contentHash": "801ffc4b6d4a960f08493cfbfd90bb54",
+      "lastModificationDate": 1643455813693,
+      "contentHash": "97678464d908beebda287c45bb9261a2",
       "sourceName": "contracts/Tools.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -520,8 +522,8 @@
       ]
     },
     "/Users/den/Projects/below-the-mountain/contracts/Items.sol": {
-      "lastModificationDate": 1643450894756,
-      "contentHash": "c1170e8a4fa78ed43561fd3e31e22e3c",
+      "lastModificationDate": 1643455491788,
+      "contentHash": "eaa8578336b5422e58e8af905fdbe71c",
       "sourceName": "contracts/Items.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -549,6 +551,7 @@
       "imports": [
         "@openzeppelin/contracts/token/ERC1155/ERC1155.sol",
         "@openzeppelin/contracts/access/Ownable.sol",
+        "./ExternalActor.sol",
         "./Withdrawable.sol",
         "./String.sol"
       ],

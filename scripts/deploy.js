@@ -29,12 +29,26 @@ async function main() {
   console.log('Deploying...');
 
   goldContract = await deployContract('Gold', [GOLD_NAME, GOLD_SYMBOL]);
-  goldContract.deployTransaction.wait(2);
+  await goldContract.deployTransaction.wait();
+  fs.writeFileSync('src/contracts/Gold.json', JSON.stringify(getContractData(goldContract)));
+
   itemsContract = await deployContract('Items', ['']);
-  itemsContract.deployTransaction.wait(2);
-  craftingContract = await deployContract('Crafting', []);
-  craftingContract.deployTransaction.wait(2);
+  await itemsContract.deployTransaction.wait();
+  fs.writeFileSync('src/contracts/Items.json', JSON.stringify(getContractData(itemsContract)));
+
   toolsContract = await deployContract('Tools', [TOOLS_NAME, TOOLS_SYMBOL]);
+  await toolsContract.deployTransaction.wait();
+  fs.writeFileSync('src/contracts/Tools.json', JSON.stringify(getContractData(toolsContract)));
+
+  craftingContract = await deployContract('Crafting', [
+    toolsContract.address,
+    itemsContract.address,
+  ]);
+  await craftingContract.deployTransaction.wait();
+  fs.writeFileSync(
+    'src/contracts/Crafting.json',
+    JSON.stringify(getContractData(craftingContract)),
+  );
 
   console.log(
     '\u001b[' +
@@ -44,21 +58,11 @@ async function main() {
       '\u001b[0m',
   );
 
-  // Write ABIs to files
-  try {
-    console.log('Writing ABI files...');
+  console.log('Initializing states...');
 
-    fs.writeFileSync('src/contracts/Gold.json', JSON.stringify(getContractData(goldContract)));
-    fs.writeFileSync('src/contracts/Items.json', JSON.stringify(getContractData(itemsContract)));
-    fs.writeFileSync(
-      'src/contracts/Crafting.json',
-      JSON.stringify(getContractData(craftingContract)),
-    );
-    fs.writeFileSync('src/contracts/Tools.json', JSON.stringify(getContractData(toolsContract)));
-  } catch (err) {
-    console.log('ABI creation failed:', err.message);
-    console.error(err);
-  }
+  await craftingContract.addRecipe(1, 3, 1);
+  await toolsContract.authorize(craftingContract.address, true, true);
+  await itemsContract.authorize(craftingContract.address, true, true);
 
   // Auto verify
 

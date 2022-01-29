@@ -7,6 +7,7 @@ import Moralis from './plugins/moralis';
 import { TroisJSVuePlugin } from 'troisjs';
 import FloatingVue from 'floating-vue';
 import { VTooltip } from 'floating-vue';
+import VueKinesis from 'vue-kinesis';
 
 const tooltipOptions = {
   themes: {
@@ -23,7 +24,8 @@ createApp(App)
   .use(store)
   .use(router)
   .use(FloatingVue, tooltipOptions)
-  .use(TroisJSVuePlugin)
+  // .use(TroisJSVuePlugin)
+  .use(VueKinesis)
   .directive('tooltip', VTooltip)
   // .directive('close-popper', VClosePopper)
   .mount('#app');

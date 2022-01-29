@@ -67,6 +67,7 @@ module.exports = {
     ],
   },
   abiExporter: {
+    // runOnCompile: true,
     path: './abi',
     clear: true,
     flat: true,

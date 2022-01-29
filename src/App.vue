@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-800 text-gray-200 font-sans">
+  <div>
     <!-- <input type="file" @input="input" /> -->
     <router-view />
   </div>

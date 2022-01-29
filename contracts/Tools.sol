@@ -20,6 +20,7 @@ contract Tools is ERC721, Ownable, Withdrawable, ExternalActor {
     string name;
     string description;
     string image;
+    uint256 toolType;
     uint256 speed;
     Bonuses bonuses;
   }
@@ -27,18 +28,25 @@ contract Tools is ERC721, Ownable, Withdrawable, ExternalActor {
   mapping(uint256 => Tool) private _toolDetails;
 
   constructor(string memory name, string memory symbol) ERC721(name, symbol) {
-    mintTool(msg.sender);
+    mintTool(msg.sender, 1);
   }
 
-  function externalMint(address requester) public onlyAllowedMinters {
-    mintTool(requester);
+  function externalMint(
+    address requester,
+    uint256 toolType,
+    uint256 amount
+  ) public onlyAllowedMinters {
+    for (uint256 i = 0; i < amount; i++) {
+      mintTool(requester, toolType);
+    }
   }
 
-  function mintTool(address requester) private {
+  function mintTool(address requester, uint256 toolType) private {
     _toolDetails[nextId] = Tool(
       "Pickaxe",
       "A basic tool",
       "QmQif6u78YavNFEhAzjBDxZjH29dMyAexBY1md3jBjnazR",
+      toolType,
       1,
       Bonuses(1, 1, 1)
     );
