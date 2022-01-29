@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex flex-col justify-between p-2 bg-gray-900 w-52 shrink-0 h-screen">
+  <nav class="flex flex-col justify-between p-2 bg-gray-900 w-52 shrink-0 h-screen sticky top-0">
     <div class="flex flex-col">
       <router-link to="/app">
         <h1 class="mb-2 text-lg">TODO: LOGO</h1>
