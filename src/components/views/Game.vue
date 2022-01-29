@@ -55,6 +55,7 @@ import GameNavLink from '../GameNavLink.vue';
 import { HomeIcon } from '@heroicons/vue/solid';
 
 export default {
+  name: 'Game',
   components: {
     GameNavLink,
     Nav,

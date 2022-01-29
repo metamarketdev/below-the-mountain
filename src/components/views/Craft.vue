@@ -2,6 +2,7 @@
 
 <script>
 export default {
+  name: 'Craft',
   components: {},
 };
 </script>
