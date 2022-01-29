@@ -518,8 +518,8 @@
       ]
     },
     "/Users/den/Projects/below-the-mountain/contracts/Items.sol": {
-      "lastModificationDate": 1643401139897,
-      "contentHash": "a245d348d6305a4405c4abc000fc3f5c",
+      "lastModificationDate": 1643422563925,
+      "contentHash": "0664972ff6f2d725229f12e98814e001",
       "sourceName": "contracts/Items.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -547,7 +547,8 @@
       "imports": [
         "@openzeppelin/contracts/token/ERC1155/ERC1155.sol",
         "@openzeppelin/contracts/access/Ownable.sol",
-        "./Withdrawable.sol"
+        "./Withdrawable.sol",
+        "./String.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
@@ -859,6 +860,41 @@
       ],
       "artifacts": [
         "ExternalActor"
+      ]
+    },
+    "/Users/den/Projects/below-the-mountain/contracts/String.sol": {
+      "lastModificationDate": 1643422198828,
+      "contentHash": "a532e158eae658b1c40c3ceeff757258",
+      "sourceName": "contracts/String.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "String"
       ]
     }
   }

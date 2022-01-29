@@ -2,6 +2,8 @@
   <div class="flex flex-row items-center">
     <template v-if="isAuthenticated">
       <!-- <ThemeToggle class="mr-2" /> -->
+      <div class="mr-2">{{ $store.state.gold }} gold</div>
+
       <UserPopover v-if="isAuthenticated" @logOut="logout" @openAvatarModal="openAvatarModal" />
     </template>
 
@@ -46,6 +48,7 @@ export default {
       avatars: [],
     };
   },
+
   methods: {
     openAvatarModal() {
       this.showAvatarModal = true;
@@ -71,10 +74,14 @@ export default {
     const store = useStore();
     // const $moralis = inject('$moralis');
     const setUser = (payload) => store.commit('setUser', payload);
+    const loadPlayerData = () => store.dispatch('loadPlayerData');
 
     const login = async () => {
-      const user = await Moralis.Web3.authenticate();
+      const user = await Moralis.Web3.authenticate({
+        signingMessage: 'Below The Mountain authentication',
+      });
       setUser(user);
+      loadPlayerData();
     };
 
     const logout = async () => {
@@ -86,6 +93,7 @@ export default {
       const user = Moralis.User.current();
       if (user) {
         setUser(user);
+        loadPlayerData();
       }
     };
 

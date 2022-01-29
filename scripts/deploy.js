@@ -17,7 +17,7 @@ function getContractData(contract) {
 }
 
 async function main() {
-  let goldContract;
+  let goldContract, itemsContract;
   let network = networks[hre.network.name];
 
   let [owner] = await ethers.getSigners();
@@ -26,6 +26,7 @@ async function main() {
   console.log('Deploying...');
 
   goldContract = await deployContract('Gold', [GOLD_NAME, GOLD_SYMBOL]);
+  itemsContract = await deployContract('Items', ['']);
 
   console.log(
     '\u001b[' +
@@ -40,6 +41,7 @@ async function main() {
     console.log('Writing ABI files...');
 
     fs.writeFileSync('src/contracts/Gold.json', JSON.stringify(getContractData(goldContract)));
+    fs.writeFileSync('src/contracts/Items.json', JSON.stringify(getContractData(itemsContract)));
   } catch (err) {
     console.log('ABI creation failed:', err.message);
     console.error(err);
