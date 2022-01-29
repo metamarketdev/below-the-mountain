@@ -1,5 +1,5 @@
 <template>
-  <VTooltip :delay="0" :instantMove="true">
+  <VTooltip theme="item-tooltip">
     <div
       class="relative bg-gray-700 border border-gray-600 border-b-4 p-2 rounded-md inline-block m-1"
     >
@@ -31,6 +31,12 @@
       <div v-if="metadata.description" class="font-light text-sm text-gray-400">
         {{ metadata.description }}
       </div>
+
+      <div v-if="metadata.bonuses" class="font-light text-sm text-indigo-400">
+        <div v-for="(bonus, key) in metadata.bonuses" :key="key" class="capitalize">
+          +{{ bonus }} {{ key }}
+        </div>
+      </div>
     </template>
   </VTooltip>
 </template>
@@ -48,7 +54,7 @@ export default {
 
   computed: {
     metadata() {
-      console.log(this.item.attributes.token_uri)
+      // console.log(this.item.attributes.token_uri);
       return JSON.parse(this.item.attributes.token_uri);
     },
 
@@ -60,14 +66,32 @@ export default {
 };
 </script>
 
-<style lang="css">
-.v-popper__popper.v-popper__popper--show-from .v-popper__wrapper {
-  transform: scale(0.9);
-  opacity: 0;
-}
+<style lang="scss">
+$backgroundColor: rgb(1, 13, 20);
 
-.v-popper__popper.v-popper__popper--show-to .v-popper__wrapper {
-  transform: none;
-  transition: transform 0.1s;
+.v-popper__popper.v-popper--theme-item-tooltip {
+  .v-popper__wrapper {
+    min-width: 150px;
+    max-width: 250px;
+  }
+
+  .v-popper__arrow-inner {
+    visibility: visible;
+    border-color: $backgroundColor;
+  }
+
+  .v-popper__inner {
+    background: $backgroundColor;
+  }
+
+  &.v-popper__popper--show-from .v-popper__wrapper {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+
+  &.v-popper__popper--show-to .v-popper__wrapper {
+    transform: none;
+    transition: transform 0.05s;
+  }
 }
 </style>

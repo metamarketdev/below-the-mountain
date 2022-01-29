@@ -8,11 +8,21 @@ import { TroisJSVuePlugin } from 'troisjs';
 import FloatingVue from 'floating-vue';
 import { VTooltip } from 'floating-vue';
 
+const tooltipOptions = {
+  themes: {
+    'item-tooltip': {
+      $extend: 'tooltip',
+      delay: 0,
+      // instantMove: true,
+    },
+  },
+};
+
 createApp(App)
   .provide('$moralis', Moralis)
   .use(store)
   .use(router)
-  .use(FloatingVue)
+  .use(FloatingVue, tooltipOptions)
   .use(TroisJSVuePlugin)
   .directive('tooltip', VTooltip)
   // .directive('close-popper', VClosePopper)

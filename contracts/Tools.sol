@@ -58,7 +58,14 @@ contract Tools is ERC721, Ownable, Withdrawable, ExternalActor {
           String.toString(_toolDetails[tokenId].speed),
           '", "background_color" : "101922", "image": "ipfs://',
           _toolDetails[tokenId].image,
-          '"}'
+          '", "bonuses": {',
+          '"stone": "',
+          String.toString(_toolDetails[tokenId].bonuses.stone),
+          '", "iron": "',
+          String.toString(_toolDetails[tokenId].bonuses.iron),
+          '", "gold": "',
+          String.toString(_toolDetails[tokenId].bonuses.gold),
+          '"}}'
         )
       );
   }
