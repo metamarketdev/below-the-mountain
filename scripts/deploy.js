@@ -30,25 +30,18 @@ async function main() {
 
   goldContract = await deployContract('Gold', [GOLD_NAME, GOLD_SYMBOL]);
   await goldContract.deployTransaction.wait();
-  fs.writeFileSync('src/contracts/Gold.json', JSON.stringify(getContractData(goldContract)));
 
   itemsContract = await deployContract('Items', ['']);
   await itemsContract.deployTransaction.wait();
-  fs.writeFileSync('src/contracts/Items.json', JSON.stringify(getContractData(itemsContract)));
 
   toolsContract = await deployContract('Tools', [TOOLS_NAME, TOOLS_SYMBOL]);
   await toolsContract.deployTransaction.wait();
-  fs.writeFileSync('src/contracts/Tools.json', JSON.stringify(getContractData(toolsContract)));
 
   craftingContract = await deployContract('Crafting', [
     toolsContract.address,
     itemsContract.address,
   ]);
   await craftingContract.deployTransaction.wait();
-  fs.writeFileSync(
-    'src/contracts/Crafting.json',
-    JSON.stringify(getContractData(craftingContract)),
-  );
 
   console.log(
     '\u001b[' +
@@ -60,9 +53,18 @@ async function main() {
 
   console.log('Initializing states...');
 
-  await craftingContract.addRecipe(1, 3, 1);
+
   await toolsContract.authorize(craftingContract.address, true, true);
   await itemsContract.authorize(craftingContract.address, true, true);
+  await craftingContract.addRecipe('Stone pickaxe', 1, 3, 1);
+
+  fs.writeFileSync('src/contracts/Gold.json', JSON.stringify(getContractData(goldContract)));
+  fs.writeFileSync('src/contracts/Items.json', JSON.stringify(getContractData(itemsContract)));
+  fs.writeFileSync('src/contracts/Tools.json', JSON.stringify(getContractData(toolsContract)));
+  fs.writeFileSync(
+    'src/contracts/Crafting.json',
+    JSON.stringify(getContractData(craftingContract)),
+  );
 
   // Auto verify
 
