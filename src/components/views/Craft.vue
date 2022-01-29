@@ -3,7 +3,12 @@
     <div v-if="loadingRecipes">Loading...</div>
 
     <div v-else>
-      <Recipe v-for="(recipe, i) in filteredRecipes" :key="i" :bind="recipe" />
+      <Recipe
+        v-for="(recipe, i) in filteredRecipes"
+        :key="i"
+        :recipe="recipe"
+        @click="openCraftModal(i)"
+      />
     </div>
   </ItemGroup>
 
@@ -11,24 +16,41 @@
     <Item v-for="item in $store.state.items" :key="item.id" :item="item" />
     <Item v-for="item in $store.state.pendingItems" :key="item.id" :item="item" />
   </ItemGroup>
+
+  <Modal :open="showCraftingModal" @close="showCraftingModal = false">
+    <template v-slot:title>Craft {{ selectedRecipe }}</template>
+
+    <div v-if="isCrafting">Crafting...</div>
+
+    <div v-else class="w-screen max-w-xl">
+      <Cta size="big" @make="makeRecipe(selectedRecipe, amount)">Craft {{ amount }}</Cta>
+    </div>
+  </Modal>
 </template>
 
 <script>
 import contracts from '../../contracts';
 import Moralis from '../../plugins/moralis';
 import ItemGroup from '../ItemGroup.vue';
+import Item from '../Item.vue';
 import Recipe from '../Recipe.vue';
+import Modal from '../Modal.vue';
+import Cta from '../Cta.vue';
 
 export default {
   name: 'Craft',
 
-  components: { Recipe, ItemGroup },
+  components: { Recipe, ItemGroup, Item, Modal, Cta },
 
   data() {
     return {
+      isCrafting: false,
       loadingRecipes: false,
       recipes: [],
       onlyPossible: false,
+      showCraftingModal: false,
+      selectedRecipe: null,
+      amount: 1,
       craftingContract: null,
     };
   },
@@ -64,26 +86,58 @@ export default {
   },
 
   methods: {
+    openCraftModal(index) {
+      console.log(index);
+      this.selectedRecipe = index;
+      this.showCraftingModal = true;
+    },
+
+    async makeRecipe(recipeId, amount) {
+      console.log('makeRecipe', { recipeId, amount });
+
+      const sendOptions = {
+        contractAddress: contracts.crafting.address,
+        functionName: 'makeRecipe',
+        abi: contracts.crafting.abi,
+        params: {
+          recipeId,
+          amount: 10,
+        },
+      };
+
+      const transaction = await Moralis.executeFunction(sendOptions);
+      this.isCrafting = true;
+      console.log(1, { transaction });
+
+      const result = await transaction.wait();
+      if (result.status===1) {
+        console.log('success')
+      }
+
+      this.isCrafting = false;
+    },
+
     async fetchContractState() {
       this.loadingRecipes = true;
 
       const web3Provider = await Moralis.enableWeb3();
       const ethers = Moralis.web3Library;
-      // console.log('Crafting ABI:', contracts.crafting.abi);
 
-      const craftingContract = new ethers.Contract(
+      // console.log('Crafting ABI:', contracts.crafting.abi);
+      this.craftingContract = new ethers.Contract(
         contracts.crafting.address,
         contracts.crafting.abi,
         web3Provider,
+        // this.$store.state.userAttributes.ethAddress,
       );
 
-      let numRecipes = await craftingContract.numRecipes();
+      let numRecipes = await this.craftingContract.numRecipes();
       numRecipes = numRecipes.toNumber();
 
       let recipes = [];
 
       for (let i = 1; i <= numRecipes; i++) {
-        let recipe = await craftingContract._recipeDetails(i);
+        let recipe = await this.craftingContract._recipeDetails(i);
         // let recipe = await toolsContract._(i);
 
         // IMPROVEMENT: make this more future-proof
@@ -97,6 +151,8 @@ export default {
           recipes.push(recipe);
         }
       }
+
+      console.log(recipes);
 
       this.recipes = recipes;
 

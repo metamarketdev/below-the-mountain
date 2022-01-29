@@ -1,6 +1,8 @@
 <template>
   <VTooltip theme="item-tooltip" class="inline-block">
-    <div class="bg-gray-700 border border-gray-600 border-b-4 p-2 rounded-md m-1">
+    <div
+      class="inline-block relative bg-gray-700 border border-gray-600 border-b-4 p-2 rounded-md m-1"
+    >
       <div class="flex flex-row justify-between">
         <!-- <div class="text-left">
         <div class="text-xs">#{{ gem.id }}</div>

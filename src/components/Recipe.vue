@@ -2,9 +2,10 @@
   <VTooltip theme="item-tooltip" class="inline-block">
     <div
       @click="$emit('click')"
-      class="bg-gray-700 border border-gray-600 border-b-4 p-2 rounded-md m-1"
+      class="relative bg-gray-700 border border-gray-600 border-b-4 p-2 rounded-md inline-block m-1"
     >
       <div class="text-center">
+        {{ recipe }}
         <!-- <img :src="src" :alt="metadata.name" width="80" height="80" class="inline-block" /> -->
       </div>
 
@@ -13,7 +14,7 @@
       >
         <!-- {{ recipe.inputTokenId }} -->
         <!-- {{ recipe.inputAmount }} -->
-        <!-- {{ recipe.possibleAmount }} -->
+        {{ recipe.possibleAmount }}
       </div>
     </div>
 
@@ -36,6 +37,10 @@ export default {
   },
 
   computed: {
+    isPossible() {
+      return this.possibleAmount > 0;
+    },
+
     metadata() {
       // console.log(this.item.attributes.token_uri);
       return JSON.parse(this.item.attributes.token_uri);
