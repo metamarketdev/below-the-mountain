@@ -27,6 +27,7 @@ const store = createStore({
 
       loadingItems: true,
       items: [],
+      pendingItems: [],
     };
   },
 
@@ -71,6 +72,7 @@ const store = createStore({
         state.userAttributes.ethAddress,
         contracts.items.address,
       );
+
       commit('setItems', items);
       console.log(items);
       const pendingItems = await queryNfts(
@@ -78,7 +80,7 @@ const store = createStore({
         state.userAttributes.ethAddress,
         contracts.items.address,
       );
-      commit('setItems', pendingItems);
+      commit('setPendingItems', pendingItems);
       console.log(items);
     },
   },
@@ -96,6 +98,10 @@ const store = createStore({
 
     setItems(state, payload) {
       state.items = payload;
+    },
+
+    setPendingItems(state, payload) {
+      state.pendingItems = payload;
     },
   },
 
