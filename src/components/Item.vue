@@ -3,16 +3,8 @@
     <div
       class="inline-block relative bg-gray-700 border border-gray-600 border-b-4 p-2 rounded-md m-1"
     >
-      <div class="flex flex-row justify-between">
-        <!-- <div class="text-left">
-        <div class="text-xs">#{{ gem.id }}</div>
-      </div> -->
-        <!--
-      <div class="text-right">
-        <div class="text-xs text-gray-500">{{ gem.luster }}</div>
-        <div class="text-xs text-gray-500">{{ gem.color }}</div>
-        <div class="text-xs text-gray-500">lvl. {{ gem.level }}</div>
-      </div> -->
+      <div class="absolute top-0 left-1 text-xs text-gray-500">
+        #{{ item.attributes.token_id }}
       </div>
 
       <div class="text-center">
