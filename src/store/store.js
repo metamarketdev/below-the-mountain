@@ -190,7 +190,13 @@ const store = createStore({
     },
 
     allTools: (state) => {
-      const allTools = [...state.confirmed.tools, ...state.pending.tools];
+      const allTools = [
+        ...state.confirmed.tools,
+        ...state.pending.tools.map((tool) => {
+          tool.isPending = true;
+          return tool;
+        }),
+      ];
       return _.uniqBy(allTools, 'attributes.token_id');
     },
 
