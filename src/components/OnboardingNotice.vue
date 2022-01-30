@@ -1,4 +1,9 @@
 <template>
+  <Notice>
+    isConnected:{{  $store.getters.isConnected }}
+    isConnected:{{  $store.getters.isConnected }}
+  </Notice>
+
   <template v-if="!$store.state.loadingBalances">
     <Notice v-if="$store.state.balance < 0.01">
       You need some testnet AVAX to interact with the app.

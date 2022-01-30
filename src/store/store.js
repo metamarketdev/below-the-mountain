@@ -2,24 +2,12 @@ import { createStore } from 'vuex';
 import Moralis from '../plugins/moralis';
 import contracts from '../contracts';
 import _ from 'lodash';
-import createPersistedState from 'vuex-persistedstate';
-import { userPrefs } from './userPrefs';
 
 const CHAIN_NAME = 'avalanche testnet';
 const NFT_TABLE = 'AvaxNFTOwners';
 const NFT_TABLE_PENDING = 'AvaxNFTOwnersPending';
 
-const userPrefsPlugin = createPersistedState({
-  paths: ['userPrefs'],
-});
-
 const store = createStore({
-  plugins: [userPrefsPlugin],
-
-  modules: {
-    userPrefs,
-  },
-
   state() {
     return {
       user: {},

@@ -53,7 +53,6 @@
 import UserMenu from '../UserMenu.vue';
 import GameNav from '../GameNav.vue';
 import Modal from '../Modal.vue';
-import { mapState, mapMutations } from 'vuex';
 import { ExclamationIcon } from '@heroicons/vue/outline';
 import OnboardingNotice from '../OnboardingNotice.vue';
 
@@ -73,20 +72,11 @@ export default {
       showWelcomeModal: false,
     };
   },
-
   mounted() {
-    if (!this.hasSeenWelcomeModal) {
+    if (!localStorage.getItem('welcomed')) {
       this.showWelcomeModal = true;
-      this.setHasSeenWelcomeModal();
+      localStorage.setItem('welcomed', true);
     }
-  },
-
-  computed: {
-    ...mapState('userPrefs', ['hasSeenWelcomeModal']),
-  },
-
-  methods: {
-    ...mapMutations('userPrefs', ['setHasSeenWelcomeModal']),
   },
 };
 </script>
