@@ -12,11 +12,37 @@
   <div class="fixed top-0 right-0 flex flex-row p-2">
     <UserMenu class="fixed top-2 right-2" />
   </div>
+
+  <Modal :open="showWelcomeModal" @close="showWelcomeModal = false">
+    <template v-slot:title>Welcome to the world under</template>
+    <template v-slot:description>We're glad you're here.</template>
+
+    This is a
+    <b>TESTNET</b>
+    beta. None of the assets here hold any value.
+    <br />
+    To interact with the app, you will need some Testnet AVAX.
+
+    <template v-slot:buttons>
+      <Cta
+        href="https:faucet.avax-test.network"
+        color="red"
+        class="inline-block"
+        icon="arrow-up-right-from-square"
+      >
+        Get testnet AVAX
+      </Cta>
+      <Cta @click="showWelcomeModal = false">Got it!</Cta>
+    </template>
+  </Modal>
 </template>
 
 <script>
 import UserMenu from '../UserMenu.vue';
 import GameNav from '../GameNav.vue';
+import Modal from '../Modal.vue';
+import Cta from '../Cta.vue';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: 'Game',
@@ -24,8 +50,29 @@ export default {
   components: {
     GameNav,
     UserMenu,
+    Modal,
+    Cta,
+  },
+
+  data() {
+    return {
+      showWelcomeModal: false,
+    };
+  },
+
+  mounted() {
+    if (!this.hasSeenWelcomeModal) {
+      this.showWelcomeModal = true;
+      this.setHasSeenWelcomeModal();
+    }
+  },
+
+  computed: {
+    ...mapState('userPrefs', ['hasSeenWelcomeModal']),
+  },
+
+  methods: {
+    ...mapMutations('userPrefs', ['setHasSeenWelcomeModal']),
   },
 };
 </script>
-
-<style></style>

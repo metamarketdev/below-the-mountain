@@ -46,7 +46,7 @@
     <div v-if="isMinting">Minting...</div>
 
     <div v-else class="w-screen max-w-xl">
-      <Cta size="big" @make="mintClaim(x, y, z)">Mint</Cta>
+      <Cta size="big" @click="mintClaim(x, y, z)">Mint</Cta>
     </div>
   </Modal>
 </template>

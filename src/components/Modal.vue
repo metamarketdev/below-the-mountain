@@ -31,7 +31,7 @@
           leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
         >
           <div
-            class="inline-block align-bottom bg-gray-900 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6"
+            class="min-w-4 max-w-2xl min-w-md inline-block align-bottom bg-gray-900 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6"
           >
             <button @click="$emit('close')" class="absolute top-2 right-2">
               <XIcon class="h-4 w-4 text-gray-400 hover:text-gray-500 p2" />
@@ -42,7 +42,7 @@
                 <CheckIcon class="h-6 w-6 text-green-600" aria-hidden="true" />
               </div> -->
               <div class="text-gray-200 mt-3 text-center sm:mt-5">
-                <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-200">
+                <DialogTitle as="h3" class="text-2xl leading-6 font-medium text-gray-200">
                   <slot name="title"></slot>
                 </DialogTitle>
 
@@ -54,17 +54,13 @@
               </div>
             </div>
 
-            <slot />
-            <!--
-            <div class="mt-5 sm:mt-6">
-              <button
-                type="button"
-                class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
-                @click="$emit('close')"
-              >
-                Go back to dashboard
-              </button>
-            </div> -->
+            <div class="text-sm text-gray-300 my-6 text-center">
+              <slot />
+            </div>
+
+            <div class="flex flex-row items-center justify-center gap-3">
+              <slot name="buttons"></slot>
+            </div>
           </div>
         </TransitionChild>
       </div>

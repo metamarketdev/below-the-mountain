@@ -22,7 +22,7 @@
     <div v-if="isCrafting">Crafting...</div>
 
     <div v-else class="w-screen max-w-xl">
-      <Cta size="big" @make="makeRecipe(selectedRecipe, amount)">Craft {{ amount }}</Cta>
+      <Cta size="big" @click="makeRecipe(selectedRecipe, amount)">Craft {{ amount }}</Cta>
     </div>
   </Modal>
 </template>
