@@ -65,9 +65,12 @@ export default {
     filteredRecipes() {
       return this.recipes
         .map((recipe) => {
-          const inputItem = this.$store.state.items.find(
-            (item) => item.attributes.token_id === recipe.inputTokenId,
-          );
+          const inputItem = this.allItems.find((item) => {
+            console.log(item.attributes.token_id, recipe.inputTokenId);
+            return item.attributes.token_id === recipe.inputTokenId;
+          });
+
+          console.log(inputItem);
 
           if (inputItem) {
             recipe.possibleAmount = Math.floor(inputItem.attributes.amount / recipe.inputAmount);
@@ -146,8 +149,8 @@ export default {
         if (recipe.enabled) {
           recipe = {
             inputAmount: recipe.inputAmount.toNumber(),
-            inputTokenId: recipe.inputTokenId.toNumber(),
-            outputTokenType: recipe.outputTokenType.toNumber(),
+            inputTokenId: recipe.inputTokenId.toString(),
+            outputTokenType: recipe.outputTokenType.toString(),
           };
 
           recipes.push(recipe);
