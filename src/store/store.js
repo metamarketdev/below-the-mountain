@@ -219,6 +219,10 @@ const store = createStore({
 
       return truncateEthAddress(state.user.attributes.ethAddress);
     },
+
+    displayGold: (state) => {
+      return Math.floor(state.gold);
+    },
   },
 });
 
