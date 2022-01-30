@@ -13,6 +13,7 @@ const store = createStore({
     return {
       currentChainId: null,
 
+      loadingUser: true,
       user: {},
       userAttributes: {},
       avatar: null,
@@ -56,7 +57,7 @@ const store = createStore({
         ({ token_address }) => token_address === contracts.gold.address.toLowerCase(),
       );
 
-      commit('setGold', goldToken.balance / 10 ** 18);
+      commit('setGold', goldToken ? goldToken.balance / 10 ** 18 : 0);
       commit('setNativeBalance', native.balance / 10 ** 18);
       commit('setLoadingBalances', false);
 
@@ -147,6 +148,7 @@ const store = createStore({
       console.log('getCurrentUser', user);
 
       if (user) {
+        commit('setLoadingUser', false);
         commit('setUser', user);
         dispatch('loadPlayerData');
       } else {
@@ -182,6 +184,10 @@ const store = createStore({
   mutations: {
     setCurrentChainId(state, chainId) {
       state.currentChainId = chainId;
+    },
+
+    setLoadingUser(state, payload) {
+      state.loadingUser = payload;
     },
 
     setUser(state, user) {

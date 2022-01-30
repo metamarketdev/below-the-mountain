@@ -39,6 +39,7 @@ export default {
       tokenRequests: 0,
       requestSucceeded: false,
       timeout: null,
+      fetchedContractState: false,
     };
   },
 
@@ -52,7 +53,7 @@ export default {
 
   computed: {
     showTokensNotice() {
-      return !this.isRequesting && this.tokenRequests === 0 && !this.requestSucceeded;
+      return this.fetchedContractState && this.tokenRequests === 0 && !this.requestSucceeded;
     },
   },
 
@@ -62,11 +63,13 @@ export default {
         const tokenRequests = await callMethod('faucet', 'getRequests');
         this.tokenRequests = tokenRequests.toNumber();
         this.timeout = setTimeout(this.fetchContractState, 10000);
+        this.fetchedContractState = true;
       }
     },
 
     async requestTokens() {
       const transaction = await callMethod('faucet', 'requestTokens');
+      this.isRequesting = true;
       console.log(1, { transaction });
 
       // TODO: better event handler UX

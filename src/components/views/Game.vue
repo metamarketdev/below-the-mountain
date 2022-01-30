@@ -5,13 +5,16 @@
     <div class="flex flex-col flex-grow p-4">
       <h2 class="font-title text-4xl text-left mb-12">{{ $route.name }}</h2>
 
-      <WrongNetworkNotice v-if="$store.getters.isWrongNetwork" />
-
       <NotLoggedInNotice
-        v-else-if="!$store.getters.isConnected || !$store.getters.isAuthenticated"
+        v-if="
+          !$store.state.loadingUser &&
+          (!$store.getters.isConnected || !$store.getters.isAuthenticated)
+        "
       />
 
-      <OnboardingNotice v-else-if="$store.getters.isConnected && $store.getters.isAuthenticated" />
+      <WrongNetworkNotice v-else-if="$store.getters.isWrongNetwork" />
+
+      <OnboardingNotices v-if="$store.getters.isConnected && $store.getters.isAuthenticated" />
 
       <router-view
         v-if="
@@ -67,7 +70,7 @@ import UserMenu from '../UserMenu.vue';
 import GameNav from '../GameNav.vue';
 import Modal from '../Modal.vue';
 import { ExclamationIcon } from '@heroicons/vue/outline';
-import OnboardingNotice from '../OnboardingNotice.vue';
+import OnboardingNotices from '../OnboardingNotices.vue';
 import WrongNetworkNotice from '../WrongNetworkNotice.vue';
 import NotLoggedInNotice from '../NotLoggedInNotice.vue';
 
@@ -78,7 +81,7 @@ export default {
     GameNav,
     UserMenu,
     Modal,
-    OnboardingNotice,
+    OnboardingNotices,
     WrongNetworkNotice,
     NotLoggedInNotice,
     ExclamationIcon,
