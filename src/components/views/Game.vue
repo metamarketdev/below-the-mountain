@@ -17,11 +17,15 @@
     <template v-slot:title>Welcome to the world under</template>
     <template v-slot:description>We're glad you're here.</template>
 
+    <!-- <div class="text-center mb-2">
+      <ExclamationIcon class="text-rose-400 w-12 h-12 inline-block" />
+    </div> -->
+
     This is a
     <b>TESTNET</b>
     beta. None of the assets here hold any value.
     <br />
-    To interact with the app, you will need some Testnet AVAX.
+    You need Testnet AVAX to interact with the app.
 
     <template v-slot:buttons>
       <Cta
@@ -43,6 +47,7 @@ import GameNav from '../GameNav.vue';
 import Modal from '../Modal.vue';
 import Cta from '../Cta.vue';
 import { mapState, mapMutations } from 'vuex';
+import { ExclamationIcon } from '@heroicons/vue/outline';
 
 export default {
   name: 'Game',
@@ -52,6 +57,7 @@ export default {
     UserMenu,
     Modal,
     Cta,
+    ExclamationIcon,
   },
 
   data() {
