@@ -13,7 +13,7 @@
       <div
         class="absolute px-1 py-0 rounded-tl-md bg-gray-600 bottom-0 right-0 text-md text-gray-300"
       >
-        {{ recipe.possibleAmount }}
+        {{ amount || recipe.possibleAmount }}
       </div>
     </div>
 
@@ -21,6 +21,7 @@
       <div class="font-normal text-gray-200">
         {{ recipe.name }}
       </div>
+
       <div class="font-light text-sm text-gray-400">
         {{ recipe.inputTokenId }}:
         {{ recipe.inputAmount }}
@@ -37,6 +38,11 @@ export default {
     recipe: {
       type: Object,
       required: true,
+    },
+
+    amount: {
+      type: Number,
+      required: false,
     },
   },
 

@@ -19,9 +19,16 @@
   <Modal :open="showCraftingModal" @close="showCraftingModal = false">
     <template v-slot:title>{{ selectedRecipe.name }}</template>
 
+    <!-- {{ selectedRecipe.inputTokenId }} x {{ selectedRecipe.inputAmount }} -->
+    <div class="flex flex-row items-center justify-center">
+      <Item :item="selectedRecipe.inputItem" :amount="amount" />
+      <ArrowSmRightIcon class="w-12 text-gray-600" />
+      <Recipe :recipe="selectedRecipe" :amount="amount" />
+    </div>
+
     <div v-if="isCrafting">Crafting...</div>
 
-    <div v-else class="w-screen max-w-xl">
+    <div v-else class="flex flex-row justify-center mt-4">
       <Butt size="big" @click="makeRecipe(selectedRecipe, amount)">Craft {{ amount }}</Butt>
     </div>
   </Modal>
@@ -33,11 +40,12 @@ import ItemGroup from '../ItemGroup.vue';
 import Item from '../Item.vue';
 import Recipe from '../Recipe.vue';
 import { mapGetters } from 'vuex';
+import { ArrowSmRightIcon } from '@heroicons/vue/outline';
 
 export default {
   name: 'Craft',
 
-  components: { Recipe, ItemGroup, Item },
+  components: { Recipe, ItemGroup, Item, ArrowSmRightIcon },
 
   data() {
     return {
@@ -72,6 +80,8 @@ export default {
             recipe.possibleAmount = 0;
           }
 
+          recipe.inputItem = inputItem;
+
           return recipe;
         })
         .filter((recipe) => {
@@ -87,6 +97,7 @@ export default {
   methods: {
     openCraftModal(recipe) {
       this.selectedRecipe = recipe;
+      console.log(recipe);
       this.showCraftingModal = true;
     },
 

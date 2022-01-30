@@ -13,7 +13,7 @@
       <div
         class="absolute px-1 py-0 rounded-tl-md bg-gray-600 bottom-0 right-0 text-md text-gray-300"
       >
-        {{ item.attributes.amount }}
+        {{ amount || item.attributes.amount }}
       </div>
     </div>
 
@@ -54,6 +54,11 @@ export default {
     item: {
       type: Object,
       required: true,
+    },
+
+    amount: {
+      type: Number,
+      required: false,
     },
   },
 
