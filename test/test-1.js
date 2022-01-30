@@ -1,23 +1,20 @@
-const { expect, should } = require("chai");
-const { ethers } = require("hardhat");
-const deployContract = require("../deployments/deployContract");
-const ethUtils = require("../utils.js");
+const { expect, should } = require('chai');
+const { ethers } = require('hardhat');
+const deployContract = require('../deployments/deployContract');
+const ethUtils = require('../utils.js');
 
 ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR); // turn off warnings
 
-describe("All contracts", () => {
+describe('All contracts', () => {
   let owner, addr1, addr2;
-  let factoryContract;
+  let goldContract;
 
   beforeEach(async () => {
     [owner, addr1, addr2] = await ethers.getSigners();
-    factoryContract = await deployContract("CollectionFactory");
+    // goldContract = await deployContract('Gold');
   });
 
-  it("Should create collection", async () => {
-    await factoryContract.deployNewContract();
-
-    let contracts = await factoryContract.getContractForIndex(1);
-    console.log(contracts);
+  it('Should do some tests', async () => {
+    // ...
   });
 });
