@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/den/Projects/below-the-mountain/contracts/Crafting.sol": {
-      "lastModificationDate": 1643501772628,
-      "contentHash": "e478430e90cb9012320f96da65c5a4d1",
+      "lastModificationDate": 1643558760146,
+      "contentHash": "facd3d4cf21bca3916fb2bd3941a0173",
       "sourceName": "contracts/Crafting.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -945,8 +945,8 @@
       ]
     },
     "/Users/den/Projects/below-the-mountain/contracts/Faucet.sol": {
-      "lastModificationDate": 1643555057850,
-      "contentHash": "33b696bf2efa6fd8d16a61dc508bccd4",
+      "lastModificationDate": 1643558538413,
+      "contentHash": "55f3323b7e53fe95ad44702a01f444b2",
       "sourceName": "contracts/Faucet.sol",
       "solcConfig": {
         "version": "0.8.0",

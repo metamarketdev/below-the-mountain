@@ -1,4 +1,3 @@
-<!-- This example requires Tailwind CSS v2.0+ -->
 <template>
   <Menu as="div" class="inline-block text-left" key="test">
     <div>
@@ -33,16 +32,19 @@
         <div class="py-1">
           <MenuItem @click.once="$emit('openAvatarModal')">
             <button
-              class="text-gray-200 w-full block px-4 py-2 text-left text-sm hover:bg-sky-500 hover:bg-opacity-20"
+              class="flex flex-row items-center gap-2 text-gray-200 w-full px-4 py-2 text-left text-sm hover:bg-sky-500 hover:bg-opacity-20"
             >
+              <UserCircleIcon class="w-6 h6 text-blue-300" />
               Change avatar
             </button>
           </MenuItem>
 
           <button
             @click="$emit('logOut')"
-            class="text-gray-200 w-full block px-4 py-2 text-left text-sm hover:bg-sky-500 hover:bg-opacity-20"
+            class="flex flex-row items-center gap-2 text-gray-200 w-full px-4 py-2 text-left text-sm hover:bg-sky-500 hover:bg-opacity-20"
           >
+            <LogoutIcon class="w-6 h6 text-red-400" />
+
             Sign out
           </button>
         </div>
@@ -54,7 +56,7 @@
 <script>
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import { ChevronDownIcon } from '@heroicons/vue/solid';
-import ThemeToggle from './ThemeToggle.vue';
+import { UserCircleIcon, LogoutIcon } from '@heroicons/vue/solid';
 
 export default {
   components: {
@@ -63,6 +65,8 @@ export default {
     MenuItem,
     MenuItems,
     ChevronDownIcon,
+    UserCircleIcon,
+    LogoutIcon,
   },
 };
 </script>
