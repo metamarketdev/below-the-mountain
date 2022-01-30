@@ -47,7 +47,8 @@ async function main() {
 
   await toolsContract.authorize(craftingContract.address, true, true);
   await itemsContract.authorize(craftingContract.address, true, true);
-  await craftingContract.addRecipe('Stone pickaxe', 1, 3, 1);
+
+  // await craftingContract.addRecipe('Stone pickaxe', 1, 3, 1);
 
   fs.writeFileSync('src/contracts/Gold.json', JSON.stringify(getContractData(goldContract)));
   fs.writeFileSync('src/contracts/Items.json', JSON.stringify(getContractData(itemsContract)));

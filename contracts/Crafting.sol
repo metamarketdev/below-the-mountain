@@ -25,6 +25,10 @@ contract Crafting is Ownable, Withdrawable {
   constructor(address _toolsContract, address _itemsContract) {
     toolsContract = Tools(_toolsContract);
     itemsContract = Items(_itemsContract);
+
+    addRecipe('Stone pickaxe', 1, 3, 1);
+    addRecipe('Iron pickaxe', 2, 3, 2);
+    addRecipe('Mithril pickaxe', 3, 3, 3);
   }
 
   function addRecipe(
