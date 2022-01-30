@@ -1,7 +1,13 @@
 <template>
   <div class="flex flex-row items-center">
-    <template v-if="!isConnected">
-      <button @click="login()">Connect wallet</button>
+    <template v-if="!isConnected || !isAuthenticated">
+      <button
+        @click="login()"
+        class="bg-sky-800 hover:bg-sky-700 text-gray-200 rounded px-2 py-1 cursor-pointer"
+      >
+        <i class="fa-solid fa-plug text-white mr-1"></i>
+        Connect wallet
+      </button>
     </template>
 
     <template v-if="$store.getters.isWrongNetwork">

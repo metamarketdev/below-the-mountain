@@ -6,7 +6,7 @@
       >
         <img
           v-if="$store.state.avatar"
-          class="inline-block h-8 w-8 rounded-full mr-2"
+          class="inline-block h-6 w-6 rounded-full mr-2"
           :src="$store.state.avatar"
           alt="Avatar"
         />

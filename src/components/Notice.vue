@@ -6,7 +6,7 @@
       <slot />
     </div>
 
-    <div class="flex flex-col mt-2 items-center">
+    <div v-if="$slots.buttons" class="flex flex-col mt-2 items-center">
       <slot name="buttons"></slot>
     </div>
   </div>

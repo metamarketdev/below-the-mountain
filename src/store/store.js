@@ -42,6 +42,8 @@ const store = createStore({
     },
 
     async loadBalances({ state, commit, dispatch }) {
+      // IMPROVEMENT: use DB live query instead
+
       const options = {
         chain: CHAIN_NAME,
         address: state.userAttributes.ethAddress,
@@ -149,7 +151,6 @@ const store = createStore({
         dispatch('loadPlayerData');
       } else {
         dispatch('login');
-
       }
     },
 
@@ -183,10 +184,13 @@ const store = createStore({
       state.currentChainId = chainId;
     },
 
-    setUser(state, payload) {
-      state.user = payload;
-      state.userAttributes = payload.attributes;
-      state.avatar = payload.attributes.avatar;
+    setUser(state, user) {
+      state.user = user;
+
+      if (user.attributes) {
+        state.userAttributes = user.attributes;
+        state.avatar = user.attributes.avatar;
+      }
     },
 
     setLoadingItems(state, payload) {
@@ -273,8 +277,10 @@ const store = createStore({
 
     isWrongNetwork: (state, getters) => getters.isConnected && state.currentChainId !== CHAIN_ID,
 
+    isCorrectNetwork: (state, getters) => !getters.isWrongNetwork,
+
     displayAddress: (state) => {
-      const truncateRegex = /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/;
+      const truncateRegex = /^(0x[a-zA-Z0-9]{2})[a-zA-Z0-9]+([a-zA-Z0-9]{3})$/;
 
       const truncateEthAddress = (address) => {
         const match = address.match(truncateRegex);

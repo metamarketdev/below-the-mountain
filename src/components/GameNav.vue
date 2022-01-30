@@ -11,6 +11,12 @@
       <GameNavLink to="/app/land" icon="FlagIcon">Land</GameNavLink>
     </div>
 
+    isConnected:{{ $store.getters.isConnected }}
+    <br />
+    isAuthenticated:{{ $store.getters.isAuthenticated }}
+    <br />
+    isWrongNetwork:{{ $store.getters.isWrongNetwork }}
+
     <div>
       <div class="flex flex-row items-center gap-2 mb-4">
         <router-link to="/">

@@ -33,10 +33,12 @@ export default {
 
   data() {
     return {
-      isRequesting: false,
+      loadingContractState: true,
+      isRequesting: true,
       faucetContract: null,
       tokenRequests: 0,
       requestSucceeded: false,
+      timeout: null,
     };
   },
 
@@ -44,23 +46,27 @@ export default {
     this.fetchContractState();
   },
 
+  unmounted() {
+    clearTimeout(this.timeout);
+  },
+
   computed: {
     showTokensNotice() {
-      return this.tokenRequests === 0 && !this.requestSucceeded;
+      return !this.isRequesting && this.tokenRequests === 0 && !this.requestSucceeded;
     },
   },
 
   methods: {
     async fetchContractState() {
-      const tokenRequests = await callMethod('faucet', 'getRequests');
-      this.tokenRequests = tokenRequests.toNumber();
-
-      setTimeout(this.fetchContractState, 3000);
+      if (this.$store.getters.isAuthenticated) {
+        const tokenRequests = await callMethod('faucet', 'getRequests');
+        this.tokenRequests = tokenRequests.toNumber();
+        this.timeout = setTimeout(this.fetchContractState, 10000);
+      }
     },
 
     async requestTokens() {
       const transaction = await callMethod('faucet', 'requestTokens');
-      this.isRequesting = true;
       console.log(1, { transaction });
 
       // TODO: better event handler UX
