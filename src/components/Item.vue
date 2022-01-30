@@ -11,6 +11,7 @@
       </div>
 
       <div
+        v-if="!hideAmount"
         class="absolute px-1 py-0 rounded-tl-md bg-gray-600 bottom-0 right-0 text-md text-gray-300"
       >
         {{ amount || item.attributes.amount }}
@@ -58,6 +59,11 @@ export default {
 
     amount: {
       type: Number,
+      required: false,
+    },
+
+    hideAmount: {
+      type: Boolean,
       required: false,
     },
   },
