@@ -12,7 +12,13 @@ contract Faucet is Ownable, Withdrawable {
   Tools private toolsContract;
   Gold private goldContract;
 
-  constructor(address _toolsContract, address _itemsContract, address _goldContract) {
+  mapping(address => uint256) public _tokenRequests;
+
+  constructor(
+    address _toolsContract,
+    address _itemsContract,
+    address _goldContract
+  ) {
     toolsContract = Tools(_toolsContract);
     itemsContract = Items(_itemsContract);
     goldContract = Gold(_goldContract);
@@ -24,5 +30,9 @@ contract Faucet is Ownable, Withdrawable {
     itemsContract.externalMint(msg.sender, 2, 5);
     itemsContract.externalMint(msg.sender, 3, 1);
     goldContract.externalMint(msg.sender, 1000);
+  }
+
+  function getRequests() public view returns (uint256) {
+    return _tokenRequests[msg.sender];
   }
 }

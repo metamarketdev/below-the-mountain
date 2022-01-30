@@ -6,7 +6,7 @@
     :to="to"
     :target="href && '_blank'"
     :class="`flex flex-row items-center place-content-center text-white font-medium bg-opacity-80 rounded-xl border-2 border-b-4 hover:-translate-y-0.5 active:translate-y-0 will-change-transform transition-all bg-${color}-600 hover:bg-${color}-500 border-gray-800 active:bg-${color}-600 ${sizeClasses} ${disabledClasses}`"
-    @click="$emit('click')"
+    @click="$emit('clicked')"
     :disabled="disabled"
   >
     <i v-if="icon" :class="`fas fa-${icon} mr-3`"></i>

@@ -1,5 +1,5 @@
 <template>
-  <Butt @click="requestTokens()">Gimme tokens plz!</Butt>
+  <Butt v-if="tokenRequests === 0" @clicked="requestTokens()">Gimme tokens plz!</Butt>
 </template>
 
 <script>
@@ -11,21 +11,29 @@ export default {
 
   data() {
     return {
-      isCrafting: false,
-      loadingRecipes: false,
-      recipes: [],
-      onlyPossible: false,
-      showCraftingModal: false,
-      selectedRecipe: null,
-      amount: 1,
-      craftingContract: null,
+      isRequesting: false,
+      faucetContract: null,
+      tokenRequests: 0,
     };
   },
 
+  mounted() {
+    this.fetchContractState();
+  },
+
   methods: {
+    async fetchContractState() {
+      const sendOptions = {
+        contractAddress: contracts.faucet.address,
+        functionName: 'getRequests',
+        abi: contracts.faucet.abi,
+      };
+
+      const tokenRequests = await Moralis.executeFunction(sendOptions);
+      this.tokenRequests = tokenRequests.toNumber();
+    },
+
     async requestTokens() {
-
-
       const sendOptions = {
         contractAddress: contracts.faucet.address,
         functionName: 'requestTokens',

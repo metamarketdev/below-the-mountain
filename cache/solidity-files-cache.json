@@ -945,8 +945,8 @@
       ]
     },
     "/Users/den/Projects/below-the-mountain/contracts/Faucet.sol": {
-      "lastModificationDate": 1643553304207,
-      "contentHash": "4a5b34e5e03c7ad220c09904a3746ec5",
+      "lastModificationDate": 1643554178260,
+      "contentHash": "1d954710919845bf3a1f2fcdfaa7f67c",
       "sourceName": "contracts/Faucet.sol",
       "solcConfig": {
         "version": "0.8.0",
