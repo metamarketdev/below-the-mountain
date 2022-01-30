@@ -67,15 +67,15 @@ async function main() {
   await goldContract.authorize(faucetContract.address, true, true);
   // await craftingContract.addRecipe('Stone pickaxe', 1, 3, 1);
 
-  fs.writeFileSync('src/contracts/Claims.json', JSON.stringify(getContractData(claimsContract)));
-  fs.writeFileSync('src/contracts/Gold.json', JSON.stringify(getContractData(goldContract)));
-  fs.writeFileSync('src/contracts/Items.json', JSON.stringify(getContractData(itemsContract)));
-  fs.writeFileSync('src/contracts/Tools.json', JSON.stringify(getContractData(toolsContract)));
-  fs.writeFileSync(
-    'src/contracts/Crafting.json',
-    JSON.stringify(getContractData(craftingContract)),
-  );
-  fs.writeFileSync('src/contracts/Faucet.json', JSON.stringify(getContractData(faucetContract)));
+  // fs.writeFileSync('src/contracts/Claims.json', JSON.stringify(getContractData(claimsContract)));
+  // fs.writeFileSync('src/contracts/Gold.json', JSON.stringify(getContractData(goldContract)));
+  // fs.writeFileSync('src/contracts/Items.json', JSON.stringify(getContractData(itemsContract)));
+  // fs.writeFileSync('src/contracts/Tools.json', JSON.stringify(getContractData(toolsContract)));
+  // fs.writeFileSync(
+  //   'src/contracts/Crafting.json',
+  //   JSON.stringify(getContractData(craftingContract)),
+  // );
+  // fs.writeFileSync('src/contracts/Faucet.json', JSON.stringify(getContractData(faucetContract)));
 
   // Auto verify
 
