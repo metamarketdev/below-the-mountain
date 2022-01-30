@@ -112,15 +112,14 @@ export default {
     openCraftModal(recipe) {
       this.selectedRecipe = recipe;
       this.showCraftingModal = true;
-    },
-
-    closeCraftModal() {
-      this.selectedRecipe = null;
-      this.showCraftingModal = false;
       this.craftingSuccess = false;
       this.craftingSubmitted = false;
       this.craftingFailed = false;
       this.craftingTx = '';
+    },
+
+    closeCraftModal() {
+      this.showCraftingModal = false;
     },
 
     async makeRecipe(recipe, amount) {
