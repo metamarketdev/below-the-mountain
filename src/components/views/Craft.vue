@@ -22,7 +22,12 @@
     <div v-if="craftingFailed">Failed :(</div>
     <div v-else-if="isCrafting && craftingSubmitted">Crafting item...</div>
     <div v-else-if="isCrafting">Sending transaction...</div>
-    <div v-else-if="craftingSuccess">Success!</div>
+    <div v-else-if="craftingSuccess">
+      Success!
+      <a :href="`https://testnet.snowtrace.io/tx/${craftingTx}`" target="_blank" class="underline">
+        View transaction
+      </a>
+    </div>
 
     <template v-else>
       <div class="flex flex-row items-center justify-center">
@@ -65,6 +70,7 @@ export default {
       craftingSubmitted: false,
       craftingSuccess: false,
       craftingFailed: false,
+      craftingTx: '',
     };
   },
 
@@ -114,6 +120,7 @@ export default {
       this.craftingSuccess = false;
       this.craftingSubmitted = false;
       this.craftingFailed = false;
+      this.craftingTx = '';
     },
 
     async makeRecipe(recipe, amount) {
@@ -128,10 +135,10 @@ export default {
         this.craftingSubmitted = true;
 
         const result = await transaction.wait();
-
         if (result.status === 1) {
           console.log('success');
           this.craftingSuccess = true;
+          this.craftingTx = result.transactionHash;
         } else {
           throw Error(result);
         }
