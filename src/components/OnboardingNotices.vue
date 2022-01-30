@@ -70,7 +70,6 @@ export default {
     async requestTokens() {
       const transaction = await callMethod('faucet', 'requestTokens');
       this.isRequesting = true;
-      console.log(1, { transaction });
 
       // TODO: better event handler UX
 
