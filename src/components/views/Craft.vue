@@ -1,18 +1,18 @@
 <template>
-  <ItemGroup title="Recipes">
-    <div v-if="loadingRecipes">Loading...</div>
-
-    <div v-else>
-      <Recipe
-        v-for="(recipe, i) in filteredRecipes"
-        :key="i"
-        :recipe="recipe"
-        @click="openCraftModal(recipe)"
-      />
-    </div>
+  <ItemGroup title="Recipes" :loading="loadingRecipes" :empty="filteredRecipes.length === 0">
+    <Recipe
+      v-for="(recipe, i) in filteredRecipes"
+      :key="i"
+      :recipe="recipe"
+      @click="openCraftModal(recipe)"
+    />
   </ItemGroup>
 
-  <ItemGroup title="Available Materials">
+  <ItemGroup
+    title="Available Materials"
+    :loading="$store.state.loadingItems"
+    :empty="allItems.length === 0"
+  >
     <Item v-for="item in allItems" :key="item.id" :item="item" />
   </ItemGroup>
 

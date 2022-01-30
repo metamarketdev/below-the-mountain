@@ -1,9 +1,9 @@
 <template>
-  <ItemGroup title="Tools">
+  <ItemGroup title="Tools" :loading="$store.state.loadingItems" :empty="allTools.length === 0">
     <Item v-for="item in allTools" :key="item.id" :item="item" />
   </ItemGroup>
 
-  <ItemGroup title="Materials">
+  <ItemGroup title="Materials" :loading="$store.state.loadingItems" :empty="allItems.length === 0">
     <Item v-for="item in allItems" :key="item.id" :item="item" />
   </ItemGroup>
 </template>
