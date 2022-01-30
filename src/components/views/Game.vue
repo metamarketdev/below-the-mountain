@@ -5,7 +5,7 @@
     <div class="flex flex-col flex-grow p-4">
       <h2 class="font-title text-4xl text-left mb-12">{{ $route.name }}</h2>
 
-      <DemoTokenRequest />
+      <OnboardingNotice />
       <router-view />
     </div>
   </div>
@@ -52,18 +52,8 @@
     This is a
     <b>TESTNET</b>
     beta. None of the assets here hold any value.
-    <br />
-    You need Testnet AVAX to interact with the app.
 
     <template v-slot:buttons>
-      <Butt
-        href="https:faucet.avax-test.network"
-        color="red"
-        class="inline-block"
-        icon="arrow-up-right-from-square"
-      >
-        Get testnet AVAX
-      </Butt>
       <Butt @click="showWelcomeModal = false">Got it!</Butt>
     </template>
   </Modal>
@@ -75,7 +65,7 @@ import GameNav from '../GameNav.vue';
 import Modal from '../Modal.vue';
 import { mapState, mapMutations } from 'vuex';
 import { ExclamationIcon } from '@heroicons/vue/outline';
-import DemoTokenRequest from '../DemoTokenRequest.vue';
+import OnboardingNotice from '../OnboardingNotice.vue';
 
 export default {
   name: 'Game',
@@ -84,7 +74,7 @@ export default {
     GameNav,
     UserMenu,
     Modal,
-    DemoTokenRequest,
+    OnboardingNotice,
     ExclamationIcon,
   },
 

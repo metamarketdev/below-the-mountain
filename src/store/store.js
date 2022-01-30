@@ -26,7 +26,8 @@ const store = createStore({
       userAttributes: {},
       avatar: null,
 
-      loadingGold: true,
+      loadingBalances: true,
+      balance: 0,
       gold: 0,
 
       loadingItems: true,
@@ -45,18 +46,17 @@ const store = createStore({
 
   actions: {
     loadPlayerData({ dispatch }) {
-      dispatch('loadGold');
+      dispatch('loadBalances');
       dispatch('loadItems');
     },
 
-    async loadGold({ state, commit, dispatch }) {
-      // IMPROVEMENT: figure out most efficient way
-
+    async loadBalances({ state, commit, dispatch }) {
       const options = {
         chain: CHAIN_NAME,
         address: state.userAttributes.ethAddress,
       };
 
+      const native = await Moralis.Web3API.account.getNativeBalance(options);
       const tokens = await Moralis.Web3API.account.getTokenBalances(options);
 
       const goldToken = tokens.find(
@@ -64,10 +64,11 @@ const store = createStore({
       );
 
       commit('setGold', goldToken.balance / 10 ** 18);
-      commit('setLoadingGold', false);
+      commit('setNativeBalance', native.balance / 10 ** 18);
+      commit('setLoadingBalances', false);
 
       setTimeout(() => {
-        dispatch('loadGold');
+        dispatch('loadBalances');
       }, 7500);
     },
 
@@ -135,8 +136,12 @@ const store = createStore({
       state.loadingItems = payload;
     },
 
-    setLoadingGold(state, payload) {
-      state.loadingGold = payload;
+    setLoadingBalances(state, payload) {
+      state.loadingBalances = payload;
+    },
+
+    setNativeBalance(state, payload) {
+      state.balance = payload;
     },
 
     setGold(state, payload) {
@@ -227,6 +232,10 @@ const store = createStore({
 
     displayGold: (state) => {
       return Math.floor(state.gold);
+    },
+
+    displayBalance: (state) => {
+      return Math.floor(state.balance * 100) / 100;
     },
   },
 });
