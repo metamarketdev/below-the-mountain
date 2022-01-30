@@ -25,18 +25,8 @@
     This is a
     <b>TESTNET</b>
     beta. None of the assets here hold any value.
-    <br />
-    You need Testnet AVAX to interact with the app.
 
     <template v-slot:buttons>
-      <Butt
-        href="https:faucet.avax-test.network"
-        color="red"
-        class="inline-block"
-        icon="arrow-up-right-from-square"
-      >
-        Get testnet AVAX
-      </Butt>
       <Butt @click="showWelcomeModal = false">Got it!</Butt>
     </template>
   </Modal>
