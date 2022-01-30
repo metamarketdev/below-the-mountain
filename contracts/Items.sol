@@ -58,6 +58,14 @@ contract Items is ERC1155, Ownable, Withdrawable, ExternalActor {
     _burn(requester, tokenId, amount);
   }
 
+  function externalMint(
+    address requester,
+    uint256 tokenId,
+    uint256 amount
+  ) public onlyAllowedMinters {
+    _burn(requester, tokenId, amount);
+  }
+
   function getMetadata(uint256 tokenId) public view returns (string memory) {
     return
       string(

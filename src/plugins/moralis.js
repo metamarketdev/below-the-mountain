@@ -5,6 +5,8 @@ Moralis.start({
   appId: '5Ttx6h1EwHwWTZeuPH9mrgaNhHuJ6fjhySN0cVlm',
 });
 
+await Moralis.enableWeb3();
+
 // TODO:
 // serverUrl: process.env.VUE_APP_MORALIS_SERVER_URL,
 // appId: process.env.VUE_APP_MORALIS_APP_ID,

@@ -3,6 +3,7 @@ import itemsContract from './Items.json';
 import craftingContract from './Crafting.json';
 import toolsContract from './Tools.json';
 import claimsContract from './Claims.json';
+import faucetContract from './Faucet.json';
 
 import goldAbi from '../../abi/Gold.json';
 import itemsAbi from '../../abi/Items.json';
@@ -32,5 +33,9 @@ export default {
   claims: {
     address: claimsContract.address,
     abi: claimsContract.abi,
+  },
+  faucet: {
+    address: faucetContract.address,
+    abi: faucetContract.abi,
   },
 };

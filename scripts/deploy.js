@@ -23,7 +23,7 @@ function getContractData(contract) {
 }
 
 async function main() {
-  let goldContract, itemsContract, craftingContract, toolsContract, claimsContract;
+  let goldContract, itemsContract, craftingContract, toolsContract, claimsContract, faucetContract;
   let network = networks[hre.network.name];
 
   let [owner] = await ethers.getSigners();
@@ -49,11 +49,22 @@ async function main() {
   ]);
   await craftingContract.deployTransaction.wait();
 
+  faucetContract = await deployContract('Faucet', [
+    toolsContract.address,
+    itemsContract.address,
+    goldContract.address,
+  ]);
+  await faucetContract.deployTransaction.wait();
+
   console.log('Initializing states...');
 
+  // Review these permissions on launch
   await toolsContract.authorize(craftingContract.address, true, true);
   await itemsContract.authorize(craftingContract.address, true, true);
 
+  await toolsContract.authorize(faucetContract.address, true, true);
+  await itemsContract.authorize(faucetContract.address, true, true);
+  await goldContract.authorize(faucetContract.address, true, true);
   // await craftingContract.addRecipe('Stone pickaxe', 1, 3, 1);
 
   fs.writeFileSync('src/contracts/Claims.json', JSON.stringify(getContractData(claimsContract)));
@@ -64,27 +75,28 @@ async function main() {
     'src/contracts/Crafting.json',
     JSON.stringify(getContractData(craftingContract)),
   );
+  fs.writeFileSync('src/contracts/Faucet.json', JSON.stringify(getContractData(faucetContract)));
 
   // Auto verify
 
-  // try {
-  //   console.log('Verifying...');
+  try {
+    console.log('Verifying...');
 
-  //   // Wait a few confirmations to make sure the bytecode is not empty
-  //   await goldContract.deployTransaction.wait(6);
+    // Wait a few confirmations to make sure the bytecode is not empty
+    await faucetContract.deployTransaction.wait(6);
 
-  //   await hre.run('verify:verify', {
-  //     address: goldContract.address,
-  //     network: hre.network.name,
-  //     constructorArguments: [GOLD_NAME, GOLD_SYMBOL],
-  //     // libraries: {
-  //     //   LibraryName: libraryContract.address,
-  //     // },
-  //   });
-  // } catch (err) {
-  //   console.log('Verification failed:', err.message);
-  //   console.error(err);
-  // }
+    await hre.run('verify:verify', {
+      address: faucetContract.address,
+      network: hre.network.name,
+      constructorArguments: [toolsContract.address, itemsContract.address, goldContract.address],
+      // libraries: {
+      //   LibraryName: libraryContract.address,
+      // },
+    });
+  } catch (err) {
+    console.log('Verification failed:', err.message);
+    console.error(err);
+  }
 }
 
 main()

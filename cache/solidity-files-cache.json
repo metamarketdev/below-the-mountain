@@ -522,8 +522,8 @@
       ]
     },
     "/Users/den/Projects/below-the-mountain/contracts/Items.sol": {
-      "lastModificationDate": 1643455491788,
-      "contentHash": "eaa8578336b5422e58e8af905fdbe71c",
+      "lastModificationDate": 1643552069228,
+      "contentHash": "68169608d61ad0b27d116a4b026a849f",
       "sourceName": "contracts/Items.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -792,8 +792,8 @@
       ]
     },
     "/Users/den/Projects/below-the-mountain/contracts/Gold.sol": {
-      "lastModificationDate": 1643401139902,
-      "contentHash": "bac31f954c78dd23428a5b3a50c04ab5",
+      "lastModificationDate": 1643552083508,
+      "contentHash": "b01bf36f84ce508dcfe55e48f60a816b",
       "sourceName": "contracts/Gold.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -821,7 +821,8 @@
       "imports": [
         "@openzeppelin/contracts/token/ERC20/ERC20.sol",
         "@openzeppelin/contracts/access/Ownable.sol",
-        "./Withdrawable.sol"
+        "./Withdrawable.sol",
+        "./ExternalActor.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
@@ -941,6 +942,47 @@
       ],
       "artifacts": [
         "Claims"
+      ]
+    },
+    "/Users/den/Projects/below-the-mountain/contracts/Faucet.sol": {
+      "lastModificationDate": 1643553304207,
+      "contentHash": "4a5b34e5e03c7ad220c09904a3746ec5",
+      "sourceName": "contracts/Faucet.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "./Items.sol",
+        "./Tools.sol",
+        "./Gold.sol",
+        "./Withdrawable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Faucet"
       ]
     }
   }
