@@ -7,7 +7,7 @@
         v-for="(recipe, i) in filteredRecipes"
         :key="i"
         :recipe="recipe"
-        @click="openCraftModal(i)"
+        @click="openCraftModal(recipe)"
       />
     </div>
   </ItemGroup>
@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <Modal :open="showCraftingModal" @close="showCraftingModal = false">
-    <template v-slot:title>Craft {{ selectedRecipe }}</template>
+    <template v-slot:title>{{ selectedRecipe.name }}</template>
 
     <div v-if="isCrafting">Crafting...</div>
 
@@ -89,8 +89,8 @@ export default {
   },
 
   methods: {
-    openCraftModal(index) {
-      this.selectedRecipe = index;
+    openCraftModal(recipe) {
+      this.selectedRecipe = recipe;
       this.showCraftingModal = true;
     },
 
@@ -151,6 +151,7 @@ export default {
         // IMPROVEMENT: make this more future-proof
         if (recipe.enabled) {
           recipe = {
+            ...recipe,
             inputAmount: recipe.inputAmount.toNumber(),
             inputTokenId: recipe.inputTokenId.toString(),
             outputTokenType: recipe.outputTokenType.toString(),

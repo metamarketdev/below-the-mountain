@@ -2,25 +2,29 @@
   <VTooltip theme="item-tooltip" class="inline-block">
     <div
       @click="$emit('click')"
-      class="relative bg-gray-700 border border-gray-600 border-b-4 p-2 rounded-md inline-block m-1"
+      class="relative border bg-gray-700 border-gray-600 border-b-4 p-2 rounded-md inline-block m-1"
+      :class="{ 'hover:bg-gray-500 cursor-pointer': isPossible, 'opacity-50': !isPossible }"
     >
       <div class="text-center">
-        {{ recipe }}
+        {{ recipe.name }}
         <!-- <img :src="src" :alt="metadata.name" width="80" height="80" class="inline-block" /> -->
       </div>
 
       <div
         class="absolute px-1 py-0 rounded-tl-md bg-gray-600 bottom-0 right-0 text-md text-gray-300"
       >
-        <!-- {{ recipe.inputTokenId }} -->
-        <!-- {{ recipe.inputAmount }} -->
         {{ recipe.possibleAmount }}
       </div>
     </div>
 
     <template #popper>
-      <div class="font-normal text-gray-200">...</div>
-      <div class="font-light text-sm text-gray-400">...</div>
+      <div class="font-normal text-gray-200">
+        {{ recipe.name }}
+      </div>
+      <div class="font-light text-sm text-gray-400">
+        {{ recipe.inputTokenId }}:
+        {{ recipe.inputAmount }}
+      </div>
     </template>
   </VTooltip>
 </template>
@@ -38,7 +42,7 @@ export default {
 
   computed: {
     isPossible() {
-      return this.possibleAmount > 0;
+      return this.recipe.possibleAmount > 0;
     },
 
     metadata() {
