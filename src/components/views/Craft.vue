@@ -70,8 +70,6 @@ export default {
             return item.attributes.token_id === recipe.inputTokenId;
           });
 
-          console.log(inputItem);
-
           if (inputItem) {
             recipe.possibleAmount = Math.floor(inputItem.attributes.amount / recipe.inputAmount);
           } else {
@@ -92,7 +90,6 @@ export default {
 
   methods: {
     openCraftModal(index) {
-      console.log(index);
       this.selectedRecipe = index;
       this.showCraftingModal = true;
     },
@@ -106,7 +103,7 @@ export default {
         abi: contracts.crafting.abi,
         params: {
           recipeId,
-          amount: 10,
+          amount,
         },
       };
 
