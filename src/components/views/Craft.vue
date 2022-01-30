@@ -22,7 +22,7 @@
     <div v-if="isCrafting">Crafting...</div>
 
     <div v-else class="w-screen max-w-xl">
-      <Cta size="big" @click="makeRecipe(selectedRecipe, amount)">Craft {{ amount }}</Cta>
+      <Butt size="big" @click="makeRecipe(selectedRecipe, amount)">Craft {{ amount }}</Butt>
     </div>
   </Modal>
 </template>
@@ -33,14 +33,12 @@ import Moralis from '../../plugins/moralis';
 import ItemGroup from '../ItemGroup.vue';
 import Item from '../Item.vue';
 import Recipe from '../Recipe.vue';
-import Modal from '../Modal.vue';
-import Cta from '../Cta.vue';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'Craft',
 
-  components: { Recipe, ItemGroup, Item, Modal, Cta },
+  components: { Recipe, ItemGroup, Item },
 
   data() {
     return {

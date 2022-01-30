@@ -46,7 +46,7 @@
     <div v-if="isMinting">Minting...</div>
 
     <div v-else class="w-screen max-w-xl">
-      <Cta size="big" @click="mintClaim(x, y, z)">Mint</Cta>
+      <Butt size="big" @click="mintClaim(x, y, z)">Mint</Butt>
     </div>
   </Modal>
 </template>
@@ -54,14 +54,9 @@
 <script>
 import contracts from '../../contracts';
 import Moralis from '../../plugins/moralis';
-import Modal from '../Modal.vue';
-import Cta from '../Cta.vue';
-import { mapGetters } from 'vuex';
 
 export default {
   name: 'Land',
-
-  components: { Modal, Cta },
 
   data() {
     return {

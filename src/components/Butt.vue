@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: 'Cta',
+  name: 'Butt',
 
   props: {
     icon: {

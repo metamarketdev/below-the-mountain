@@ -30,14 +30,12 @@
 <script>
 import { useStore } from 'vuex';
 import { onMounted, inject, computed } from 'vue';
-import Modal from './Modal.vue';
 import UserPopover from './UserPopover.vue';
 import ThemeToggle from './ThemeToggle.vue';
 import Moralis from '../plugins/moralis';
 
 export default {
   components: {
-    Modal,
     UserPopover,
     ThemeToggle,
   },
@@ -56,8 +54,9 @@ export default {
     },
 
     async loadNfts() {
-      const options = { chain: 'polygon', address: this.user.attributes.ethAddress };
+      const options = { chain: 'eth', address: this.user.attributes.ethAddress };
       const ethNFTS = await Moralis.Web3API.account.getNFTs(options);
+      console.log(ethNFTS.result);
       this.avatars = ethNFTS.result.filter((nft) => nft.is_valid);
     },
 

@@ -5,6 +5,7 @@
     <div class="flex flex-col flex-grow p-4">
       <h2 class="font-title text-4xl text-left mb-12">{{ $route.name }}</h2>
 
+      <DemoTokenRequest />
       <router-view />
     </div>
   </div>
@@ -28,15 +29,42 @@
     You need Testnet AVAX to interact with the app.
 
     <template v-slot:buttons>
-      <Cta
+      <Butt
         href="https:faucet.avax-test.network"
         color="red"
         class="inline-block"
         icon="arrow-up-right-from-square"
       >
         Get testnet AVAX
-      </Cta>
-      <Cta @click="showWelcomeModal = false">Got it!</Cta>
+      </Butt>
+      <Butt @click="showWelcomeModal = false">Got it!</Butt>
+    </template>
+  </Modal>
+
+  <Modal :open="show" @close="showWelcomeModal = false">
+    <template v-slot:title>Welcome to the world under</template>
+    <template v-slot:description>We're glad you're here.</template>
+
+    <!-- <div class="text-center mb-2">
+      <ExclamationIcon class="text-rose-400 w-12 h-12 inline-block" />
+    </div> -->
+
+    This is a
+    <b>TESTNET</b>
+    beta. None of the assets here hold any value.
+    <br />
+    You need Testnet AVAX to interact with the app.
+
+    <template v-slot:buttons>
+      <Butt
+        href="https:faucet.avax-test.network"
+        color="red"
+        class="inline-block"
+        icon="arrow-up-right-from-square"
+      >
+        Get testnet AVAX
+      </Butt>
+      <Butt @click="showWelcomeModal = false">Got it!</Butt>
     </template>
   </Modal>
 </template>
@@ -45,9 +73,9 @@
 import UserMenu from '../UserMenu.vue';
 import GameNav from '../GameNav.vue';
 import Modal from '../Modal.vue';
-import Cta from '../Cta.vue';
 import { mapState, mapMutations } from 'vuex';
 import { ExclamationIcon } from '@heroicons/vue/outline';
+import DemoTokenRequest from '../DemoTokenRequest.vue';
 
 export default {
   name: 'Game',
@@ -56,7 +84,7 @@ export default {
     GameNav,
     UserMenu,
     Modal,
-    Cta,
+    DemoTokenRequest,
     ExclamationIcon,
   },
 

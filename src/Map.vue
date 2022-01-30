@@ -68,7 +68,6 @@
 <script>
 import Popper from 'vue3-popper';
 import ThemeToggle from './components/ThemeToggle.vue';
-import Modal from './components/Modal.vue';
 import { onMounted, inject, computed } from 'vue';
 import { useStore } from 'vuex';
 import Moralis from './plugins/moralis';
@@ -78,7 +77,6 @@ export default {
   components: {
     Popper,
     ThemeToggle,
-    Modal,
   },
 
   data() {

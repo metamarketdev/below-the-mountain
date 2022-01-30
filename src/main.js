@@ -8,6 +8,8 @@ import { TroisJSVuePlugin } from 'troisjs';
 import FloatingVue from 'floating-vue';
 import { VTooltip } from 'floating-vue';
 import VueKinesis from 'vue-kinesis';
+import Butt from './components/Butt.vue';
+import Modal from './components/Modal.vue';
 
 const tooltipOptions = {
   themes: {
@@ -20,6 +22,8 @@ const tooltipOptions = {
 };
 
 createApp(App)
+  .component('Butt', Butt)
+  .component('Modal', Modal)
   .provide('$moralis', Moralis)
   .use(store)
   .use(router)
