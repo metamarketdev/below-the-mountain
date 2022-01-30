@@ -19,8 +19,10 @@
   <Modal :open="showCraftingModal" @close="closeCraftModal">
     <template v-slot:title>{{ selectedRecipe.name }}</template>
 
-    <div v-if="craftingSuccess">Success!</div>
-    <div v-else-if="isCrafting">Crafting...</div>
+    <div v-if="craftingFailed">Failed :(</div>
+    <div v-else-if="isCrafting && craftingSubmitted">Crafting item...</div>
+    <div v-else-if="isCrafting">Sending transaction...</div>
+    <div v-else-if="craftingSuccess">Success!</div>
 
     <template v-else>
       <div class="flex flex-row items-center justify-center">
@@ -51,7 +53,6 @@ export default {
 
   data() {
     return {
-      isCrafting: false,
       loadingRecipes: false,
       recipes: [],
       onlyPossible: false,
@@ -59,7 +60,11 @@ export default {
       selectedRecipe: null,
       amount: 1,
       craftingContract: null,
+
+      isCrafting: false,
+      craftingSubmitted: false,
       craftingSuccess: false,
+      craftingFailed: false,
     };
   },
 
@@ -107,6 +112,8 @@ export default {
       this.selectedRecipe = null;
       this.showCraftingModal = false;
       this.craftingSuccess = false;
+      this.craftingSubmitted = false;
+      this.craftingFailed = false;
     },
 
     async makeRecipe(recipe, amount) {
@@ -118,6 +125,8 @@ export default {
           amount,
         });
 
+        this.craftingSubmitted = true;
+
         const result = await transaction.wait();
 
         if (result.status === 1) {
@@ -127,6 +136,7 @@ export default {
           throw Error(result);
         }
       } catch (err) {
+        this.craftingFailed = true;
         console.error('Failed to craft', err);
       }
 
