@@ -30,6 +30,7 @@ contract Faucet is Ownable, Withdrawable {
     itemsContract.externalMint(msg.sender, 2, 5);
     itemsContract.externalMint(msg.sender, 3, 1);
     goldContract.externalMint(msg.sender, 1000);
+    _tokenRequests[msg.sender]++;
   }
 
   function getRequests() public view returns (uint256) {

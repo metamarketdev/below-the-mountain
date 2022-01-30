@@ -1,5 +1,11 @@
 <template>
-  <Butt v-if="tokenRequests === 0" @clicked="requestTokens()">Gimme tokens plz!</Butt>
+  <Notice v-if="tokenRequests === 0">
+    Looks like it's your first time here. Request some demo tokens to try out the app.
+
+    <template v-slot:buttons>
+      <Butt @clicked="requestTokens()" icon="gift">Gimme tokens plz!</Butt>
+    </template>
+  </Notice>
 </template>
 
 <script>
