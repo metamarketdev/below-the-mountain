@@ -1,8 +1,8 @@
 <template>
   <VTooltip theme="item-tooltip" class="inline-block">
     <div
-      class="inline-block relative bg-gray-700 border border-gray-600 border-b-4 p-2 rounded-md m-1"
-      :class="{ 'opacity-50': isPending }"
+      class="inline-block relative bg-gray-700 border border-gray-600 border-b-4 p-2 rounded-md m-1 transition-all"
+      :class="{ 'opacity-50': item.isPending }"
     >
       <div class="absolute top-0 left-1 text-xs text-gray-500">#{{ item.attributes.token_id }}</div>
 
