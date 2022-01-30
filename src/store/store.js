@@ -163,11 +163,20 @@ const store = createStore({
 
   getters: {
     allItems: (state) => {
-      const allItems = [...state.confirmed.items, ...state.pending.items];
-      return _.uniqBy(allItems, 'attributes.token_id');
+      // Prioritize pending items to better update amounts of ERC1155
+      const allItems = [
+        ...state.pending.items.map((tool) => {
+          tool.isPending = true;
+          return tool;
+        }),
+        ...state.confirmed.items,
+      ];
+
+      return _(allItems).uniqBy('attributes.token_id').orderBy('createdAt');
     },
 
     allTools: (state) => {
+      // Prioritize confirmed items
       const allTools = [
         ...state.confirmed.tools,
         ...state.pending.tools.map((tool) => {
@@ -175,7 +184,8 @@ const store = createStore({
           return tool;
         }),
       ];
-      return _.uniqBy(allTools, 'attributes.token_id');
+
+      return _(allTools).uniqBy('attributes.token_id').orderBy('createdAt');
     },
 
     isConnected: (state) => !!state.currentChainId,
