@@ -78,6 +78,7 @@ export default {
         const result = await transaction.wait();
         if (result.status === 1) {
           this.requestSucceeded = true;
+          clearTimeout(this.timeout);
         }
       } catch (err) {
         console.error(err);
