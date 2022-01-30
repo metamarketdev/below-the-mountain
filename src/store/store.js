@@ -149,32 +149,37 @@ const store = createStore({
     },
 
     setItems(state, { items, destination }) {
-      console.log('1');
       state.confirmed[destination] = items;
     },
 
     setPendingItems(state, { items, destination }) {
-      console.log('2');
       state.pending[destination] = items;
     },
 
     createItem(state, { msg, destination }) {
-      console.log('yes!');
+      state.confirmed[destination].push(msg);
     },
+
     deleteItem(state, { msg, destination }) {
-      console.log('yes!');
+      state.confirmed[destination] = state.confirmed[destination].filter(({ id }) => msg.id !== id);
     },
+
     updateItem(state, { msg, destination }) {
-      console.log('yes!');
+      let old = state.confirmed[destination].find(({ id }) => msg.id === id);
+      old = msg;
     },
+
     createPendingItem(state, { msg, destination }) {
-      console.log('yes!');
+      state.pending[destination].push(msg);
     },
+
     deletePendingItem(state, { msg, destination }) {
-      console.log('yes!');
+      state.pending[destination] = state.pending[destination].filter(({ id }) => msg.id !== id);
     },
+
     updatePendingItem(state, { msg, destination }) {
-      console.log('yes!');
+      let old = state.pending[destination].find(({ id }) => msg.id === id);
+      old = msg;
     },
   },
 
