@@ -38,8 +38,7 @@ const store = createStore({
     },
 
     async loadGold({ state, commit, dispatch }) {
-      // TODO: figure out most efficient way
-      // TODO: try covalent to get token amount?
+      // IMPROVEMENT: figure out most efficient way
 
       const options = {
         chain: CHAIN_NAME,
@@ -53,13 +52,6 @@ const store = createStore({
       );
 
       commit('setGold', goldToken.balance / 10 ** 18);
-
-      // const query = new Moralis.Query('AvaxTokenBalance');
-      // query.equalTo('address', state.userAttributes.ethAddress);
-      // query.equalTo('token_address', contracts.gold.address);
-      // const result = await query.find();
-      // console.log(result);
-      // console.timeEnd('query balance');
 
       setTimeout(() => {
         dispatch('loadGold');
@@ -98,37 +90,23 @@ const store = createStore({
       commit('setPendingItems', { items: resultPending, destination });
 
       subscription.on('create', (msg) => {
-        // console.log('created pending', msg);
-        // state.pendingGems.push(msg);
         commit('createItem', { msg, destination });
       });
       subscription.on('delete', (msg) => {
         commit('deleteItem', { msg, destination });
-        // console.log('delete pending', msg);
-        // state.pendingGems = state.pendingGems.filter(({ id }) => msg.id !== id);
       });
       subscription.on('update', (msg) => {
         commit('updateItem', { msg, destination });
-        // console.log('updated pending', msg);
-        // let old = state.pendingGems.find(({ id }) => msg.id === id);
-        // old = msg;
       });
 
       subscriptionPending.on('create', (msg) => {
-        // console.log('created pending', msg);
-        // state.pendingGems.push(msg);
         commit('createPendingItem', { msg, destination });
       });
       subscriptionPending.on('delete', (msg) => {
         commit('deletePendingItem', { msg, destination });
-        // console.log('delete pending', msg);
-        // state.pendingGems = state.pendingGems.filter(({ id }) => msg.id !== id);
       });
       subscriptionPending.on('update', (msg) => {
         commit('updatePendingItem', { msg, destination });
-        // console.log('updated pending', msg);
-        // let old = state.pendingGems.find(({ id }) => msg.id === id);
-        // old = msg;
       });
     },
   },
