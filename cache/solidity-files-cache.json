@@ -901,6 +901,47 @@
       "artifacts": [
         "String"
       ]
+    },
+    "/Users/den/Projects/below-the-mountain/contracts/Claims.sol": {
+      "lastModificationDate": 1643508421942,
+      "contentHash": "7c5ca0e54813f63c0e1980eb9421992b",
+      "sourceName": "contracts/Claims.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "./Withdrawable.sol",
+        "./ExternalActor.sol",
+        "./String.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Claims"
+      ]
     }
   }
 }

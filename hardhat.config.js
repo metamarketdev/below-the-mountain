@@ -90,6 +90,8 @@ module.exports = {
       chainId: networks.fuji.chainId,
       url: networks.fuji.rpc,
       accounts: [secret.key],
+      // gasPrice: 20000000000,
+      // gas: 6000000,
     },
     polygon: {
       chainId: networks.polygon.chainId,

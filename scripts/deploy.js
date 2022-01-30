@@ -12,6 +12,9 @@ const GOLD_SYMBOL = 'MGLD';
 const TOOLS_NAME = 'Mountain Tools';
 const TOOLS_SYMBOL = 'MTLS';
 
+const CLAIMS_NAME = 'Mountain Claims';
+const CLAIMS_SYMBOL = 'MCLM';
+
 function getContractData(contract) {
   return {
     address: contract.address,
@@ -20,13 +23,16 @@ function getContractData(contract) {
 }
 
 async function main() {
-  let goldContract, itemsContract, craftingContract, toolsContract;
+  let goldContract, itemsContract, craftingContract, toolsContract, claimsContract;
   let network = networks[hre.network.name];
 
   let [owner] = await ethers.getSigners();
   let balance = await owner.getBalance();
 
   console.log('Deploying...');
+
+  claimsContract = await deployContract('Claims', [CLAIMS_NAME, CLAIMS_SYMBOL]);
+  await claimsContract.deployTransaction.wait();
 
   goldContract = await deployContract('Gold', [GOLD_NAME, GOLD_SYMBOL]);
   await goldContract.deployTransaction.wait();
@@ -50,6 +56,7 @@ async function main() {
 
   // await craftingContract.addRecipe('Stone pickaxe', 1, 3, 1);
 
+  fs.writeFileSync('src/contracts/Claims.json', JSON.stringify(getContractData(claimsContract)));
   fs.writeFileSync('src/contracts/Gold.json', JSON.stringify(getContractData(goldContract)));
   fs.writeFileSync('src/contracts/Items.json', JSON.stringify(getContractData(itemsContract)));
   fs.writeFileSync('src/contracts/Tools.json', JSON.stringify(getContractData(toolsContract)));
