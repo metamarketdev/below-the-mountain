@@ -14,10 +14,12 @@ contract Crafting is Ownable, Withdrawable {
   uint256 public numRecipes = 0;
 
   struct Recipe {
-    bool enabled;
+    string name;
+    uint256 recipeId;
     uint256 inputTokenId;
     uint256 inputAmount;
     uint256 outputTokenType;
+    bool enabled;
   }
 
   mapping(uint256 => Recipe) public _recipeDetails;
@@ -32,25 +34,33 @@ contract Crafting is Ownable, Withdrawable {
   }
 
   function addRecipe(
+    string memory name,
     uint256 inputTokenId,
     uint256 inputAmount,
     uint256 outputTokenType
   ) public onlyOwner returns (uint256 tokenId) {
     uint256 newId = nextId;
-    _recipeDetails[newId] = Recipe(true, inputTokenId, inputAmount, outputTokenType);
+    _recipeDetails[newId] = Recipe(name, newId, inputTokenId, inputAmount, outputTokenType, true);
     nextId++;
     numRecipes++;
     return newId;
   }
 
   function updateRecipe(
-    bool enabled,
+    string memory name,
     uint256 recipeId,
     uint256 inputTokenId,
     uint256 inputAmount,
     uint256 outputTokenType
   ) public onlyOwner {
-    _recipeDetails[recipeId] = Recipe(enabled, inputTokenId, inputAmount, outputTokenType);
+    _recipeDetails[recipeId] = Recipe(
+      name,
+      recipeId,
+      inputTokenId,
+      inputAmount,
+      outputTokenType,
+      _recipeDetails[recipeId].enabled
+    );
   }
 
   function toggleRecipe(uint256 recipeId) public onlyOwner {
