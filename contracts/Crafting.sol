@@ -76,4 +76,8 @@ contract Crafting is Ownable, Withdrawable {
 
     toolsContract.externalMint(msg.sender, _recipeDetails[recipeId].outputTokenType, amount);
   }
+
+  //  function getRecipe(uint256 recipeId) public view returns () {
+  //   return _recipeDetails
+  // }
 }

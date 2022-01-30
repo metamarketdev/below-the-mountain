@@ -9,8 +9,7 @@
 </template>
 
 <script>
-import contracts from '../contracts';
-import Moralis from '../plugins/moralis';
+import { callMethod } from '../contracts';
 
 export default {
   name: 'DemoTokenRequest',
@@ -29,24 +28,12 @@ export default {
 
   methods: {
     async fetchContractState() {
-      const sendOptions = {
-        contractAddress: contracts.faucet.address,
-        functionName: 'getRequests',
-        abi: contracts.faucet.abi,
-      };
-
-      const tokenRequests = await Moralis.executeFunction(sendOptions);
+      const tokenRequests = await callMethod('faucet', 'getRequests');
       this.tokenRequests = tokenRequests.toNumber();
     },
 
     async requestTokens() {
-      const sendOptions = {
-        contractAddress: contracts.faucet.address,
-        functionName: 'requestTokens',
-        abi: contracts.faucet.abi,
-      };
-
-      const transaction = await Moralis.executeFunction(sendOptions);
+      const transaction = await callMethod('faucet', 'requestTokens');
       this.isRequesting = true;
       console.log(1, { transaction });
 

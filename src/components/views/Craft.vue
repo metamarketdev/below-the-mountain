@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import contracts from '../../contracts';
+import { callMethod } from '../../contracts';
 import Moralis from '../../plugins/moralis';
 import ItemGroup from '../ItemGroup.vue';
 import Item from '../Item.vue';
@@ -64,7 +64,6 @@ export default {
       return this.recipes
         .map((recipe) => {
           const inputItem = this.allItems.find((item) => {
-            console.log(item.attributes.token_id, recipe.inputTokenId);
             return item.attributes.token_id === recipe.inputTokenId;
           });
 
@@ -93,17 +92,11 @@ export default {
     },
 
     async makeRecipe(recipe, amount) {
-      const sendOptions = {
-        contractAddress: contracts.crafting.address,
-        functionName: 'makeRecipe',
-        abi: contracts.crafting.abi,
-        params: {
-          recipeId: recipe.recipeId,
-          amount,
-        },
-      };
+      const transaction = await callMethod('crafting', 'makeRecipe', {
+        recipeId: recipe.recipeId,
+        amount,
+      });
 
-      const transaction = await Moralis.executeFunction(sendOptions);
       this.isCrafting = true;
       console.log(1, { transaction });
 
@@ -124,24 +117,15 @@ export default {
     async fetchContractState() {
       this.loadingRecipes = true;
 
-      const web3Provider = await Moralis.enableWeb3();
-      const ethers = Moralis.web3Library;
-
-      // console.log('Crafting ABI:', contracts.crafting.abi);
-      this.craftingContract = new ethers.Contract(
-        contracts.crafting.address,
-        contracts.crafting.abi,
-        web3Provider,
-        // this.$store.state.userAttributes.ethAddress,
-      );
-
-      let numRecipes = await this.craftingContract.numRecipes();
+      let numRecipes = await callMethod('crafting', 'numRecipes');
       numRecipes = numRecipes.toNumber();
+      console.log({ numRecipes });
 
       let recipes = [];
 
       for (let i = 1; i <= numRecipes; i++) {
-        let recipe = await this.craftingContract._recipeDetails(i);
+        console.log({ i });
+        let recipe = await callMethod('crafting', '_recipeDetails', { recipeId: i });
         // let recipe = await toolsContract._(i);
 
         // IMPROVEMENT: make this more future-proof

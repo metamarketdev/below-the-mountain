@@ -12,7 +12,7 @@ contract Faucet is Ownable, Withdrawable {
   Tools private toolsContract;
   Gold private goldContract;
 
-  mapping(address => uint256) public _tokenRequests;
+  mapping(address => uint256) private _tokenRequests;
 
   constructor(
     address _toolsContract,
