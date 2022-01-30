@@ -255,7 +255,7 @@ const store = createStore({
         ...state.confirmed.items,
       ];
 
-      return _(allItems).uniqBy('attributes.token_id').orderBy('createdAt');
+      return _(allItems).uniqBy('attributes.token_id').orderBy('createdAt').value();
     },
 
     allTools: (state) => {
@@ -268,7 +268,7 @@ const store = createStore({
         }),
       ];
 
-      return _(allTools).uniqBy('attributes.token_id').orderBy('createdAt');
+      return _(allTools).uniqBy('attributes.token_id').orderBy('createdAt').value();
     },
 
     isConnected: (state) => !!state.currentChainId,
