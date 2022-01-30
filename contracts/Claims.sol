@@ -9,7 +9,7 @@ import "./String.sol";
 
 contract Claims is ERC721, Ownable, Withdrawable, ExternalActor {
   uint256 private amountMinted = 1;
-  uint256 public mapSize = 32; // TODO: fine-tune this; allow for update + lock
+  uint256 public mapSize = 16; // TODO: fine-tune this; allow for update + lock
   uint256 public maxDepth = 64; // TODO: fine-tune this; allow for update + lock
 
   // FIXME: coords unicity

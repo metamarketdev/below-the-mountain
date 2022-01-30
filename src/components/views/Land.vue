@@ -1,16 +1,44 @@
 <template>
-  <ItemGroup title="Claims">
-    <div v-if="loadingClaims">Loading...</div>
+  Z:{{ z }}
 
-    <div v-else>
-      <Recipe
-        v-for="(recipe, i) in filteredRecipes"
-        :key="i"
-        :recipe="recipe"
-        @click="openCraftModal(recipe)"
-      />
-    </div>
-  </ItemGroup>
+  <div v-if="loadingClaims">Loading...</div>
+
+  <renderer v-if="!loadingClaims" ref="renderer" v-bind="rendererConfig">
+    <camera ref="camera" :position="{ x: gridSize, z: gridSize, y: 10 }"></camera>
+    <scene background="#1f2937">
+      <point-light :position="{ y: 50, z: 100 }"></point-light>
+      <point-light :position="{ y: 100, z: 50 }"></point-light>
+
+      <Group ref="grid" :rotation="{ y: 0 }">
+        <box
+          @pointerMove="highlighted = i"
+          @pointerLeave="highlighted = null"
+          @click="selectBox(i, true)"
+          v-for="i in gridSize ** 2"
+          :key="i"
+          :position="{
+            x: i % gridSize,
+            y: 0,
+            z: (i - (i % gridSize)) / gridSize,
+          }"
+          :scale="{
+            x: 0.95,
+            y: Math.random(),
+            z: 0.95,
+          }"
+        >
+          <PhongMaterial color="#333333">
+            <!-- <Texture src="./bricks.jpeg" /> -->
+          </PhongMaterial>
+        </box>
+      </Group>
+    </scene>
+    <!-- <EffectComposer>
+      <RenderPass />
+      <UnrealBloomPass :strength="1" />
+      <HalftonePass :radius="1" :scatter="0" />
+    </EffectComposer> -->
+  </renderer>
 
   <Modal :open="showMintingModal" @close="showMintingModal = false">
     <template v-slot:title>Mint {{ x }}:{{ y }}:{{ z }}</template>
@@ -50,6 +78,28 @@ export default {
         mapSize: 0,
         maxDepth: 0,
       },
+
+      selectedBox: null,
+      highlighted: null,
+
+      rendererConfig: {
+        antialias: true,
+        resize: 'window',
+
+        orbitCtrl: {
+          mouseButtons: {
+            LEFT: 2,
+            MIDDLE: 2,
+            RIGHT: 0,
+          },
+
+          enableDamping: true,
+          minZoom: 10,
+          maxZoom: 10,
+          minDistance: 10,
+          maxDistance: 100,
+        },
+      },
     };
   },
 
@@ -57,7 +107,17 @@ export default {
     await this.fetchContractState();
   },
 
+  computed: {
+    gridSize() {
+      return this.contractState.mapSize;
+    },
+  },
+
   methods: {
+    selectBox(i, selected) {
+      this.selectedBox = selected ? i : null;
+    },
+
     async mintClaim(x, y, z) {
       console.log('mintClaim', x, y, z);
 
@@ -91,8 +151,6 @@ export default {
     },
 
     async fetchContractState() {
-      this.loadingClaims = true;
-
       const web3Provider = await Moralis.enableWeb3();
       const ethers = Moralis.web3Library;
 
@@ -108,31 +166,6 @@ export default {
         mapSize: await this.claimsContract.mapSize(),
         maxDepth: await this.claimsContract.maxDepth(),
       };
-
-      let claims = [];
-
-      for (let i = 1; i <= numRecipes; i++) {
-        let recipe = await this.claimsContract._recipeDetails(i);
-        // let recipe = await toolsContract._(i);
-
-        // IMPROVEMENT: make this more future-proof
-        if (recipe.enabled) {
-          recipe = {
-            ...recipe,
-            inputAmount: recipe.inputAmount.toNumber(),
-            inputTokenId: recipe.inputTokenId.toString(),
-            outputTokenType: recipe.outputTokenType.toString(),
-          };
-
-          recipes.push(recipe);
-        }
-      }
-
-      console.log(claims);
-
-      this.claims = claims;
-
-      this.loadingClaims = false;
     },
   },
 };
