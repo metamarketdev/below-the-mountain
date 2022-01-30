@@ -55,7 +55,7 @@ const store = createStore({
 
       setTimeout(() => {
         dispatch('loadGold');
-      }, 5000);
+      }, 7500);
     },
 
     async loadItems({ state, commit, dispatch }) {
