@@ -13,12 +13,13 @@
 
     <Modal :open="showAvatarModal" @close="showAvatarModal = false" @open="loadNfts">
       <template v-slot:title>Pick your swag</template>
+      <template v-slot:description>Living underground doesn't mean you can't be stylish.</template>
 
       <div v-if="isLoadingAvatars">Loading...</div>
 
       <template v-else>
         <div v-if="avatars.length === 0">No NFTs found. Sorry!</div>
-        <div v-else class="w-screen max-w-xl">
+        <div v-else>
           {{ token }}
           <button
             v-for="(token, i) in avatars"
