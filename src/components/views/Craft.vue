@@ -114,9 +114,15 @@ export default {
       this.isCrafting = true;
       console.log(1, { transaction });
 
-      const result = await transaction.wait();
-      if (result.status===1) {
-        console.log('success')
+      // TODO: better event handler UX
+
+      try {
+        const result = await transaction.wait();
+        if (result.status === 1) {
+          console.log('success');
+        }
+      } catch (err) {
+        console.error(err);
       }
 
       this.isCrafting = false;
