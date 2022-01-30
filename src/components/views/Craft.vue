@@ -29,7 +29,6 @@
 
 <script>
 import { callMethod } from '../../contracts';
-import Moralis from '../../plugins/moralis';
 import ItemGroup from '../ItemGroup.vue';
 import Item from '../Item.vue';
 import Recipe from '../Recipe.vue';
