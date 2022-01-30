@@ -28,7 +28,7 @@ contract Tools is ERC721, Ownable, Withdrawable, ExternalActor {
   mapping(uint256 => Tool) private _toolDetails;
 
   constructor(string memory name, string memory symbol) ERC721(name, symbol) {
-    mintTool(msg.sender, 1);
+    // mintTool(msg.sender, 1);
   }
 
   // function addTool(

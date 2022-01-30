@@ -34,9 +34,9 @@ contract Items is ERC1155, Ownable, Withdrawable, ExternalActor {
       "Rare metal",
       "QmYWJAJw5HD4HaZwDeWd4AhxRmRJ9iv3N2K1W8J1TgWkNs"
     );
-    _mint(msg.sender, stoneId, 100, "");
-    _mint(msg.sender, ironId, 100, "");
-    _mint(msg.sender, mithrilId, 100, "");
+    // _mint(msg.sender, stoneId, 100, "");
+    // _mint(msg.sender, ironId, 100, "");
+    // _mint(msg.sender, mithrilId, 100, "");
   }
 
   function addItem(

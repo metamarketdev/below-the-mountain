@@ -33,7 +33,7 @@ contract Claims is ERC721, Ownable, Withdrawable, ExternalActor {
   mapping(uint256 => Claim) private _claimDetails;
 
   constructor(string memory name, string memory symbol) ERC721(name, symbol) {
-    mintClaim(msg.sender, 1);
+    // mintClaim(msg.sender, 1);
   }
 
   function getCoords(uint256 tokenId)
