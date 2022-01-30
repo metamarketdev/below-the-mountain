@@ -31,6 +31,19 @@ contract Tools is ERC721, Ownable, Withdrawable, ExternalActor {
     mintTool(msg.sender, 1);
   }
 
+  // function addTool(
+  //   string memory name,
+  //   uint256 inputTokenId,
+  //   uint256 inputAmount,
+  //   uint256 outputTokenType
+  // ) public onlyOwner returns (uint256 tokenId) {
+  //   uint256 newId = nextId;
+  //   _recipeDetails[newId] = Recipe(name, newId, inputTokenId, inputAmount, outputTokenType, true);
+  //   nextId++;
+  //   numRecipes++;
+  //   return newId;
+  // }
+
   function externalMint(
     address requester,
     uint256 toolType,
