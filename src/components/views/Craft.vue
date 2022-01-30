@@ -92,15 +92,13 @@ export default {
       this.showCraftingModal = true;
     },
 
-    async makeRecipe(recipeId, amount) {
-      console.log('makeRecipe', { recipeId, amount });
-
+    async makeRecipe(recipe, amount) {
       const sendOptions = {
         contractAddress: contracts.crafting.address,
         functionName: 'makeRecipe',
         abi: contracts.crafting.abi,
         params: {
-          recipeId,
+          recipeId: recipe.recipeId,
           amount,
         },
       };
