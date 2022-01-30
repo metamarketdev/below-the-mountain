@@ -28,13 +28,27 @@
           +{{ bonus }} {{ key }}
         </div>
       </div>
+
+      <div
+        v-if="item.isPending"
+        class="flex flex-row items-center mt-1 text-xs text-amber-600 text-opacity-50"
+      >
+        <ClockIcon class="w-3 h-3 text-amber-700 mr-1" />
+        Confirmation pending
+      </div>
     </template>
   </VTooltip>
 </template>
 
 <script>
+import { ClockIcon } from '@heroicons/vue/solid';
+
 export default {
   name: 'Item',
+
+  components: {
+    ClockIcon,
+  },
 
   props: {
     item: {
