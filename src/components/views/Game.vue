@@ -7,6 +7,10 @@
 
       <WrongNetworkNotice v-if="$store.getters.isWrongNetwork" />
 
+      <NotLoggedInNotice
+        v-else-if="!$store.getters.isConnected || !$store.getters.isAuthenticated"
+      />
+
       <OnboardingNotice v-else-if="$store.getters.isConnected && $store.getters.isAuthenticated" />
 
       <router-view
@@ -65,6 +69,7 @@ import Modal from '../Modal.vue';
 import { ExclamationIcon } from '@heroicons/vue/outline';
 import OnboardingNotice from '../OnboardingNotice.vue';
 import WrongNetworkNotice from '../WrongNetworkNotice.vue';
+import NotLoggedInNotice from '../NotLoggedInNotice.vue';
 
 export default {
   name: 'Game',
@@ -75,6 +80,7 @@ export default {
     Modal,
     OnboardingNotice,
     WrongNetworkNotice,
+    NotLoggedInNotice,
     ExclamationIcon,
   },
 
