@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col p-4 mb-4 items-center mx-auto border-2 border-black border-opacity-20 rounded"
+    class="flex flex-col p-4 mb-4 text-center items-center mx-auto border-2 border-black border-opacity-20 rounded max-w-md"
   >
     <div>
       <slot />
