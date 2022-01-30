@@ -4,12 +4,15 @@ import contracts from '../contracts';
 import _ from 'lodash';
 
 const CHAIN_NAME = 'avalanche testnet';
+const CHAIN_ID = '0xa869';
 const NFT_TABLE = 'AvaxNFTOwners';
 const NFT_TABLE_PENDING = 'AvaxNFTOwnersPending';
 
 const store = createStore({
   state() {
     return {
+      currentChainId: null,
+
       user: {},
       userAttributes: {},
       avatar: null,
@@ -111,9 +114,75 @@ const store = createStore({
         commit('updatePendingItem', { msg, destination });
       });
     },
+
+    async initUser({ state, commit, dispatch, getters }) {
+      console.log('initUser');
+
+      Moralis.onWeb3Enabled(async (result) => {
+        console.log('onWeb3Enabled', result);
+        commit('setCurrentChainId', result.chainId);
+      });
+
+      Moralis.onChainChanged(async (chain) => {
+        console.log('onChainChanged', chain);
+        commit('setCurrentChainId', chain);
+      });
+
+      Moralis.onWeb3Deactivated((result) => {
+        console.log('onWeb3Deactivated', result);
+      });
+
+      Moralis.onAccountChanged(async (chain) => {
+        console.log('onAccountChanged', chain);
+      });
+
+      await Moralis.enableWeb3();
+      dispatch('getCurrentUser');
+    },
+
+    getCurrentUser({ state, commit, dispatch }) {
+      const user = Moralis.User.current();
+      console.log('getCurrentUser', user);
+
+      if (user) {
+        commit('setUser', user);
+        dispatch('loadPlayerData');
+      } else {
+        dispatch('login');
+
+      }
+    },
+
+    async login({ state, commit, dispatch }) {
+      console.log('login');
+
+      const user = await Moralis.Web3.authenticate({
+        signingMessage: 'BelowTheMountain.io - Authentication',
+      });
+
+      commit('setUser', user);
+      dispatch('loadPlayerData');
+    },
+
+    async logout({ state, commit }) {
+      console.log('logout');
+      await Moralis.User.logOut();
+      commit('setUser', {});
+    },
+
+    async switchToCorrectNetwork() {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: CHAIN_ID }],
+      });
+    },
   },
 
   mutations: {
+    setCurrentChainId(state, chainId) {
+      state.currentChainId = chainId;
+    },
+
     setUser(state, payload) {
       state.user = payload;
       state.userAttributes = payload.attributes;
@@ -200,11 +269,9 @@ const store = createStore({
 
     isConnected: (state) => !!state.currentChainId,
 
-    isWrongNetwork: (state, getters) =>
-      !!state.user && state.currentChainId !== state.networkConfig.chainId,
+    isAuthenticated: (state) => state.user && !!state.user.id,
 
-    isCorrectNetwork: (state, getters) =>
-      !!state.user && state.currentChainId === state.networkConfig.chainId,
+    isWrongNetwork: (state, getters) => getters.isConnected && state.currentChainId !== CHAIN_ID,
 
     displayAddress: (state) => {
       const truncateRegex = /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/;

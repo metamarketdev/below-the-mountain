@@ -1,15 +1,30 @@
 <template>
   <div class="flex flex-row items-center">
-    <template v-if="isAuthenticated">
-      <!-- <ThemeToggle class="mr-2" /> -->
-      <div v-if="!$store.state.loadingBalances" class="mr-2">{{ $store.getters.displayGold }} gold</div>
-      <div v-if="!$store.state.loadingBalances" class="mr-2">{{ $store.getters.displayBalance }} AVAX</div>
-
-      <UserPopover v-if="isAuthenticated" @logOut="logout" @openAvatarModal="openAvatarModal" />
+    <template v-if="!isConnected">
+      <button @click="login()">Connect wallet</button>
     </template>
 
-    <template v-else>
-      <button @click="login">Connect wallet</button>
+    <template v-if="$store.getters.isWrongNetwork">
+      <button
+        class="text-gray-800 px-2 py-1 mr-1 rounded bg-red-800 bg-opacity-80 hover:bg-opacity-100"
+        @click="$store.dispatch('switchToCorrectNetwork')"
+      >
+        <i class="fa-solid fa-bolt text-gray-800 mr-1"></i>
+        Wrong network
+      </button>
+    </template>
+
+    <template v-else-if="isConnected && isAuthenticated">
+      <!-- <ThemeToggle class="mr-2" /> -->
+      <div v-if="!$store.state.loadingBalances" class="mr-2">
+        {{ $store.getters.displayGold }} gold
+      </div>
+
+      <div v-if="!$store.state.loadingBalances" class="mr-2">
+        {{ $store.getters.displayBalance }} AVAX
+      </div>
+
+      <UserPopover @logOut="logout" @openAvatarModal="openAvatarModal" />
     </template>
 
     <Modal :open="showAvatarModal" @close="showAvatarModal = false" @open="loadNfts">
@@ -36,8 +51,7 @@
 </template>
 
 <script>
-import { useStore } from 'vuex';
-import { onMounted, inject, computed } from 'vue';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import UserPopover from './UserPopover.vue';
 import ThemeToggle from './ThemeToggle.vue';
 import Moralis from '../plugins/moralis';
@@ -57,7 +71,18 @@ export default {
     };
   },
 
+  mounted() {
+    // this.handleCurrentUser();
+  },
+
+  computed: {
+    ...mapState(['user', 'userAttributes']),
+    ...mapGetters(['isConnected', 'isAuthenticated', 'isWrongNetwork']),
+  },
+
   methods: {
+    ...mapActions(['login', 'logout']),
+
     openAvatarModal() {
       this.showAvatarModal = true;
       this.loadNfts();
@@ -92,46 +117,5 @@ export default {
       this.showAvatarModal = false;
     },
   },
-
-  setup() {
-    const store = useStore();
-    // const $moralis = inject('$moralis');
-    const setUser = (payload) => store.commit('setUser', payload);
-    const loadPlayerData = () => store.dispatch('loadPlayerData');
-
-    const login = async () => {
-      const user = await Moralis.Web3.authenticate({
-        signingMessage: 'Below The Mountain authentication',
-      });
-      setUser(user);
-      loadPlayerData();
-    };
-
-    const logout = async () => {
-      await Moralis.User.logOut();
-      setUser({});
-    };
-
-    const handleCurrentUser = () => {
-      const user = Moralis.User.current();
-      if (user) {
-        setUser(user);
-        loadPlayerData();
-      }
-    };
-
-    onMounted(() => {
-      handleCurrentUser();
-    });
-
-    return {
-      login,
-      logout,
-      isAuthenticated: computed(() => Object.keys(store.state.user).length > 0),
-      user: computed(() => store.state.user),
-    };
-  },
 };
 </script>
-
-<style></style>

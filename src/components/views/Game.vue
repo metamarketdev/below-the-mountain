@@ -5,8 +5,19 @@
     <div class="flex flex-col flex-grow p-4">
       <h2 class="font-title text-4xl text-left mb-12">{{ $route.name }}</h2>
 
-      <OnboardingNotice />
-      <router-view />
+      <Notice>
+        isConnected:{{ $store.getters.isConnected }}
+        <br />
+        isAuthenticated:{{ $store.getters.isAuthenticated }}
+        <br />
+        isWrongNetwork:{{ $store.getters.isWrongNetwork }}
+
+        <br />
+      </Notice>
+
+      <OnboardingNotice v-if="false" />
+
+      <router-view v-if="false" />
     </div>
   </div>
 
