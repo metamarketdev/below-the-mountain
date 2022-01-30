@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/den/Projects/below-the-mountain/contracts/Crafting.sol": {
-      "lastModificationDate": 1643470218708,
-      "contentHash": "118cab0898569fcc6dc5bf4fef1054ce",
+      "lastModificationDate": 1643501772628,
+      "contentHash": "e478430e90cb9012320f96da65c5a4d1",
       "sourceName": "contracts/Crafting.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -187,8 +187,8 @@
       ]
     },
     "/Users/den/Projects/below-the-mountain/contracts/Tools.sol": {
-      "lastModificationDate": 1643455813693,
-      "contentHash": "97678464d908beebda287c45bb9261a2",
+      "lastModificationDate": 1643501847124,
+      "contentHash": "888173c2aca4bf9a8f5c96e250856af8",
       "sourceName": "contracts/Tools.sol",
       "solcConfig": {
         "version": "0.8.0",
