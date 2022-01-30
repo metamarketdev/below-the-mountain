@@ -54,17 +54,22 @@ async function main() {
     itemsContract.address,
     goldContract.address,
   ]);
-  await faucetContract.deployTransaction.wait();
+  await faucetContract.deployTransaction.wait(6);
 
   console.log('Initializing states...');
 
   // Review these permissions on launch
-  await toolsContract.authorize(craftingContract.address, true, true);
-  await itemsContract.authorize(craftingContract.address, true, true);
+  let tx = await toolsContract.authorize(craftingContract.address, true, true);
+  await tx.wait(2);
+  tx = await itemsContract.authorize(craftingContract.address, true, true);
+  await tx.wait(2);
+  tx = await toolsContract.authorize(faucetContract.address, true, true);
+  await tx.wait(2);
+  tx = await itemsContract.authorize(faucetContract.address, true, true);
+  await tx.wait(2);
+  tx = await goldContract.authorize(faucetContract.address, true, true);
+  await tx.wait(2);
 
-  await toolsContract.authorize(faucetContract.address, true, true);
-  await itemsContract.authorize(faucetContract.address, true, true);
-  await goldContract.authorize(faucetContract.address, true, true);
   // await craftingContract.addRecipe('Stone pickaxe', 1, 3, 1);
 
   fs.writeFileSync('src/contracts/Claims.json', JSON.stringify(getContractData(claimsContract)));
