@@ -2,7 +2,7 @@
   <div class="flex flex-row items-center">
     <template v-if="isAuthenticated">
       <!-- <ThemeToggle class="mr-2" /> -->
-      <div class="mr-2">{{ $store.getters.displayGold }} gold</div>
+      <div v-if="!$store.state.loadingGold" class="mr-2">{{ $store.getters.displayGold }} gold</div>
 
       <UserPopover v-if="isAuthenticated" @logOut="logout" @openAvatarModal="openAvatarModal" />
     </template>

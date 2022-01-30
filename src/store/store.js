@@ -64,6 +64,7 @@ const store = createStore({
       );
 
       commit('setGold', goldToken.balance / 10 ** 18);
+      commit('setLoadingGold', false);
 
       setTimeout(() => {
         dispatch('loadGold');
@@ -132,6 +133,10 @@ const store = createStore({
 
     setLoadingItems(state, payload) {
       state.loadingItems = payload;
+    },
+
+    setLoadingGold(state, payload) {
+      state.loadingGold = payload;
     },
 
     setGold(state, payload) {
