@@ -2,8 +2,11 @@
   <VTooltip theme="item-tooltip" class="inline-block">
     <div
       @click="$emit('click')"
-      class="relative border bg-gray-700 border-gray-600 border-b-4 p-2 rounded-md inline-block m-1"
-      :class="{ 'hover:bg-gray-500 cursor-pointer': isPossible, 'opacity-50': !isPossible }"
+      class="relative border bg-gray-700 cursor-pointer border-gray-600 border-b-4 p-2 rounded-md inline-block m-1"
+      :class="{
+        'hover:bg-gray-500': isPossible,
+        'opacity-50': !isPossible,
+      }"
     >
       <div class="text-center">
         {{ recipe.name }}

@@ -1,6 +1,6 @@
 <template>
   <template v-if="!$store.state.loadingBalances">
-    <Notice v-if="$store.state.balance < 0.01">
+    <Notice v-if="$store.state.balance < 0.001">
       You need some testnet AVAX to interact with the app.
 
       <template v-slot:buttons>

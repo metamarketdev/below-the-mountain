@@ -16,21 +16,23 @@
     <Item v-for="item in allItems" :key="item.id" :item="item" />
   </ItemGroup>
 
-  <Modal :open="showCraftingModal" @close="showCraftingModal = false">
+  <Modal :open="showCraftingModal" @close="closeCraftModal">
     <template v-slot:title>{{ selectedRecipe.name }}</template>
 
-    <!-- {{ selectedRecipe.inputTokenId }} x {{ selectedRecipe.inputAmount }} -->
-    <div class="flex flex-row items-center justify-center">
-      <Item :item="selectedRecipe.inputItem" :amount="amount" />
-      <ArrowSmRightIcon class="w-12 text-gray-600" />
-      <Recipe :recipe="selectedRecipe" :amount="amount" />
-    </div>
+    <div v-if="craftingSuccess">Success!</div>
+    <div v-else-if="isCrafting">Crafting...</div>
 
-    <div v-if="isCrafting">Crafting...</div>
+    <template v-else>
+      <div class="flex flex-row items-center justify-center">
+        <Item :item="selectedRecipe.inputItem" :amount="amount" />
+        <ArrowSmRightIcon class="w-12 text-gray-600" />
+        <Recipe :recipe="selectedRecipe" :amount="amount" />
+      </div>
 
-    <div v-else class="flex flex-row justify-center mt-4">
-      <Butt size="big" @click="makeRecipe(selectedRecipe, amount)">Craft {{ amount }}</Butt>
-    </div>
+      <div class="flex flex-row justify-center mt-4">
+        <Butt size="big" @click="makeRecipe(selectedRecipe, amount)">Craft {{ amount }}</Butt>
+      </div>
+    </template>
   </Modal>
 </template>
 
@@ -57,6 +59,7 @@ export default {
       selectedRecipe: null,
       amount: 1,
       craftingContract: null,
+      craftingSuccess: false,
     };
   },
 
@@ -97,28 +100,34 @@ export default {
   methods: {
     openCraftModal(recipe) {
       this.selectedRecipe = recipe;
-      console.log(recipe);
       this.showCraftingModal = true;
     },
 
+    closeCraftModal() {
+      this.selectedRecipe = null;
+      this.showCraftingModal = false;
+      this.craftingSuccess = false;
+    },
+
     async makeRecipe(recipe, amount) {
-      const transaction = await callMethod('crafting', 'makeRecipe', {
-        recipeId: recipe.recipeId,
-        amount,
-      });
-
       this.isCrafting = true;
-      console.log(1, { transaction });
-
-      // TODO: better event handler UX
 
       try {
+        const transaction = await callMethod('crafting', 'makeRecipe', {
+          recipeId: recipe.recipeId,
+          amount,
+        });
+
         const result = await transaction.wait();
+
         if (result.status === 1) {
           console.log('success');
+          this.craftingSuccess = true;
+        } else {
+          throw Error(result);
         }
       } catch (err) {
-        console.error(err);
+        console.error('Failed to craft', err);
       }
 
       this.isCrafting = false;
@@ -129,12 +138,10 @@ export default {
 
       let numRecipes = await callMethod('crafting', 'numRecipes');
       numRecipes = numRecipes.toNumber();
-      console.log({ numRecipes });
 
       let recipes = [];
 
       for (let i = 1; i <= numRecipes; i++) {
-        console.log({ i });
         let recipe = await callMethod('crafting', '_recipeDetails', { recipeId: i });
         // let recipe = await toolsContract._(i);
 
@@ -151,10 +158,7 @@ export default {
         }
       }
 
-      console.log(recipes);
-
       this.recipes = recipes;
-
       this.loadingRecipes = false;
     },
   },

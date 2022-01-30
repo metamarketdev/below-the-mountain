@@ -17,7 +17,7 @@ const contracts = {
 };
 
 export async function callMethod(contractName, methodName, params = {}) {
-  console.log('callMethod', contractName, methodName, { params });
+  // console.log('callMethod', contractName, methodName, { params });
 
   if (!contracts[contractName]) {
     console.error('No such contract:', contractName);
