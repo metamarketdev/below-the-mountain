@@ -52,7 +52,7 @@ async function main() {
   faucetContract = await deployContract('Faucet', [
     toolsContract.address,
     itemsContract.address,
-    goldContract.address,
+    goldContract.address
   ]);
   await faucetContract.deployTransaction.wait(6);
 
