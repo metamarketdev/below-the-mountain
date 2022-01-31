@@ -43,9 +43,6 @@ module.exports = {
       },
     },
     compilers: [
-      // {
-      //   version: "0.7.9",
-      // },
       {
         version: '0.7.6',
       },
@@ -58,9 +55,6 @@ module.exports = {
       {
         version: '0.4.24',
       },
-      // {
-      //   version: '0.4.8',
-      // },
       {
         version: '0.4.11',
       },
@@ -90,8 +84,6 @@ module.exports = {
       chainId: networks.fuji.chainId,
       url: networks.fuji.rpc,
       accounts: [secret.key],
-      // gasPrice: 20000000000,
-      // gas: 6000000,
     },
     polygon: {
       chainId: networks.polygon.chainId,

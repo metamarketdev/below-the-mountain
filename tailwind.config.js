@@ -14,16 +14,5 @@ module.exports = {
         title: ['Staatliches', ...defaultTheme.fontFamily.sans],
       },
     },
-
-    // colors: {
-    //   white: '#ffffff',
-    //   black: '#000000',
-    //   'marker-blue': '#2B8AFF',
-    //   'marker-blue-light': '#2B8AFF',
-    //   'marker-blue-dark': '#2B8AFF',
-    // },
-  },
-  variants: {
-    extend: {},
   },
 };
