@@ -46,23 +46,6 @@
       <Butt @click="showWelcomeModal = false">Got it!</Butt>
     </template>
   </Modal>
-
-  <Modal :open="show" @close="showWelcomeModal = false">
-    <template v-slot:title>Welcome to the world under</template>
-    <template v-slot:description>We're glad you're here.</template>
-
-    <!-- <div class="text-center mb-2">
-      <ExclamationIcon class="text-rose-400 w-12 h-12 inline-block" />
-    </div> -->
-
-    This is a
-    <b>TESTNET</b>
-    beta. None of the assets here hold any value.
-
-    <template v-slot:buttons>
-      <Butt @click="showWelcomeModal = false">Got it!</Butt>
-    </template>
-  </Modal>
 </template>
 
 <script>

@@ -9,11 +9,18 @@ import "./String.sol";
 
 contract Tools is ERC721, Ownable, Withdrawable, ExternalActor {
   uint256 private nextId = 1;
+  uint256 private nextTypeId = 1;
 
   struct Bonuses {
     uint256 stone;
     uint256 iron;
     uint256 gold;
+  }
+
+  struct ToolType {
+    string name;
+    string description;
+    string image;
   }
 
   struct Tool {
@@ -25,24 +32,37 @@ contract Tools is ERC721, Ownable, Withdrawable, ExternalActor {
     Bonuses bonuses;
   }
 
-  mapping(uint256 => Tool) private _toolDetails;
+  mapping(uint256 => ToolType) public _toolTypes;
+  mapping(uint256 => Tool) public _toolDetails;
 
   constructor(string memory name, string memory symbol) ERC721(name, symbol) {
-    // mintTool(msg.sender, 1);
+    addToolType(
+      "Stone Pickaxe",
+      "A basic pickaxe",
+      "QmarjweMXieXGtMAkCQbBeHGWUrQuLbd68pDwov6V6LvB3"
+    );
+    addToolType(
+      "Iron Pickaxe",
+      "A decent pickaxe",
+      "Qmc7TWJ3NnZgvKxsMhzLzfN6fVGAtcJaMbru3KUAQ4YCyn"
+    );
+    addToolType(
+      "Mithril Pickaxe",
+      "A professional pickaxe",
+      "QmUrkLhkx2m3PG5Kmyi6JSbyMJziPDgEdXCRyEZGFHKqHa"
+    );
   }
 
-  // function addTool(
-  //   string memory name,
-  //   uint256 inputTokenId,
-  //   uint256 inputAmount,
-  //   uint256 outputTokenType
-  // ) public onlyOwner returns (uint256 tokenId) {
-  //   uint256 newId = nextId;
-  //   _recipeDetails[newId] = Recipe(name, newId, inputTokenId, inputAmount, outputTokenType, true);
-  //   nextId++;
-  //   numRecipes++;
-  //   return newId;
-  // }
+  function addToolType(
+    string memory name,
+    string memory description,
+    string memory image
+  ) public onlyOwner returns (uint256 tokenTypeId) {
+    uint256 newId = nextTypeId;
+    _toolTypes[newId] = ToolType(name, description, image);
+    nextTypeId++;
+    return nextTypeId;
+  }
 
   function externalMint(
     address requester,
@@ -56,9 +76,9 @@ contract Tools is ERC721, Ownable, Withdrawable, ExternalActor {
 
   function mintTool(address requester, uint256 toolType) private {
     _toolDetails[nextId] = Tool(
-      "Pickaxe",
-      "A basic tool",
-      "QmQif6u78YavNFEhAzjBDxZjH29dMyAexBY1md3jBjnazR",
+      _toolTypes[toolType].name,
+      _toolTypes[toolType].description,
+      _toolTypes[toolType].image,
       toolType,
       1,
       Bonuses(1, 1, 1)

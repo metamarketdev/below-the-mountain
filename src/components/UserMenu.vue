@@ -22,8 +22,12 @@
 
     <template v-else-if="isConnected && isAuthenticated">
       <!-- <ThemeToggle class="mr-2" /> -->
-      <div v-if="!$store.state.loadingBalances" class="mr-2">
-        {{ $store.getters.displayGold }} gold
+      <div
+        v-if="!$store.state.loadingBalances"
+        class="flex flex-row items-center mr-2 rounded-xl bg-gray-900 px-2 py-1"
+      >
+        <img src="/coin.png" width="18" height="18" class="mr-1" />
+        {{ $store.getters.displayGold }}
       </div>
 
       <div v-if="!$store.state.loadingBalances" class="mr-2">

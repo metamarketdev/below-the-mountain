@@ -19,24 +19,14 @@ contract Items is ERC1155, Ownable, Withdrawable, ExternalActor {
   mapping(uint256 => Item) private _itemDetails;
 
   constructor(string memory _uri) ERC1155(_uri) {
-    uint256 stoneId = addItem(
-      "Stone",
-      "Pretty hard",
-      "QmYWJAJw5HD4HaZwDeWd4AhxRmRJ9iv3N2K1W8J1TgWkNs"
-    );
-    uint256 ironId = addItem(
-      "Iron",
-      "Basic metal",
-      "QmYWJAJw5HD4HaZwDeWd4AhxRmRJ9iv3N2K1W8J1TgWkNs"
-    );
-    uint256 mithrilId = addItem(
-      "Mithril",
-      "Rare metal",
-      "QmYWJAJw5HD4HaZwDeWd4AhxRmRJ9iv3N2K1W8J1TgWkNs"
-    );
-    // _mint(msg.sender, stoneId, 100, "");
-    // _mint(msg.sender, ironId, 100, "");
-    // _mint(msg.sender, mithrilId, 100, "");
+    addItem("Stone", "Pretty hard", "QmX4o8tg4ivL2MXG8CJX79BfMjd3rPGuMejkmRfKwFrEmP");
+    addItem("Iron", "Basic metal", "QmXJwvWAzkabRtgmYuktWRRCEbxXEHQZc395QMtBqz4zt4");
+    addItem("Mithril", "Rare metal", "QmdooUQrAfRSTVHnKcQXoHGNHEBJjVtsWDbeTkAQBAJm2v");
+
+    addItem("Sapphire", "Blue gem", "QmSGPEhGPRc3JpVZGCyME2JKJS7N1xKVtLXjN5BmKKXdBm");
+    addItem("Ruby", "Red gem", "QmP1RvzTuGPXwtcc3Pjd4yA2vW4CRFVLqscejJ98qHvBac");
+    addItem("Emerald", "Green gem", "QmTsU42PDJbhEvwNQ3Y4Ex6Jo5s3AYa7dQuN4zw2oJdidV");
+    addItem("Diamond", "Pure gem", "QmWr38jR8Z4UkoVkE6M7RnsQTrQq8smg6jycpKUSig3RMT");
   }
 
   function addItem(
@@ -63,7 +53,7 @@ contract Items is ERC1155, Ownable, Withdrawable, ExternalActor {
     uint256 tokenId,
     uint256 amount
   ) public onlyAllowedMinters {
-    _burn(requester, tokenId, amount);
+    _mint(requester, tokenId, amount, '');
   }
 
   function getMetadata(uint256 tokenId) public view returns (string memory) {
@@ -81,12 +71,7 @@ contract Items is ERC1155, Ownable, Withdrawable, ExternalActor {
       );
   }
 
-  // function _exists(uint256 tokenId) internal view virtual returns (bool) {
-  //   return tokenId < nextId;
-  // }
-
   function uri(uint256 tokenId) public view override returns (string memory) {
-    // TODO: exists?
     return getMetadata(tokenId);
   }
 }

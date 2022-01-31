@@ -31,13 +31,23 @@
 
     <template v-else>
       <div class="flex flex-row items-center justify-center">
-        <Item :item="selectedRecipe.inputItem" :amount="amount" />
+        <Item
+          :item="selectedRecipe.inputItem"
+          :amount="selectedRecipe.inputAmount"
+          :error="selectedRecipe.possibleAmount === 0"
+        />
         <ArrowSmRightIcon class="w-12 text-gray-600" />
         <Recipe :recipe="selectedRecipe" :amount="amount" />
       </div>
 
       <div class="flex flex-row justify-center mt-4">
-        <Butt size="big" @click="makeRecipe(selectedRecipe, amount)">Craft {{ amount }}</Butt>
+        <Butt
+          size="big"
+          :disabled="selectedRecipe.possibleAmount === 0"
+          @click="makeRecipe(selectedRecipe, amount)"
+        >
+          Craft {{ amount }}
+        </Butt>
       </div>
     </template>
   </Modal>
@@ -159,6 +169,9 @@ export default {
 
       for (let i = 1; i <= numRecipes; i++) {
         let recipe = await callMethod('crafting', '_recipeDetails', { recipeId: i });
+        let toolType = await callMethod('tools', '_toolTypes', {
+          toolTypeId: recipe.outputTokenType,
+        });
         // let recipe = await toolsContract._(i);
 
         // IMPROVEMENT: make this more future-proof
@@ -167,7 +180,7 @@ export default {
             ...recipe,
             inputAmount: recipe.inputAmount.toNumber(),
             inputTokenId: recipe.inputTokenId.toString(),
-            outputTokenType: recipe.outputTokenType.toString(),
+            outputTokenType: toolType,
           };
 
           recipes.push(recipe);

@@ -68,7 +68,9 @@ export default {
     },
 
     disabledClasses() {
-      return this.disabled ? 'cursor-disabled' : 'cursor-pointer';
+      return this.disabled
+        ? 'cursor-not-allowed bg-gray-600 hover:bg-gray-600 hover:transform-none opacity-70'
+        : 'cursor-pointer';
     },
   },
 };

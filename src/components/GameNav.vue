@@ -26,6 +26,10 @@
         <a href="https://discord.gg/yWxXYxbpB6" target="_blank">
           <i class="fab fa-discord fa-lg text-gray-600 hover:text-purple-600 text-xl"></i>
         </a>
+
+        <a href="https://belowthemountain.gitbook.io/docs/" target="_blank">
+          <i class="fa-solid fa-book fa-lg text-gray-600 hover:text-blue-500 text-xl"></i>
+        </a>
       </div>
 
       <div class="flex flex-row items-center gap-2">

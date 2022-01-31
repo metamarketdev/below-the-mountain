@@ -9,8 +9,7 @@
       }"
     >
       <div class="text-center">
-        {{ recipe.name }}
-        <!-- <img :src="src" :alt="metadata.name" width="80" height="80" class="inline-block" /> -->
+        <img :src="src" :alt="recipe.name" width="80" height="80" class="inline-block" />
       </div>
 
       <div
@@ -21,13 +20,21 @@
     </div>
 
     <template #popper>
-      <div class="font-normal text-gray-200">
-        {{ recipe.name }}
+      <div v-if="recipe.outputTokenType.name" class="font-normal text-gray-200">
+        {{ recipe.outputTokenType.name }}
+      </div>
+      <div v-if="recipe.outputTokenType.description" class="font-light text-sm text-gray-400">
+        {{ recipe.outputTokenType.description }}
       </div>
 
+      <!-- <div v-if="metadata.bonuses" class="font-light text-sm text-indigo-400">
+        <div v-for="(bonus, key) in metadata.bonuses" :key="key" class="capitalize">
+          +{{ bonus }} {{ key }}
+        </div>
+      </div> -->
+
       <div class="font-light text-sm text-gray-400">
-        {{ recipe.inputTokenId }}:
-        {{ recipe.inputAmount }}
+        {{ recipe.inputAmount }} :{{ recipe.inputToken }}
       </div>
     </template>
   </VTooltip>
@@ -54,45 +61,9 @@ export default {
       return this.recipe.possibleAmount > 0;
     },
 
-    metadata() {
-      // console.log(this.item.attributes.token_uri);
-      return JSON.parse(this.item.attributes.token_uri);
-    },
-
     src() {
-      const hash = this.metadata.image.split('://')[1];
-      return 'https://gateway.pinata.cloud/ipfs/' + hash;
+      return 'https://gateway.pinata.cloud/ipfs/' + this.recipe.outputTokenType.image;
     },
   },
 };
 </script>
-
-<style lang="scss">
-$backgroundColor: rgb(1, 13, 20);
-
-.v-popper__popper.v-popper--theme-item-tooltip {
-  .v-popper__wrapper {
-    min-width: 150px;
-    max-width: 250px;
-  }
-
-  .v-popper__arrow-inner {
-    visibility: visible;
-    border-color: $backgroundColor;
-  }
-
-  .v-popper__inner {
-    background: $backgroundColor;
-  }
-
-  &.v-popper__popper--show-from .v-popper__wrapper {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-
-  &.v-popper__popper--show-to .v-popper__wrapper {
-    transform: none;
-    transition: transform 0.05s;
-  }
-}
-</style>
