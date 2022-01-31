@@ -32,10 +32,10 @@
           +{{ bonus }} {{ key }}
         </div>
       </div> -->
-
+<!--
       <div class="font-light text-sm text-gray-400">
         {{ recipe.inputAmount }} :{{ recipe.inputToken }}
-      </div>
+      </div> -->
     </template>
   </VTooltip>
 </template>
