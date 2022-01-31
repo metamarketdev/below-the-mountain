@@ -120,6 +120,8 @@ contract Claims is ERC721, Ownable, Withdrawable, ExternalActor {
           String.toString(_claimDetails[tokenId].bonuses.stone),
           '", "iron": "',
           String.toString(_claimDetails[tokenId].bonuses.iron),
+          '", "mithril": "',
+          String.toString(_claimDetails[tokenId].bonuses.mithril),
           '", "gold": "',
           String.toString(_claimDetails[tokenId].bonuses.gold),
           '"}}'
