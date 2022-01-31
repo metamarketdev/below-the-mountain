@@ -174,6 +174,7 @@ const store = createStore({
       Moralis.onWeb3Enabled(async (result) => {
         console.log('onWeb3Enabled', result);
         commit('setCurrentChainId', result.chainId);
+        commit('setMissingWeb3', false);
       });
 
       Moralis.onChainChanged(async (chain) => {
@@ -183,17 +184,21 @@ const store = createStore({
 
       Moralis.onWeb3Deactivated((result) => {
         console.log('onWeb3Deactivated', result);
+        commit('setCurrentChainId', null);
       });
 
       Moralis.onAccountChanged(async (chain) => {
         console.log('onAccountChanged', chain);
+        if (!chain) {
+          commit('setCurrentChainId', null);
+        }
       });
 
       try {
         await Moralis.enableWeb3();
         dispatch('getCurrentUser');
       } catch (err) {
-        commit('missingWeb3', true);
+        commit('setMissingWeb3', true);
       }
     },
 
@@ -275,8 +280,8 @@ const store = createStore({
       state.loadingUser = payload;
     },
 
-    missingWeb3(state, payload) {
-      state.missingWeb3 = payload;
+    setMissingWeb3(state, payload) {
+      state.setMissingWeb3 = payload;
     },
 
     setUser(state, user) {

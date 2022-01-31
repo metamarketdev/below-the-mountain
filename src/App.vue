@@ -18,7 +18,6 @@ export default {
   },
 
   async mounted() {
-    this.$store.dispatch('initUser');
     // const options = { chain: 'matic', address: this.user.attributes.ethAddress };
     // const polygonNFTs = await Moralis.Web3API.account.getNFTs(options);
     // const metadata = JSON.parse(polygonNFTs.result[2].metadata);

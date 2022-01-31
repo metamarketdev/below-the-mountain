@@ -83,7 +83,10 @@ export default {
       showWelcomeModal: false,
     };
   },
+
   mounted() {
+    this.$store.dispatch('initUser');
+
     if (!localStorage.getItem('welcomed')) {
       this.showWelcomeModal = true;
       localStorage.setItem('welcomed', true);
