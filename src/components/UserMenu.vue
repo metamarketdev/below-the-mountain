@@ -43,19 +43,18 @@
 
       <div v-if="isLoadingAvatars">Loading...</div>
 
-      <template v-else>
+      <div v-else>
         <div v-if="avatars.length === 0">No NFTs found. Sorry!</div>
         <div v-else>
-          {{ token }}
-          <button
+          <AvatarButton
             v-for="(token, i) in avatars"
             :key="i"
-            class="inline-block w-20 h-20 bg-cover bg-center rounded-md"
-            :style="`background:url(${JSON.parse(token.metadata).image})`"
-            @click="selectAvatar(token)"
-          ></button>
+            :token="token"
+            @clicked="selectAvatar(token)"
+            class="mx-2"
+          />
         </div>
-      </template>
+      </div>
     </Modal>
   </div>
 </template>
@@ -65,11 +64,15 @@ import { mapState, mapActions, mapGetters } from 'vuex';
 import UserPopover from './UserPopover.vue';
 import ThemeToggle from './ThemeToggle.vue';
 import Moralis from '../plugins/moralis';
+import AvatarButton from './AvatarButton.vue';
 
 export default {
+  name: 'UserMenu',
+
   components: {
     UserPopover,
     ThemeToggle,
+    AvatarButton,
   },
 
   data() {
