@@ -145,7 +145,6 @@ export default {
 
         const result = await transaction.wait();
         if (result.status === 1) {
-          console.log('success');
           this.craftingSuccess = true;
           this.craftingTx = result.transactionHash;
         } else {
