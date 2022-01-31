@@ -14,6 +14,7 @@ contract Tools is ERC721, Ownable, Withdrawable, ExternalActor {
   struct Bonuses {
     uint256 stone;
     uint256 iron;
+    uint256 mithril;
     uint256 gold;
   }
 
@@ -81,7 +82,7 @@ contract Tools is ERC721, Ownable, Withdrawable, ExternalActor {
       _toolTypes[toolType].image,
       toolType,
       1,
-      Bonuses(1, 1, 1)
+      Bonuses(toolType * 3, toolType * 2, toolType * 1, toolType * 1)
     );
     _safeMint(requester, nextId);
     nextId++;
@@ -104,6 +105,8 @@ contract Tools is ERC721, Ownable, Withdrawable, ExternalActor {
           String.toString(_toolDetails[tokenId].bonuses.stone),
           '", "iron": "',
           String.toString(_toolDetails[tokenId].bonuses.iron),
+          '", "mithril": "',
+          String.toString(_toolDetails[tokenId].bonuses.mithril),
           '", "gold": "',
           String.toString(_toolDetails[tokenId].bonuses.gold),
           '"}}'
