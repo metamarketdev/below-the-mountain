@@ -350,7 +350,7 @@ const store = createStore({
         ...state.confirmed.items,
       ];
 
-      return _(allItems).uniqBy('attributes.token_id').orderBy('createdAt').value();
+      return _(allItems).uniqBy('attributes.token_id').orderBy('attributes.token_id').value();
     },
 
     allTools: (state) => {
