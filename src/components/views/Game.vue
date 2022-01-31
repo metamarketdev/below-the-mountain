@@ -5,6 +5,8 @@
     <div class="flex flex-col flex-grow p-4">
       <h2 class="font-title text-4xl text-left mb-12">{{ $route.name }}</h2>
 
+      <Notice v-if="$store.state.missingWeb3">No wallet detected. Please use Metamask.</Notice>
+
       <NotLoggedInNotice
         v-if="
           !$store.state.loadingUser &&
@@ -14,7 +16,13 @@
 
       <WrongNetworkNotice v-else-if="$store.getters.isWrongNetwork" />
 
-      <OnboardingNotices v-if="$store.getters.isConnected && $store.getters.isAuthenticated" />
+      <OnboardingNotices
+        v-if="
+          !$store.getters.isWrongNetwork &&
+          $store.getters.isConnected &&
+          $store.getters.isAuthenticated
+        "
+      />
 
       <router-view
         v-if="

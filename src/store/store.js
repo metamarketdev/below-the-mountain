@@ -12,6 +12,7 @@ const store = createStore({
   state() {
     return {
       currentChainId: null,
+      missingWeb3: false,
 
       loadingUser: true,
       user: {},
@@ -139,8 +140,12 @@ const store = createStore({
         console.log('onAccountChanged', chain);
       });
 
-      await Moralis.enableWeb3();
-      dispatch('getCurrentUser');
+      try {
+        await Moralis.enableWeb3();
+        dispatch('getCurrentUser');
+      } catch (err) {
+        commit('missingWeb3', true);
+      }
     },
 
     getCurrentUser({ state, commit, dispatch }) {
@@ -173,11 +178,34 @@ const store = createStore({
       commit('setUser', {});
     },
 
-    async switchToCorrectNetwork() {
+    async addCorrectNetwork() {
       await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: CHAIN_ID }],
+        method: 'wallet_addEthereumChain',
+        params: [
+          {
+            chainId: CHAIN_ID,
+            chainName: 'Avalanche FUJI C-Chain',
+            rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
+            blockExplorerUrls: ['https://testnet.snowtrace.io/'],
+            nativeCurrency: {
+              name: 'AVAX',
+              symbol: 'AVAX',
+              decimals: 18,
+            },
+          },
+        ],
       });
+    },
+
+    async switchToCorrectNetwork({ dispatch }) {
+      try {
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: CHAIN_ID }],
+        });
+      } catch (err) {
+        await dispatch('addCorrectNetwork');
+      }
     },
   },
 
@@ -188,6 +216,10 @@ const store = createStore({
 
     setLoadingUser(state, payload) {
       state.loadingUser = payload;
+    },
+
+    missingWeb3(state, payload) {
+      state.missingWeb3 = payload;
     },
 
     setUser(state, user) {
