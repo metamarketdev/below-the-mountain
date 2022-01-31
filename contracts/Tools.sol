@@ -94,6 +94,8 @@ contract Tools is ERC721, Ownable, Withdrawable, ExternalActor {
         abi.encodePacked(
           '{"name": "',
           _toolDetails[tokenId].name,
+          " #",
+          String.toString(tokenId),
           '", "description": "',
           _toolDetails[tokenId].description,
           '", "speed": "',
