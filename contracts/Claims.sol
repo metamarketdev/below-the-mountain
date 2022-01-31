@@ -12,8 +12,6 @@ contract Claims is ERC721, Ownable, Withdrawable, ExternalActor {
   uint256 public mapSize = 16; // TODO: fine-tune this; allow for update + lock
   uint256 public maxDepth = 64; // TODO: fine-tune this; allow for update + lock
 
-  // FIXME: coords unicity
-
   struct Bonuses {
     uint256 stone;
     uint256 iron;
@@ -32,9 +30,7 @@ contract Claims is ERC721, Ownable, Withdrawable, ExternalActor {
 
   mapping(uint256 => Claim) private _claimDetails;
 
-  constructor(string memory name, string memory symbol) ERC721(name, symbol) {
-    // mintClaim(msg.sender, 1);
-  }
+  constructor(string memory name, string memory symbol) ERC721(name, symbol) {}
 
   function getCoords(uint256 tokenId)
     internal
