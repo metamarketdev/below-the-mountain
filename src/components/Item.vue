@@ -24,9 +24,16 @@
         {{ metadata.description }}
       </div>
 
+      <div v-if="metadata.z">
+        {{ metadata.z }}: {{ metadata.x }}:
+        {{ metadata.y }}
+      </div>
+
+      <slot />
+
       <div v-if="metadata.bonuses" class="font-light text-sm text-indigo-400">
         <div v-for="(bonus, key) in metadata.bonuses" :key="key" class="capitalize">
-          +{{ bonus }} {{ key }}
+          +{{ bonus * 10 }}% {{ key }}
         </div>
       </div>
 

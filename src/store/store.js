@@ -32,11 +32,13 @@ const store = createStore({
       confirmed: {
         items: [],
         tools: [],
+        claims: [],
       },
 
       pending: {
         items: [],
         tools: [],
+        claims: [],
       },
     };
   },
@@ -120,6 +122,11 @@ const store = createStore({
       await dispatch('fetchUserTokens', {
         contractAddress: contracts.tools.address,
         destination: 'tools',
+      });
+
+      await dispatch('fetchUserTokens', {
+        contractAddress: contracts.claims.address,
+        destination: 'claims',
       });
 
       commit('setLoadingItems', false);
@@ -357,6 +364,19 @@ const store = createStore({
       ];
 
       return _(allTools).uniqBy('attributes.token_id').orderBy('createdAt').value();
+    },
+
+    allClaims: (state) => {
+      // Prioritize pending items to better update amounts of ERC1155
+      const allClaims = [
+        ...state.pending.claims.map((claim) => {
+          claim.isPending = true;
+          return claim;
+        }),
+        ...state.confirmed.claims,
+      ];
+
+      return _(allClaims).uniqBy('attributes.token_id').orderBy('createdAt').value();
     },
 
     isConnected: (state) => !!state.currentChainId,
