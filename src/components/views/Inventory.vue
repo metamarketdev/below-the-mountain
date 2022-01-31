@@ -1,4 +1,8 @@
 <template>
+  <div class="text-gray-300 my-4">
+    Get an overview of all your on-chain assets.
+  </div>
+
   <ItemGroup title="Tools" :loading="$store.state.loadingItems" :empty="allTools.length === 0">
     <Item v-for="item in allTools" :key="item.id" :item="item" :hideAmount="true" />
   </ItemGroup>
@@ -12,7 +16,7 @@
     :loading="$store.state.loadingItems"
     :empty="allClaims.length === 0"
   >
-    <Item v-for="item in allClaims" :key="item.id" :item="item" :hideAmount="true" />
+    <Item v-for="item in allClaims" :key="item.id" :item="item" />
   </ItemGroup>
 </template>
 

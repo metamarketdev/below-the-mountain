@@ -1,4 +1,6 @@
 <template>
+  <div class="text-gray-300 my-4">Select an item to craft. You need the required materials.</div>
+
   <ItemGroup title="Recipes" :loading="loadingRecipes" :empty="filteredRecipes.length === 0">
     <Recipe
       v-for="(recipe, i) in filteredRecipes"

@@ -187,8 +187,8 @@
       ]
     },
     "/Users/den/Projects/below-the-mountain/contracts/Tools.sol": {
-      "lastModificationDate": 1643654225802,
-      "contentHash": "fb0803220e1836d5054dad5723effda1",
+      "lastModificationDate": 1643664149443,
+      "contentHash": "34dc4e81c428b62d827f933d9f6ed876",
       "sourceName": "contracts/Tools.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -904,8 +904,8 @@
       ]
     },
     "/Users/den/Projects/below-the-mountain/contracts/Claims.sol": {
-      "lastModificationDate": 1643654254537,
-      "contentHash": "d9c2e66cdf9412cc809d7109f3dbe0eb",
+      "lastModificationDate": 1643668680860,
+      "contentHash": "7e5b810fa9aa2699d01136637bd2997a",
       "sourceName": "contracts/Claims.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -986,8 +986,8 @@
       ]
     },
     "/Users/den/Projects/below-the-mountain/contracts/Mining.sol": {
-      "lastModificationDate": 1643654897519,
-      "contentHash": "34bf77c378b66598d49259f7ab8bbbe3",
+      "lastModificationDate": 1643668890830,
+      "contentHash": "c30b74e0923ab079b3f22b8171d11d5d",
       "sourceName": "contracts/Mining.sol",
       "solcConfig": {
         "version": "0.8.0",

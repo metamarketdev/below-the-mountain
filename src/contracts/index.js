@@ -5,6 +5,7 @@ import items from './Items.json';
 import crafting from './Crafting.json';
 import tools from './Tools.json';
 import claims from './Claims.json';
+import mining from './Mining.json';
 import faucet from './Faucet.json';
 
 const contracts = {
@@ -13,6 +14,7 @@ const contracts = {
   crafting,
   tools,
   claims,
+  mining,
   faucet,
 };
 

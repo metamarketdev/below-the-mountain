@@ -1,8 +1,14 @@
 <template>
   <VTooltip theme="item-tooltip" class="inline-block">
     <div
-      class="inline-block relative bg-gray-700 border border-gray-600 border-b-4 p-2 rounded-md m-1 transition-all"
-      :class="{ 'opacity-70': item.isPending, 'bg-red-800 opacity-40': error }"
+      @click="$emit('clicked')"
+      class="inline-block relative border border-b-4 p-2 rounded-md m-1 transition-all"
+      :class="{
+        'opacity-70': item.isPending,
+        'bg-red-800 opacity-40': error,
+        'border-gray-600 bg-gray-700': !selected,
+        'border-sky-500 bg-gray-600 -translate-y-1': selected,
+      }"
     >
       <div class="absolute top-0 left-1 text-xs text-gray-500">#{{ item.attributes.token_id }}</div>
 
@@ -75,6 +81,11 @@ export default {
     },
 
     error: {
+      type: Boolean,
+      default: false,
+    },
+
+    selected: {
       type: Boolean,
       default: false,
     },
