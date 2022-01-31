@@ -16,6 +16,10 @@ contract Tools is ERC721, Ownable, Withdrawable, ExternalActor {
     uint256 iron;
     uint256 mithril;
     uint256 gold;
+    uint256 ruby;
+    uint256 emerald;
+    uint256 sapphire;
+    uint256 diamond;
   }
 
   struct ToolType {
@@ -75,6 +79,11 @@ contract Tools is ERC721, Ownable, Withdrawable, ExternalActor {
     }
   }
 
+  // FIXME: use Chainlink VRF (waiting for release on AVAX)
+  function getRandom(uint256 randomSeed) private view returns (uint256) {
+    return (uint256(keccak256(abi.encode(randomSeed, block.number))) % 100) + 1;
+  }
+
   function mintTool(address requester, uint256 toolType) private {
     _toolDetails[nextId] = Tool(
       _toolTypes[toolType].name,
@@ -82,10 +91,27 @@ contract Tools is ERC721, Ownable, Withdrawable, ExternalActor {
       _toolTypes[toolType].image,
       toolType,
       1,
-      Bonuses(toolType * 3, toolType * 2, toolType * 1, toolType * 1)
+      Bonuses(
+        getRandom(1),
+        getRandom(2),
+        getRandom(3),
+        getRandom(4),
+        getRandom(5),
+        getRandom(6),
+        getRandom(7),
+        getRandom(8)
+      )
     );
     _safeMint(requester, nextId);
     nextId++;
+  }
+
+  function exists(uint256 tokenId) public view returns (bool) {
+    return _exists(tokenId);
+  }
+
+  function getToolDetails(uint256 tokenId) public view returns (Tool memory) {
+    return _toolDetails[tokenId];
   }
 
   function getMetadata(uint256 tokenId) public view returns (string memory) {

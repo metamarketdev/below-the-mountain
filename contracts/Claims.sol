@@ -8,27 +8,31 @@ import "./ExternalActor.sol";
 import "./String.sol";
 
 contract Claims is ERC721, Ownable, Withdrawable, ExternalActor {
-  uint256 private amountMinted = 1;
-  uint256 public mapSize = 16; // TODO: fine-tune this; allow for update + lock
-  uint256 public maxDepth = 64; // TODO: fine-tune this; allow for update + lock
+  uint256 public amountMinted = 1;
+  uint256 public mapSize = 16;
 
   struct Bonuses {
     uint256 stone;
     uint256 iron;
+    uint256 mithril;
     uint256 gold;
+    uint256 ruby;
+    uint256 emerald;
+    uint256 sapphire;
+    uint256 diamond;
   }
 
   struct Claim {
+    uint256 z;
     uint256 x;
     uint256 y;
-    uint256 z;
     string name;
     string description;
     string image;
     Bonuses bonuses;
   }
 
-  mapping(uint256 => Claim) private _claimDetails;
+  mapping(uint256 => Claim) public _claimDetails;
 
   constructor(string memory name, string memory symbol) ERC721(name, symbol) {}
 
@@ -41,29 +45,56 @@ contract Claims is ERC721, Ownable, Withdrawable, ExternalActor {
       uint256
     )
   {
+    uint256 z = (tokenId) / (mapSize**2); // Floored by solidity
     uint256 x = tokenId % mapSize;
     uint256 y = (tokenId - x) / mapSize;
-    uint256 z = (tokenId - x - y) / maxDepth;
-    return (x, y, z);
+    return (z, x, y);
   }
 
-  function mintClaim(address requester, uint256 tokenId) private {
-    require(!_exists(tokenId), "ALREADY_CLAIMED"); // TODO: necessary ?
-    (uint256 x, uint256 y, uint256 z) = getCoords(tokenId);
-    require(x <= mapSize && y <= mapSize && z <= maxDepth, "OUT_OF_BOUNDS");
+  // FIXME: use Chainlink VRF (waiting for release on AVAX)
+  function getRandom(uint256 randomSeed) private view returns (uint256) {
+    return (uint256(keccak256(abi.encode(randomSeed, block.number))) % 100) + 1;
+  }
+
+  function safeMintClaim(address requester, uint256 tokenId) private {
+    require(!_exists(tokenId), "ALREADY_CLAIMED");
+    (uint256 z, uint256 x, uint256 y) = getCoords(tokenId);
+    require(x <= mapSize && y <= mapSize, "OUT_OF_BOUNDS");
 
     _claimDetails[tokenId] = Claim(
+      z,
       x,
       y,
-      z,
       "Claim",
       "A mining claim.",
       "QmUKwkmHyHoYMZgnyMprKbhHSA5JrA78eiQcK8HPzTvahW",
-      Bonuses(1, 1, 1)
+      Bonuses(
+        getRandom(1),
+        getRandom(2),
+        getRandom(3),
+        getRandom(4),
+        getRandom(5),
+        getRandom(6),
+        getRandom(7),
+        getRandom(8)
+      )
     );
 
     _safeMint(requester, tokenId);
     amountMinted++;
+  }
+
+  function mintClaim(uint256 tokenId) public {
+    safeMintClaim(msg.sender, tokenId);
+    amountMinted++;
+  }
+
+  function exists(uint256 tokenId) public view returns (bool) {
+    return _exists(tokenId);
+  }
+
+  function getClaimDetails(uint256 tokenId) public view returns (Claim memory) {
+    return _claimDetails[tokenId];
   }
 
   function getMetadata(uint256 tokenId) public view returns (string memory) {

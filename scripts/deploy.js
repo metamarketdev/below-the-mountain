@@ -4,6 +4,7 @@ const deployContract = require('../deployments/deployContract');
 const ethUtils = require('../utils.js');
 const networks = require('../networks.js');
 
+// Use this command to verify manually:
 // hh verify "0x48d90737e118351a43077968871ec78dd66873bb"  --network fuji --show-stack-traces
 
 const GOLD_NAME = 'Mountain Gold';
@@ -23,13 +24,19 @@ function getContractData(contract) {
 }
 
 async function main() {
-  let goldContract, itemsContract, craftingContract, toolsContract, claimsContract, faucetContract;
-  let network = networks[hre.network.name];
+  let goldContract,
+    itemsContract,
+    craftingContract,
+    toolsContract,
+    claimsContract,
+    miningContract,
+    faucetContract;
 
-  let [owner] = await ethers.getSigners();
-  let balance = await owner.getBalance();
+  // let network = networks[hre.network.name];
+  // let [owner] = await ethers.getSigners();
+  // let balance = await owner.getBalance();
 
-  console.log('Deploying...');
+  console.log('Deploying to ' + hre.network.name + ' ...');
 
   claimsContract = await deployContract('Claims', [CLAIMS_NAME, CLAIMS_SYMBOL]);
   await claimsContract.deployTransaction.wait();
@@ -48,6 +55,14 @@ async function main() {
     itemsContract.address,
   ]);
   await craftingContract.deployTransaction.wait();
+
+  miningContract = await deployContract('Mining', [
+    toolsContract.address,
+    itemsContract.address,
+    claimsContract.address,
+    goldContract.address,
+  ]);
+  await miningContract.deployTransaction.wait();
 
   faucetContract = await deployContract('Faucet', [
     toolsContract.address,
@@ -69,6 +84,10 @@ async function main() {
   await tx.wait(2);
   tx = await goldContract.authorize(faucetContract.address, true, true);
   await tx.wait(2);
+  tx = await goldContract.authorize(miningContract.address, true, true);
+  await tx.wait(2);
+  tx = await itemsContract.authorize(miningContract.address, true, true);
+  await tx.wait(2);
 
   // await craftingContract.addRecipe('Stone pickaxe', 1, 3, 1);
 
@@ -80,6 +99,7 @@ async function main() {
     'src/contracts/Crafting.json',
     JSON.stringify(getContractData(craftingContract)),
   );
+  fs.writeFileSync('src/contracts/Mining.json', JSON.stringify(getContractData(miningContract)));
   fs.writeFileSync('src/contracts/Faucet.json', JSON.stringify(getContractData(faucetContract)));
 
   // Auto verify

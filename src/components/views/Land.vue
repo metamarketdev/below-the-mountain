@@ -2,19 +2,20 @@
   Z:{{ z }}
 
   <div v-if="loadingClaims">Loading...</div>
+  {{ gridSize }}
 
   <renderer v-if="!loadingClaims" ref="renderer" v-bind="rendererConfig">
-    <camera ref="camera" :position="{ x: gridSize, z: gridSize, y: 10 }"></camera>
+    <camera ref="camera" :position="{ x: gridSize, z: gridSize, y: 15 }"></camera>
     <scene background="#1f2937">
       <point-light :position="{ y: 50, z: 100 }"></point-light>
       <point-light :position="{ y: 100, z: 50 }"></point-light>
 
       <Group ref="grid" :rotation="{ y: 0 }">
         <box
+          v-for="i in gridSize ** 2"
           @pointerMove="highlighted = i"
           @pointerLeave="highlighted = null"
           @click="selectBox(i, true)"
-          v-for="i in gridSize ** 2"
           :key="i"
           :position="{
             x: i % gridSize,
@@ -23,37 +24,51 @@
           }"
           :scale="{
             x: 0.95,
-            y: Math.random(),
+            y: 1,
             z: 0.95,
           }"
         >
-          <PhongMaterial color="#333333">
-            <!-- <Texture src="./bricks.jpeg" /> -->
-          </PhongMaterial>
+          <PhongMaterial color="#333333"></PhongMaterial>
         </box>
       </Group>
     </scene>
-    <!-- <EffectComposer>
-      <RenderPass />
-      <UnrealBloomPass :strength="1" />
-      <HalftonePass :radius="1" :scatter="0" />
-    </EffectComposer> -->
   </renderer>
 
   <Modal :open="showMintingModal" @close="showMintingModal = false">
     <template v-slot:title>Mint {{ x }}:{{ y }}:{{ z }}</template>
 
-    <div v-if="isMinting">Minting...</div>
+    <div v-if="mintingFailed">Failed :(</div>
+    <div v-else-if="isMinting && mintingSubmitted">Minting item...</div>
+    <div v-else-if="isMinting">Sending transaction...</div>
+    <div v-else-if="mintingSuccess">
+      Success!
+      <br />
+      <a
+        :href="`https://testnet.snowtrace.io/tx/${mintingTx}`"
+        target="_blank"
+        class="text-gray-600 underline"
+      >
+        View transaction
+      </a>
 
-    <div v-else class="w-screen max-w-xl">
-      <Butt size="big" @click="mintClaim(x, y, z)">Mint</Butt>
+      <Butt to="/app/inventory">Go to inventory</Butt>
     </div>
+
+    <template v-else>
+      <div class="flex flex-row items-center justify-center">Image here</div>
+
+      <div class="flex flex-row justify-center mt-4">
+        <Butt size="big" @click="mintClaim(selectedBox)">
+          <!-- :disabled="selectedRecipe.possibleAmount === 0" -->
+          Mint
+        </Butt>
+      </div>
+    </template>
   </Modal>
 </template>
 
 <script>
-import contracts from '../../contracts';
-import Moralis from '../../plugins/moralis';
+import { callMethod } from '../../contracts';
 
 export default {
   name: 'Land',
@@ -67,11 +82,13 @@ export default {
       loadingClaims: false,
       claims: [],
       isMinting: false,
-      claimsContract: null,
+      showMintingModal: false,
+      mintingFailed: false,
+      mintingSubmitted: false,
+      mintingSuccess: false,
 
       contractState: {
         mapSize: 0,
-        maxDepth: 0,
       },
 
       selectedBox: null,
@@ -110,57 +127,61 @@ export default {
 
   methods: {
     selectBox(i, selected) {
+      console.log('clicked', i);
       this.selectedBox = selected ? i : null;
+      this.mintingFailed = false;
+      this.mintingSubmitted = false;
+      this.mintingSuccess = false;
+      this.showMintingModal = true;
     },
 
-    async mintClaim(x, y, z) {
-      console.log('mintClaim', x, y, z);
-
-      const sendOptions = {
-        contractAddress: contracts.claims.address,
-        functionName: 'mintClaim',
-        abi: contracts.claims.abi,
-        params: {
-          x,
-          y,
-          z,
-        },
-      };
-
-      const transaction = await Moralis.executeFunction(sendOptions);
-      this.isMinting = true;
-      console.log(1, { transaction });
-
-      // TODO: better event handler UX
-
+    async mintClaim(tokenId) {
       try {
+        const transaction = await callMethod('claims', 'mintClaim', {
+          tokenId,
+        });
+
+        this.mintingSubmitted = true;
+
         const result = await transaction.wait();
+
         if (result.status === 1) {
-          console.log('success');
+          this.mintingSuccess = true;
+          this.mintingTx = result.transactionHash;
+        } else {
+          throw Error(result);
         }
       } catch (err) {
-        console.error(err);
+        this.mintingFailed = true;
+        console.error('Failed to mint', err);
       }
 
       this.isMinting = false;
     },
 
     async fetchContractState() {
-      const web3Provider = await Moralis.enableWeb3();
-      const ethers = Moralis.web3Library;
+      this.loadingClaims = true;
 
-      this.claimsContract = new ethers.Contract(
-        contracts.claims.address,
-        contracts.claims.abi,
-        web3Provider,
-      );
+      let numClaims = await callMethod('claims', 'amountMinted');
+      numClaims = numClaims.toNumber();
 
-      console.log(this.claimsContract);
+      console.log({ numClaims });
+      let mapSize = await callMethod('claims', 'mapSize');
+      mapSize = mapSize.toNumber();
 
-      this.contractState = {
-        mapSize: await this.claimsContract.mapSize(),
-        maxDepth: await this.claimsContract.maxDepth(),
-      };
+      this.contractState.mapSize = mapSize;
+
+      let claims = [];
+
+      for (let i = 1; i <= numClaims; i++) {
+        let claim = await callMethod('claims', '_claimDetails', { claimId: i });
+        claims.push(claim);
+      }
+
+      console.log(claims);
+
+      this.claims = claims;
+      this.loadingClaims = false;
     },
   },
 };
