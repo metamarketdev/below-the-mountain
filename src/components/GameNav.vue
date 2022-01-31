@@ -2,9 +2,12 @@
   <nav class="flex flex-col justify-between p-2 bg-gray-900 w-52 shrink-0 h-screen sticky top-0">
     <div class="flex flex-col">
       <router-link to="/app">
-        <h1 class="mb-2 text-lg">TODO: LOGO</h1>
-        <!-- TODO: Beta/testnet flag -->
+        <h1 class="mb-2 text-lg">
+          <!-- <SVGLogo width="180" height="auto" class="p-2" /> -->
+          <img src="/logo_1024.png" class="p-2" />
+        </h1>
       </router-link>
+
       <GameNavLink to="/app/inventory" icon="ViewGridIcon">Inventory</GameNavLink>
       <GameNavLink to="/app/mine" icon="CubeIcon">Mine</GameNavLink>
       <GameNavLink to="/app/craft" icon="BeakerIcon">Craft</GameNavLink>
@@ -51,12 +54,14 @@
 <script>
 import GameNavLink from './GameNavLink.vue';
 import { HomeIcon } from '@heroicons/vue/solid';
+import SVGLogo from './SVGLogo.vue';
 
 export default {
   name: 'GameNav',
 
   components: {
     GameNavLink,
+    SVGLogo,
     HomeIcon,
   },
 };
