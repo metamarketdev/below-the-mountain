@@ -16,7 +16,7 @@
 import { ExclamationIcon } from '@heroicons/vue/outline';
 
 export default {
-  name: 'WrongNetworkNotice',
+  name: 'NotLoggedInNotice',
 
   components: {
     ExclamationIcon,
