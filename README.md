@@ -2,6 +2,9 @@
 
 Candidate project for the Moralis.io X Avalanche hackathon.
 
+[Demo website](https://belowthemountain.io)
+
+
 ## Tech Stack
 
 - Moralis.io
@@ -9,3 +12,8 @@ Candidate project for the Moralis.io X Avalanche hackathon.
 - Hardhat
 - Vite, Vue3, Vue Router, Vuex
 - TailwindCSS
+
+
+## Author
+
+Denis Hacquin
