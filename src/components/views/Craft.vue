@@ -21,9 +21,17 @@
     <div v-else-if="isCrafting">Sending transaction...</div>
     <div v-else-if="craftingSuccess">
       Success!
-      <a :href="`https://testnet.snowtrace.io/tx/${craftingTx}`" target="_blank" class="underline">
+      <br />
+
+      <a
+        :href="`https://testnet.snowtrace.io/tx/${craftingTx}`"
+        target="_blank"
+        class="underline text-gray-600"
+      >
         View transaction
       </a>
+
+      <Butt to="/app/inventory" class="mt-2">Go to inventory</Butt>
     </div>
 
     <template v-else>

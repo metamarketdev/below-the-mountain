@@ -226,7 +226,7 @@ const store = createStore({
         params: [
           {
             chainId: CHAIN_ID,
-            chainName: 'Avalanche FUJI C-Chain',
+            chainName: 'Avalanche TESTNET',
             rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
             blockExplorerUrls: ['https://testnet.snowtrace.io/'],
             nativeCurrency: {
