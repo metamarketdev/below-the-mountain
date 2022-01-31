@@ -16,17 +16,21 @@ contract Items is ERC1155, Ownable, Withdrawable, ExternalActor {
     string image;
   }
 
-  mapping(uint256 => Item) private _itemDetails;
+  mapping(uint256 => Item) public _itemDetails;
 
   constructor(string memory _uri) ERC1155(_uri) {
-    addItem("Stone", "Pretty hard", "QmX4o8tg4ivL2MXG8CJX79BfMjd3rPGuMejkmRfKwFrEmP");
-    addItem("Iron", "Basic metal", "QmXJwvWAzkabRtgmYuktWRRCEbxXEHQZc395QMtBqz4zt4");
-    addItem("Mithril", "Rare metal", "QmdooUQrAfRSTVHnKcQXoHGNHEBJjVtsWDbeTkAQBAJm2v");
+    addItem("Raw Stone", "Pretty hard", "QmQcFDQurLDxhYfciWT3Jd4w4tTyBn7Ak7J4v8J969EaHF/raw_stone.png");
+    addItem("Raw Iron", "Basic metal", "QmQcFDQurLDxhYfciWT3Jd4w4tTyBn7Ak7J4v8J969EaHF/raw_iron.png");
+    addItem("Raw Mithril", "Rare metal", "QmQcFDQurLDxhYfciWT3Jd4w4tTyBn7Ak7J4v8J969EaHF/raw_mithril.png");
 
-    addItem("Sapphire", "Blue gem", "QmSGPEhGPRc3JpVZGCyME2JKJS7N1xKVtLXjN5BmKKXdBm");
-    addItem("Ruby", "Red gem", "QmP1RvzTuGPXwtcc3Pjd4yA2vW4CRFVLqscejJ98qHvBac");
-    addItem("Emerald", "Green gem", "QmTsU42PDJbhEvwNQ3Y4Ex6Jo5s3AYa7dQuN4zw2oJdidV");
-    addItem("Diamond", "Pure gem", "QmWr38jR8Z4UkoVkE6M7RnsQTrQq8smg6jycpKUSig3RMT");
+    addItem("Stone Block", "Pretty hard", "QmQcFDQurLDxhYfciWT3Jd4w4tTyBn7Ak7J4v8J969EaHF/ingot_stone.png");
+    addItem("Iron Ingot", "Basic metal", "QmQcFDQurLDxhYfciWT3Jd4w4tTyBn7Ak7J4v8J969EaHF/ingot_iron.png");
+    addItem("Mithril Ingot", "Rare metal", "QmQcFDQurLDxhYfciWT3Jd4w4tTyBn7Ak7J4v8J969EaHF/ingot_mithril.png");
+
+    addItem("Sapphire", "Blue gem", "QmQcFDQurLDxhYfciWT3Jd4w4tTyBn7Ak7J4v8J969EaHF/gem_blue.png");
+    addItem("Ruby", "Red gem", "QmQcFDQurLDxhYfciWT3Jd4w4tTyBn7Ak7J4v8J969EaHF/gem_red.png");
+    addItem("Emerald", "Green gem", "QmQcFDQurLDxhYfciWT3Jd4w4tTyBn7Ak7J4v8J969EaHF/gem_green.png");
+    addItem("Diamond", "Pure gem", "QmQcFDQurLDxhYfciWT3Jd4w4tTyBn7Ak7J4v8J969EaHF/gem_white.png");
   }
 
   function addItem(
@@ -53,7 +57,7 @@ contract Items is ERC1155, Ownable, Withdrawable, ExternalActor {
     uint256 tokenId,
     uint256 amount
   ) public onlyAllowedMinters {
-    _mint(requester, tokenId, amount, '');
+    _mint(requester, tokenId, amount, "");
   }
 
   function getMetadata(uint256 tokenId) public view returns (string memory) {

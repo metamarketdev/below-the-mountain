@@ -4,15 +4,12 @@
       v-for="(recipe, i) in filteredRecipes"
       :key="i"
       :recipe="recipe"
+      :hideAmount="true"
       @click="openCraftModal(recipe)"
     />
   </ItemGroup>
 
-  <ItemGroup
-    title="Available Materials"
-    :loading="$store.state.loadingItems"
-    :empty="allItems.length === 0"
-  >
+  <ItemGroup title="Available Materials" :loading="loadingItems" :empty="allItems.length === 0">
     <Item v-for="item in allItems" :key="item.id" :item="item" />
   </ItemGroup>
 
@@ -54,11 +51,11 @@
 </template>
 
 <script>
+import { mapGetters, mapState, mapActions } from 'vuex';
 import { callMethod } from '../../contracts';
 import ItemGroup from '../ItemGroup.vue';
 import Item from '../Item.vue';
 import Recipe from '../Recipe.vue';
-import { mapGetters } from 'vuex';
 import { ArrowSmRightIcon } from '@heroicons/vue/outline';
 
 export default {
@@ -68,8 +65,6 @@ export default {
 
   data() {
     return {
-      loadingRecipes: false,
-      recipes: [],
       onlyPossible: false,
       showCraftingModal: false,
       selectedRecipe: null,
@@ -85,11 +80,14 @@ export default {
   },
 
   async mounted() {
-    await this.fetchContractState();
+    if (this.recipes.length === 0) {
+      await this.loadRecipes();
+    }
   },
 
   computed: {
-    ...mapGetters(['allItems', 'allTools']),
+    ...mapState(['loadingRecipes', 'recipes', 'loadingItems']),
+    ...mapGetters(['allItems']),
 
     filteredRecipes() {
       return this.recipes
@@ -119,9 +117,12 @@ export default {
   },
 
   methods: {
+    ...mapActions(['loadRecipes']),
+
     openCraftModal(recipe) {
       this.selectedRecipe = recipe;
       this.showCraftingModal = true;
+      this.isCrafting = false;
       this.craftingSuccess = false;
       this.craftingSubmitted = false;
       this.craftingFailed = false;
@@ -156,38 +157,6 @@ export default {
       }
 
       this.isCrafting = false;
-    },
-
-    async fetchContractState() {
-      this.loadingRecipes = true;
-
-      let numRecipes = await callMethod('crafting', 'numRecipes');
-      numRecipes = numRecipes.toNumber();
-
-      let recipes = [];
-
-      for (let i = 1; i <= numRecipes; i++) {
-        let recipe = await callMethod('crafting', '_recipeDetails', { recipeId: i });
-        let toolType = await callMethod('tools', '_toolTypes', {
-          toolTypeId: recipe.outputTokenType,
-        });
-        // let recipe = await toolsContract._(i);
-
-        // IMPROVEMENT: make this more future-proof
-        if (recipe.enabled) {
-          recipe = {
-            ...recipe,
-            inputAmount: recipe.inputAmount.toNumber(),
-            inputTokenId: recipe.inputTokenId.toString(),
-            outputTokenType: toolType,
-          };
-
-          recipes.push(recipe);
-        }
-      }
-
-      this.recipes = recipes;
-      this.loadingRecipes = false;
     },
   },
 };

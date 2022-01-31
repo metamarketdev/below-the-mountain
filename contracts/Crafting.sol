@@ -18,8 +18,14 @@ contract Crafting is Ownable, Withdrawable {
     uint256 recipeId;
     uint256 inputTokenId;
     uint256 inputAmount;
-    uint256 outputTokenType;
+    uint256 outputTokenId;
+    OutputTokenType outputTokenType;
     bool enabled;
+  }
+
+  enum OutputTokenType {
+    Item,
+    Tool
   }
 
   mapping(uint256 => Recipe) public _recipeDetails;
@@ -28,19 +34,32 @@ contract Crafting is Ownable, Withdrawable {
     toolsContract = Tools(_toolsContract);
     itemsContract = Items(_itemsContract);
 
-    addRecipe('Stone pickaxe', 1, 3, 1);
-    addRecipe('Iron pickaxe', 2, 3, 2);
-    addRecipe('Mithril pickaxe', 3, 3, 3);
+    addRecipe("Stone Block", 1, 3, 4, OutputTokenType.Item);
+    addRecipe("Iron Ingot", 2, 3, 5, OutputTokenType.Item);
+    addRecipe("Mithril Ingot", 3, 3, 6, OutputTokenType.Item);
+
+    addRecipe("Stone Pickaxe", 4, 3, 1, OutputTokenType.Tool);
+    addRecipe("Iron Pickaxe", 5, 3, 2, OutputTokenType.Tool);
+    addRecipe("Mithril Pickaxe", 6, 3, 3, OutputTokenType.Tool);
   }
 
   function addRecipe(
     string memory name,
     uint256 inputTokenId,
     uint256 inputAmount,
-    uint256 outputTokenType
+    uint256 outputTokenId,
+    OutputTokenType outputTokenType
   ) public onlyOwner returns (uint256 tokenId) {
     uint256 newId = nextId;
-    _recipeDetails[newId] = Recipe(name, newId, inputTokenId, inputAmount, outputTokenType, true);
+    _recipeDetails[newId] = Recipe(
+      name,
+      newId,
+      inputTokenId,
+      inputAmount,
+      outputTokenId,
+      outputTokenType,
+      true
+    );
     nextId++;
     numRecipes++;
     return newId;
@@ -51,13 +70,15 @@ contract Crafting is Ownable, Withdrawable {
     uint256 recipeId,
     uint256 inputTokenId,
     uint256 inputAmount,
-    uint256 outputTokenType
+    uint256 outputTokenId,
+    OutputTokenType outputTokenType
   ) public onlyOwner {
     _recipeDetails[recipeId] = Recipe(
       name,
       recipeId,
       inputTokenId,
       inputAmount,
+      outputTokenId,
       outputTokenType,
       _recipeDetails[recipeId].enabled
     );
@@ -74,10 +95,12 @@ contract Crafting is Ownable, Withdrawable {
       _recipeDetails[recipeId].inputAmount * amount
     );
 
-    toolsContract.externalMint(msg.sender, _recipeDetails[recipeId].outputTokenType, amount);
-  }
+    if (_recipeDetails[recipeId].outputTokenType == OutputTokenType.Item) {
+      itemsContract.externalMint(msg.sender, _recipeDetails[recipeId].outputTokenId, amount);
+    }
 
-  //  function getRecipe(uint256 recipeId) public view returns () {
-  //   return _recipeDetails
-  // }
+    if (_recipeDetails[recipeId].outputTokenType == OutputTokenType.Tool) {
+      toolsContract.externalMint(msg.sender, _recipeDetails[recipeId].outputTokenId, amount);
+    }
+  }
 }

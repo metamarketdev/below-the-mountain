@@ -2,6 +2,7 @@ import { createStore } from 'vuex';
 import Moralis from '../plugins/moralis';
 import contracts from '../contracts';
 import _ from 'lodash';
+import { callMethod } from '../contracts';
 
 const CHAIN_NAME = 'avalanche testnet';
 const CHAIN_ID = '0xa869';
@@ -25,6 +26,9 @@ const store = createStore({
 
       loadingItems: true,
 
+      loadingRecipes: true,
+      recipes: [],
+
       confirmed: {
         items: [],
         tools: [],
@@ -41,6 +45,44 @@ const store = createStore({
     loadPlayerData({ dispatch }) {
       dispatch('loadBalances');
       dispatch('loadItems');
+    },
+
+    async loadRecipes({ state, commit, dispatch }) {
+      let numRecipes = await callMethod('crafting', 'numRecipes');
+      numRecipes = numRecipes.toNumber();
+
+      let recipes = [];
+
+      for (let i = 1; i <= numRecipes; i++) {
+        let recipe = await callMethod('crafting', '_recipeDetails', { recipeId: i });
+
+        let tokenType;
+
+        if (recipe.outputTokenType === 0) {
+          tokenType = await callMethod('items', '_itemDetails', {
+            itemId: recipe.outputTokenId,
+          });
+        } else if (recipe.outputTokenType === 1) {
+          tokenType = await callMethod('tools', '_toolTypes', {
+            toolTypeId: recipe.outputTokenId,
+          });
+        }
+
+        // IMPROVEMENT: make this more future-proof
+        if (recipe.enabled) {
+          recipe = {
+            ...recipe,
+            inputAmount: recipe.inputAmount.toNumber(),
+            inputTokenId: recipe.inputTokenId.toString(),
+            outputTokenType: tokenType,
+          };
+
+          recipes.push(recipe);
+        }
+      }
+
+      commit('setRecipes', recipes);
+      commit('setLoadingRecipes', false);
     },
 
     async loadBalances({ state, commit, dispatch }) {
@@ -212,6 +254,14 @@ const store = createStore({
   mutations: {
     setCurrentChainId(state, chainId) {
       state.currentChainId = chainId;
+    },
+
+    setRecipes(state, payload) {
+      state.recipes = payload;
+    },
+
+    setLoadingRecipes(state, payload) {
+      state.loadingRecipes = payload;
     },
 
     setLoadingUser(state, payload) {

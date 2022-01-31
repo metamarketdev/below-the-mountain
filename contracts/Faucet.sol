@@ -26,9 +26,15 @@ contract Faucet is Ownable, Withdrawable {
 
   function requestTokens() public {
     toolsContract.externalMint(msg.sender, 1, 1);
-    itemsContract.externalMint(msg.sender, 1, 10);
-    itemsContract.externalMint(msg.sender, 2, 5);
-    itemsContract.externalMint(msg.sender, 3, 1);
+
+    itemsContract.externalMint(msg.sender, 1, 30);
+    itemsContract.externalMint(msg.sender, 2, 20);
+    itemsContract.externalMint(msg.sender, 3, 10);
+
+    itemsContract.externalMint(msg.sender, 4, 30);
+    itemsContract.externalMint(msg.sender, 5, 20);
+    itemsContract.externalMint(msg.sender, 6, 10);
+
     goldContract.externalMint(msg.sender, 1000);
     _tokenRequests[msg.sender]++;
   }

@@ -39,17 +39,17 @@ contract Tools is ERC721, Ownable, Withdrawable, ExternalActor {
     addToolType(
       "Stone Pickaxe",
       "A basic pickaxe",
-      "QmarjweMXieXGtMAkCQbBeHGWUrQuLbd68pDwov6V6LvB3"
+      "QmQcFDQurLDxhYfciWT3Jd4w4tTyBn7Ak7J4v8J969EaHF/pickaxe_stone.png"
     );
     addToolType(
       "Iron Pickaxe",
       "A decent pickaxe",
-      "Qmc7TWJ3NnZgvKxsMhzLzfN6fVGAtcJaMbru3KUAQ4YCyn"
+      "QmQcFDQurLDxhYfciWT3Jd4w4tTyBn7Ak7J4v8J969EaHF/pickaxe_iron.png"
     );
     addToolType(
       "Mithril Pickaxe",
       "A professional pickaxe",
-      "QmUrkLhkx2m3PG5Kmyi6JSbyMJziPDgEdXCRyEZGFHKqHa"
+      "QmQcFDQurLDxhYfciWT3Jd4w4tTyBn7Ak7J4v8J969EaHF/pickaxe_mithril.png"
     );
   }
 

@@ -12,7 +12,7 @@
         <img :src="src" :alt="recipe.name" width="80" height="80" class="inline-block" />
       </div>
 
-      <div
+      <div v-if="!hideAmount"
         class="absolute px-1 py-0 rounded-tl-md bg-gray-600 bottom-0 right-0 text-md text-gray-300"
       >
         {{ amount || recipe.possibleAmount }}
@@ -23,6 +23,7 @@
       <div v-if="recipe.outputTokenType.name" class="font-normal text-gray-200">
         {{ recipe.outputTokenType.name }}
       </div>
+
       <div v-if="recipe.outputTokenType.description" class="font-light text-sm text-gray-400">
         {{ recipe.outputTokenType.description }}
       </div>
@@ -53,6 +54,11 @@ export default {
     amount: {
       type: Number,
       required: false,
+    },
+
+    hideAmount: {
+      type: Boolean,
+      default: false,
     },
   },
 
