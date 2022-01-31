@@ -986,8 +986,8 @@
       ]
     },
     "/Users/den/Projects/below-the-mountain/contracts/Mining.sol": {
-      "lastModificationDate": 1643668890830,
-      "contentHash": "c30b74e0923ab079b3f22b8171d11d5d",
+      "lastModificationDate": 1643669348588,
+      "contentHash": "d8c095eb8710726afa2a8da607279f6c",
       "sourceName": "contracts/Mining.sol",
       "solcConfig": {
         "version": "0.8.0",
