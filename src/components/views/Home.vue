@@ -65,12 +65,10 @@
       </div>
     </kinesis-container>
 
-    <div class="p-10 my-20">s</div>
-    <div class="p-10 my-20">s</div>
-    <div class="p-10 my-20">s</div>
-    <div class="p-10 my-20">s</div>
-    <div class="p-10 my-20">s</div>
-    <div class="p-10 my-20">s</div>
+    <div class="p-10 my-20"></div>
+    <div class="p-10 my-20"></div>
+    <div class="p-10 my-20"></div>
+    <div class="p-10 mt-20"></div>
   </div>
 </template>
 
