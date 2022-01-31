@@ -44,11 +44,11 @@
       />
 
       <div class="flex flex-row justify-center absolute top-5 w-full">
-        <!-- <img src="logo_1024.png" alt="BelowTheMountain" style="width: 33%; max-width: 512px" /> -->
+        <!-- <img src="/logo_1024.png" alt="BelowTheMountain" style="width: 33%; max-width: 512px" /> -->
       </div>
 
       <div class="absolute top-1/3 right-1/4">
-        <img src="logo_1024.png" alt="BelowTheMountain" width="400" />
+        <img src="/logo_1024.png" alt="BelowTheMountain" width="400" />
 
         <!-- <div class="font-title text-6xl text-right">
           COLLECT. CRAFT.
