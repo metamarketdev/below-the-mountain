@@ -368,7 +368,7 @@ const store = createStore({
         }),
       ];
 
-      return _(allTools).uniqBy('attributes.token_id').orderBy('createdAt').value();
+      return _(allTools).uniqBy('attributes.token_id').orderBy('attributes.token_id').value();
     },
 
     allClaims: (state) => {
@@ -381,7 +381,7 @@ const store = createStore({
         ...state.confirmed.claims,
       ];
 
-      return _(allClaims).uniqBy('attributes.token_id').orderBy('createdAt').value();
+      return _(allClaims).uniqBy('attributes.token_id').orderBy('attributes.token_id').value();
     },
 
     isConnected: (state) => !!state.currentChainId,
