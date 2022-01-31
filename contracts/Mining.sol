@@ -44,21 +44,21 @@ contract Mining is Ownable, Withdrawable {
       1,
       (getRandom(1) *
         (claimsContract.getClaimDetails(claimTokenId).bonuses.stone +
-          toolsContract.getToolDetails(toolTokenId).bonuses.stone)) / 3
+          toolsContract.getToolDetails(toolTokenId).bonuses.stone)) / 30
     );
     itemsContract.externalMint(
       msg.sender,
       2,
       (getRandom(2) *
         (claimsContract.getClaimDetails(claimTokenId).bonuses.iron +
-          toolsContract.getToolDetails(toolTokenId).bonuses.iron)) / 5
+          toolsContract.getToolDetails(toolTokenId).bonuses.iron)) / 50
     );
     itemsContract.externalMint(
       msg.sender,
       3,
       (getRandom(3) *
         (claimsContract.getClaimDetails(claimTokenId).bonuses.mithril +
-          toolsContract.getToolDetails(toolTokenId).bonuses.mithril)) / 10
+          toolsContract.getToolDetails(toolTokenId).bonuses.mithril)) / 100
     );
 
     itemsContract.externalMint(
@@ -66,14 +66,14 @@ contract Mining is Ownable, Withdrawable {
       7,
       (getRandom(5) *
         (claimsContract.getClaimDetails(claimTokenId).bonuses.ruby +
-          toolsContract.getToolDetails(toolTokenId).bonuses.ruby)) / 20
+          toolsContract.getToolDetails(toolTokenId).bonuses.ruby)) / 200
     );
     itemsContract.externalMint(
       msg.sender,
       8,
       (getRandom(6) *
         (claimsContract.getClaimDetails(claimTokenId).bonuses.emerald +
-          toolsContract.getToolDetails(toolTokenId).bonuses.emerald)) / 20
+          toolsContract.getToolDetails(toolTokenId).bonuses.emerald)) / 200
     );
 
     itemsContract.externalMint(
@@ -81,21 +81,21 @@ contract Mining is Ownable, Withdrawable {
       9,
       (getRandom(7) *
         (claimsContract.getClaimDetails(claimTokenId).bonuses.sapphire +
-          toolsContract.getToolDetails(toolTokenId).bonuses.sapphire)) / 20
+          toolsContract.getToolDetails(toolTokenId).bonuses.sapphire)) / 200
     );
     itemsContract.externalMint(
       msg.sender,
       10,
       (getRandom(8) *
         (claimsContract.getClaimDetails(claimTokenId).bonuses.diamond +
-          toolsContract.getToolDetails(toolTokenId).bonuses.diamond)) / 50
+          toolsContract.getToolDetails(toolTokenId).bonuses.diamond)) / 500
     );
 
     goldContract.externalMint(
       msg.sender,
       getRandom(4) *
         (claimsContract.getClaimDetails(claimTokenId).bonuses.gold +
-          toolsContract.getToolDetails(toolTokenId).bonuses.gold)
+          toolsContract.getToolDetails(toolTokenId).bonuses.gold) / 50
     );
 
     // Pay the claim owner fee
@@ -105,7 +105,7 @@ contract Mining is Ownable, Withdrawable {
       claimOwner,
       getRandom(4) *
         (claimsContract.getClaimDetails(claimTokenId).bonuses.gold +
-          toolsContract.getToolDetails(toolTokenId).bonuses.gold)
+          toolsContract.getToolDetails(toolTokenId).bonuses.gold) / 100
     );
   }
 }
