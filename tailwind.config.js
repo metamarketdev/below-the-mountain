@@ -13,6 +13,10 @@ module.exports = {
         sans: ['Rubik', ...defaultTheme.fontFamily.sans],
         title: ['Staatliches', ...defaultTheme.fontFamily.sans],
       },
+
+      gridTemplateColumns: {
+        16: 'repeat(16, minmax(0, 1fr))', // 16 column grid
+      },
     },
   },
 };

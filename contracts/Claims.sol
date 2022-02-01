@@ -33,8 +33,14 @@ contract Claims is ERC721, Ownable, Withdrawable, ExternalActor {
   }
 
   mapping(uint256 => Claim) public _claimDetails;
+  uint256[] public mintedIds;
 
   constructor(string memory name, string memory symbol) ERC721(name, symbol) {}
+
+  // Getter func to bypass moralis need for param in executeFunction
+  function getMintedIds() public view returns (uint256[] memory) {
+    return mintedIds;
+  }
 
   function getCoords(uint256 tokenId)
     internal
@@ -45,9 +51,10 @@ contract Claims is ERC721, Ownable, Withdrawable, ExternalActor {
       uint256
     )
   {
-    uint256 z = (tokenId) / (mapSize**2); // Floored by solidity
+    // TODO: triple test this
     uint256 x = tokenId % mapSize;
-    uint256 y = (tokenId - x) / mapSize;
+    uint256 y = ((tokenId - x) / mapSize) % mapSize;
+    uint256 z = tokenId / mapSize**2; // Floored by solidity
     return (z, x, y);
   }
 
@@ -81,12 +88,12 @@ contract Claims is ERC721, Ownable, Withdrawable, ExternalActor {
     );
 
     _safeMint(requester, tokenId);
+    mintedIds.push(tokenId);
     amountMinted++;
   }
 
   function mintClaim(uint256 tokenId) public {
     safeMintClaim(msg.sender, tokenId);
-    amountMinted++;
   }
 
   function exists(uint256 tokenId) public view returns (bool) {

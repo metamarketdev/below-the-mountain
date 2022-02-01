@@ -1,44 +1,30 @@
 <template>
-  Z:{{ z }}
+  <div class="flex flex-row items-center justify-center mb-4">
+    <Butt @clicked="up()" color="gray">Up</Butt>
+    <div class="font-title text-2xl p-2">
+      <span class="text-gray-600">FLOOR</span>
+      {{ z > 0 ? '-' : '' }}{{ z }}
+    </div>
+    <Butt @clicked="down()" color="gray">Down</Butt>
+  </div>
 
-  <div v-if="loadingClaims">Loading...</div>
-  {{ gridSize }}
+  <div v-if="loadingClaims">Scouting the underworld...</div>
 
-  <renderer v-if="!loadingClaims" ref="renderer" v-bind="rendererConfig">
-    <camera ref="camera" :position="{ x: gridSize, z: gridSize, y: 15 }"></camera>
-    <scene background="#1f2937">
-      <point-light :position="{ y: 50, z: 100 }"></point-light>
-      <point-light :position="{ y: 100, z: 50 }"></point-light>
-
-      <Group ref="grid" :rotation="{ y: 0 }">
-        <box
-          v-for="i in gridSize ** 2"
-          @pointerMove="highlighted = i"
-          @pointerLeave="highlighted = null"
-          @click="selectBox(i, true)"
-          :key="i"
-          :position="{
-            x: i % gridSize,
-            y: 0,
-            z: (i - (i % gridSize)) / gridSize,
-          }"
-          :scale="{
-            x: 0.95,
-            y: 1,
-            z: 0.95,
-          }"
-        >
-          <PhongMaterial color="#333333"></PhongMaterial>
-        </box>
-      </Group>
-    </scene>
-  </renderer>
+  <div class="grid grid-cols-16 gap-1 container mx-auto mb-10">
+    <LandItem
+      v-for="i in gridSize ** 2"
+      :key="i"
+      @clicked="selectClaim(i + z * gridSize ** 2)"
+      :isMinted="contractState.mintedIds.includes(i + z * gridSize ** 2)"
+      :tokenId="i + z * gridSize ** 2"
+    />
+  </div>
 
   <Modal :open="showMintingModal" @close="showMintingModal = false">
-    <template v-slot:title>Mint {{ x }}:{{ y }}:{{ z }}</template>
+    <template v-slot:title>Claim mine #{{ selectedClaim }}</template>
 
     <div v-if="mintingFailed">Failed :(</div>
-    <div v-else-if="isMinting && mintingSubmitted">Minting item...</div>
+    <div v-else-if="isMinting && mintingSubmitted">Claiming some underground turf...</div>
     <div v-else-if="isMinting">Sending transaction...</div>
     <div v-else-if="mintingSuccess">
       Success!
@@ -55,13 +41,10 @@
     </div>
 
     <template v-else>
-      <div class="flex flex-row items-center justify-center">Image here</div>
+      <img src="/deed.png" width="140" height="140" alt="Deed" class="mx-10" />
 
       <div class="flex flex-row justify-center mt-4">
-        <Butt size="big" @click="mintClaim(selectedBox)">
-          <!-- :disabled="selectedRecipe.possibleAmount === 0" -->
-          Mint
-        </Butt>
+        <Butt size="big" @click="mintClaim(selectedClaim)">Mint</Butt>
       </div>
     </template>
   </Modal>
@@ -69,14 +52,17 @@
 
 <script>
 import { callMethod } from '../../contracts';
+import LandItem from '../LandItem.vue';
 
 export default {
   name: 'Land',
 
+  components: {
+    LandItem,
+  },
+
   data() {
     return {
-      x: 0,
-      y: 0,
       z: 0,
 
       loadingClaims: false,
@@ -89,10 +75,10 @@ export default {
 
       contractState: {
         mapSize: 0,
+        mintedIds: [],
       },
 
-      selectedBox: null,
-      highlighted: null,
+      selectedClaim: null,
 
       rendererConfig: {
         antialias: true,
@@ -126,9 +112,20 @@ export default {
   },
 
   methods: {
-    selectBox(i, selected) {
-      console.log('clicked', i);
-      this.selectedBox = selected ? i : null;
+    up() {
+      if (this.z <= 0) {
+        this.z = 0;
+      } else {
+        this.z--;
+      }
+    },
+
+    down() {
+      this.z++;
+    },
+
+    selectClaim(i) {
+      this.selectedClaim = i;
       this.mintingFailed = false;
       this.mintingSubmitted = false;
       this.mintingSuccess = false;
@@ -136,6 +133,8 @@ export default {
     },
 
     async mintClaim(tokenId) {
+      this.isMinting = true;
+
       try {
         const transaction = await callMethod('claims', 'mintClaim', {
           tokenId,
@@ -162,25 +161,22 @@ export default {
     async fetchContractState() {
       this.loadingClaims = true;
 
-      let numClaims = await callMethod('claims', 'amountMinted');
-      numClaims = numClaims.toNumber();
+      let mintedIds = await callMethod('claims', 'getMintedIds');
+      mintedIds = mintedIds.map((id) => id.toNumber());
+      this.contractState.mintedIds = mintedIds;
 
-      console.log({ numClaims });
       let mapSize = await callMethod('claims', 'mapSize');
       mapSize = mapSize.toNumber();
-
       this.contractState.mapSize = mapSize;
 
-      let claims = [];
+      // let claims = [];
 
-      for (let i = 1; i <= numClaims; i++) {
-        let claim = await callMethod('claims', '_claimDetails', { claimId: i });
-        claims.push(claim);
-      }
+      // for (let i = 1; i <= numClaims; i++) {
+      //   let claim = await callMethod('claims', '_claimDetails', { claimId: i });
+      //   claims.push(claim);
+      // }
 
-      console.log(claims);
-
-      this.claims = claims;
+      // this.claims = claims;
       this.loadingClaims = false;
     },
   },

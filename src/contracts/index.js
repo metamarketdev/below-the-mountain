@@ -28,7 +28,8 @@ export async function callMethod(contractName, methodName, params = {}) {
   const contract = contracts[contractName];
 
   // Workaround required naming for params in moralis executeFunction
-  // i.e. solidity mappings have unnamed params
+  // -> solidity mappings have unnamed params in abi outputs
+  // FIXME: find a way to bypass for arrays as well
   const method = contract.abi.find((method) => method.name === methodName);
 
   method.inputs = method.inputs.map((input, i) => {
