@@ -1,11 +1,11 @@
 <template>
   <div class="flex flex-row items-center justify-center mb-4">
-    <Butt @clicked="up()" color="gray">Up</Butt>
-    <div class="font-title text-2xl p-2">
+    <Butt @clicked="up()" color="gray" icon="arrow-up" class="pl-5" />
+    <div class="font-title text-4xl p-2">
       <span class="text-gray-600">FLOOR</span>
       {{ z > 0 ? '-' : '' }}{{ z }}
     </div>
-    <Butt @clicked="down()" color="gray">Down</Butt>
+    <Butt @clicked="down()" color="gray" icon="arrow-down" class="pl-5" />
   </div>
 
   <div v-if="loadingClaims">Scouting the underworld...</div>
@@ -37,7 +37,7 @@
         View transaction
       </a>
 
-      <Butt to="/app/inventory">Go to inventory</Butt>
+      <Butt to="/app/inventory" class="mt-4">Go to inventory</Butt>
     </div>
 
     <template v-else>
@@ -147,6 +147,7 @@ export default {
         if (result.status === 1) {
           this.mintingSuccess = true;
           this.mintingTx = result.transactionHash;
+          this.fetchContractState();
         } else {
           throw Error(result);
         }

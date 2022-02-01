@@ -9,7 +9,7 @@
     @click="$emit('clicked')"
     :disabled="disabled"
   >
-    <i v-if="icon" :class="`fas fa-${icon} mr-3`"></i>
+    <i v-if="icon" :class="`fas fa-${icon} mr-2`"></i>
     <slot />
   </component>
   <!-- </div> -->
