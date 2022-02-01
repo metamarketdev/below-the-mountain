@@ -99,7 +99,7 @@ export default {
 
     src() {
       const hash = this.metadata.image.split('://')[1];
-      return 'https://gateway.pinata.cloud/ipfs/' + hash;
+      return 'https://ipfs.moralis.io:2053/ipfs/' + hash;
     },
   },
 };
