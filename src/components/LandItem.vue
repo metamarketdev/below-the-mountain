@@ -51,7 +51,7 @@ export default {
   computed: {
     src() {
       if (this.claimDetails && this.claimDetails.emblem) {
-        return 'https://ipfs.moralis.io:2053/ipfs/' + this.claimDetails.emblem;
+        return 'https://gateway.pinata.cloud/ipfs/' + this.claimDetails.emblem;
       } else {
         return '';
       }

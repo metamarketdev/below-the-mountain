@@ -68,7 +68,7 @@ export default {
     },
 
     src() {
-      return 'https://ipfs.moralis.io:2053/ipfs/' + this.recipe.outputTokenType.image;
+      return 'https://gateway.pinata.cloud/ipfs/' + this.recipe.outputTokenType.image;
     },
   },
 };
