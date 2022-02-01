@@ -72,6 +72,7 @@ export default {
       mintingFailed: false,
       mintingSubmitted: false,
       mintingSuccess: false,
+      timeout: null,
 
       contractState: {
         mapSize: 0,
@@ -103,6 +104,10 @@ export default {
 
   async mounted() {
     await this.fetchContractState();
+  },
+
+  unmounted() {
+    clearTimeout(this.timeout);
   },
 
   computed: {
@@ -147,7 +152,6 @@ export default {
         if (result.status === 1) {
           this.mintingSuccess = true;
           this.mintingTx = result.transactionHash;
-          this.fetchContractState();
         } else {
           throw Error(result);
         }
@@ -178,6 +182,9 @@ export default {
       // }
 
       // this.claims = claims;
+
+      this.timeout = setTimeout(this.fetchContractState, 5000);
+
       this.loadingClaims = false;
     },
   },
