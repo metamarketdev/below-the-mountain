@@ -1,4 +1,5 @@
 <template>
+  <div class="text-gray-300 my-4 text-center">Carve yourself a piece of the mountain.</div>
   <div class="flex flex-row items-center justify-center mb-4">
     <Butt @clicked="up()" color="gray" icon="arrow-up" class="pl-5" />
     <div class="font-title text-4xl p-2">
@@ -13,7 +14,7 @@
   <div class="grid grid-cols-16 gap-1 container mx-auto mb-10">
     <LandItem
       v-for="i in gridSize ** 2"
-      :key="i"
+      :key="i + z * gridSize ** 2"
       @clicked="selectClaim(i + z * gridSize ** 2)"
       :isMinted="contractState.mintedIds.includes(i + z * gridSize ** 2)"
       :tokenId="i + z * gridSize ** 2"
@@ -26,6 +27,7 @@
     <div v-if="mintingFailed">Failed :(</div>
     <div v-else-if="isMinting && mintingSubmitted">Claiming some underground turf...</div>
     <div v-else-if="isMinting">Sending transaction...</div>
+
     <div v-else-if="mintingSuccess">
       Success!
       <br />
@@ -40,19 +42,25 @@
       <Butt to="/app/inventory" class="mt-4">View in inventory</Butt>
     </div>
 
-    <template v-else>
-      <img src="/deed.png" width="140" height="140" alt="Deed" class="mx-10" />
+    <div v-else class="flex flex-col">
+      <img src="/deed.png" width="140" height="140" alt="Deed" class="mx-auto" />
+
+      <div class="mt-8 flex flex-col">
+        Add some swag (optional)
+        <input type="file" @input="input" class="rounded border p-2 bg-gray-800" />
+      </div>
 
       <div class="flex flex-row justify-center mt-4">
         <Butt size="big" @click="mintClaim(selectedClaim)">Mint</Butt>
       </div>
-    </template>
+    </div>
   </Modal>
 </template>
 
 <script>
 import { callMethod } from '../../contracts';
 import LandItem from '../LandItem.vue';
+import Moralis from '../../plugins/moralis';
 
 export default {
   name: 'Land',
@@ -63,9 +71,11 @@ export default {
 
   data() {
     return {
+      file: null,
+
       z: 0,
 
-      loadingClaims: false,
+      loadingClaims: true,
       claims: [],
       isMinting: false,
       showMintingModal: false,
@@ -140,9 +150,19 @@ export default {
     async mintClaim(tokenId) {
       this.isMinting = true;
 
+      let file;
+
+      if (this.file) {
+        // Save file input to IPFS
+        file = new Moralis.File(this.file.name, this.file);
+        await file.saveIPFS();
+        console.log(file.ipfs(), file.hash());
+      }
+
       try {
         const transaction = await callMethod('claims', 'mintClaim', {
           tokenId,
+          imgHash: file ? file.hash() : 'null',
         });
 
         this.mintingSubmitted = true;
@@ -164,8 +184,6 @@ export default {
     },
 
     async fetchContractState() {
-      this.loadingClaims = true;
-
       let mintedIds = await callMethod('claims', 'getMintedIds');
       mintedIds = mintedIds.map((id) => id.toNumber());
       this.contractState.mintedIds = mintedIds;
@@ -174,18 +192,12 @@ export default {
       mapSize = mapSize.toNumber();
       this.contractState.mapSize = mapSize;
 
-      // let claims = [];
-
-      // for (let i = 1; i <= numClaims; i++) {
-      //   let claim = await callMethod('claims', '_claimDetails', { claimId: i });
-      //   claims.push(claim);
-      // }
-
-      // this.claims = claims;
-
       this.timeout = setTimeout(this.fetchContractState, 5000);
-
       this.loadingClaims = false;
+    },
+
+    async input(event) {
+      this.file = event.target.files[0];
     },
   },
 };

@@ -29,6 +29,7 @@ contract Claims is ERC721, Ownable, Withdrawable, ExternalActor {
     string name;
     string description;
     string image;
+    string emblem;
     Bonuses bonuses;
   }
 
@@ -63,7 +64,7 @@ contract Claims is ERC721, Ownable, Withdrawable, ExternalActor {
     return (uint256(keccak256(abi.encode(randomSeed, block.number))) % 100) + 1;
   }
 
-  function safeMintClaim(address requester, uint256 tokenId) private {
+  function safeMintClaim(address requester, uint256 tokenId, string memory imgHash) private {
     require(!_exists(tokenId), "ALREADY_CLAIMED");
     (uint256 z, uint256 x, uint256 y) = getCoords(tokenId);
     require(x <= mapSize && y <= mapSize, "OUT_OF_BOUNDS");
@@ -75,6 +76,7 @@ contract Claims is ERC721, Ownable, Withdrawable, ExternalActor {
       "Claim",
       "A mining claim.",
       "QmUKwkmHyHoYMZgnyMprKbhHSA5JrA78eiQcK8HPzTvahW",
+      imgHash,
       Bonuses(
         getRandom(1),
         getRandom(2),
@@ -92,8 +94,13 @@ contract Claims is ERC721, Ownable, Withdrawable, ExternalActor {
     amountMinted++;
   }
 
-  function mintClaim(uint256 tokenId) public {
-    safeMintClaim(msg.sender, tokenId);
+  function mintClaim(uint256 tokenId, string memory imgHash) public {
+    safeMintClaim(msg.sender, tokenId, imgHash);
+  }
+
+  function setEmblem(uint256 tokenId, string memory imgHash) public {
+    require(ownerOf(tokenId) == msg.sender, "NOT_YOUR_CLAIM");
+    _claimDetails[tokenId].emblem = imgHash;
   }
 
   function exists(uint256 tokenId) public view returns (bool) {
@@ -122,6 +129,8 @@ contract Claims is ERC721, Ownable, Withdrawable, ExternalActor {
           String.toString(_claimDetails[tokenId].y),
           '", "background_color" : "101922", "image": "ipfs://',
           _claimDetails[tokenId].image,
+          '", "emblem": "ipfs://',
+          _claimDetails[tokenId].emblem,
           '", "bonuses": {',
           '"stone": "',
           String.toString(_claimDetails[tokenId].bonuses.stone),

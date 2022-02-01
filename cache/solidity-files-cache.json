@@ -904,8 +904,8 @@
       ]
     },
     "/Users/den/Projects/below-the-mountain/contracts/Claims.sol": {
-      "lastModificationDate": 1643675470108,
-      "contentHash": "786c8c0923becbe0dbb598f07e7b5c1a",
+      "lastModificationDate": 1643678093369,
+      "contentHash": "e0a5a134300289699a26c5aab5fa4a37",
       "sourceName": "contracts/Claims.sol",
       "solcConfig": {
         "version": "0.8.0",
