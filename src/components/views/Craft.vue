@@ -19,7 +19,7 @@
     <template v-slot:title>{{ selectedRecipe.name }}</template>
 
     <div v-if="craftingFailed">Failed :(</div>
-    <div v-else-if="isCrafting && craftingSubmitted">Crafting item...</div>
+    <div v-else-if="isCrafting && craftingSubmitted">Forging some gear...</div>
     <div v-else-if="isCrafting">Sending transaction...</div>
     <div v-else-if="craftingSuccess">
       Success!
@@ -33,7 +33,7 @@
         View transaction
       </a>
 
-      <Butt to="/app/inventory" class="mt-2">Go to inventory</Butt>
+      <Butt to="/app/inventory" class="mt-2">View in inventory</Butt>
     </div>
 
     <template v-else>

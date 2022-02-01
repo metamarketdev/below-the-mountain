@@ -37,7 +37,7 @@
         View transaction
       </a>
 
-      <Butt to="/app/inventory" class="mt-4">Go to inventory</Butt>
+      <Butt to="/app/inventory" class="mt-4">View in inventory</Butt>
     </div>
 
     <template v-else>
